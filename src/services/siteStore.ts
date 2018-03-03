@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
+import { User } from '../models/user';
  
 @Injectable()
 export class SiteStore {
 
-	private username: string;
+	private user: User;
 
 	constructor() {
 	}
 
-	setUserName(username: string) {
-		console.log(`Setting username to: ${username}`);
-		this.username = username;
+	setUser(user: User) {
+		console.log('Setting user to: ', user);
+		this.user = user;
 	}
 	
-    getUserName() {
-        return this.username;
+    getUser() : User{
+        return this.user;
     }
 }

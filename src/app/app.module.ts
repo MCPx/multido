@@ -10,12 +10,13 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { SiteStore } from '../services/siteStore';
 import { DashBoardPage } from '../pages/dashboard/dashboard';
+import { FirestoreService } from '../services/firestoreService';
 
 @NgModule({
   declarations: [
     MyApp,
-	LoginPage,
-	DashBoardPage
+	  LoginPage,
+	  DashBoardPage
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -38,8 +39,9 @@ import { DashBoardPage } from '../pages/dashboard/dashboard';
   ],
   providers: [
     StatusBar,
-	SplashScreen,
-	SiteStore,
+    SplashScreen,
+    SiteStore,
+    FirestoreService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]  
 })

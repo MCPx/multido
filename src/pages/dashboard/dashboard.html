@@ -1,0 +1,10 @@
+<h1>Lists</h1>
+
+<ul>
+    <li *ngFor="let list of lists">{{list.Name}}
+        <ul>
+            <li *ngFor="let item of list.Items">{{item.Text}}</li>
+        </ul>
+
+    </li>
+</ul>
