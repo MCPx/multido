@@ -1,0 +1,14 @@
+<ion-content padding>
+    <div class="login-box">
+        <form (ngSubmit)="login()" #registerForm="ngForm">
+            <ion-row>
+                <ion-col>
+                    <label for="username">Username</label>
+                    <ion-input type="text" id="username" name="username" [(ngModel)]="loginModel.username" required></ion-input>
+                </ion-col>
+            </ion-row>
+
+            <button type="submit" ion-button>Continue</button>
+        </form>
+    </div>
+</ion-content>
