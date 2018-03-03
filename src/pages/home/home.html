@@ -9,8 +9,8 @@
 <ion-content padding>
   The world is your oyster.
   <ul>
-    <li class="text" *ngFor="let user of users">
-      {{user.id}} - {{user.name}}
+    <li class="text" *ngFor="let user of users | async">
+      {{user.name}} - {{user.name}}
     </li>
   </ul>
   <p>
