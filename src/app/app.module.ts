@@ -7,12 +7,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
-import { Login } from '../pages/login/login';
+import { LoginPage } from '../pages/login/login';
+import { SiteStore } from '../services/siteStore';
+import { DashBoardPage } from '../pages/dashboard/dashboard';
 
 @NgModule({
   declarations: [
     MyApp,
-    Login
+	LoginPage,
+	DashBoardPage
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -30,11 +33,13 @@ import { Login } from '../pages/login/login';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    Login
+	LoginPage,
+	DashBoardPage
   ],
   providers: [
     StatusBar,
-    SplashScreen,
+	SplashScreen,
+	SiteStore,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]  
 })
