@@ -1,1 +1,3 @@
-# multido
+# Multido
+
+Multi-user ToDo List
