@@ -8,6 +8,11 @@
 
 <ion-content padding>
   The world is your oyster.
+  <ul>
+    <li class="text" *ngFor="let user of users">
+      {{user.id}} - {{user.name}}
+    </li>
+  </ul>
   <p>
     If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
   </p>
