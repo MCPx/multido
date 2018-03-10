@@ -11,12 +11,14 @@ import { LoginPage } from '../pages/login/login';
 import { SiteStore } from '../services/siteStore';
 import { DashBoardPage } from '../pages/dashboard/dashboard';
 import { FirestoreService } from '../services/firestoreService';
+import { ListPage } from '../pages/list/list';
 
 @NgModule({
   declarations: [
     MyApp,
-	  LoginPage,
-	  DashBoardPage
+    LoginPage,
+    DashBoardPage,
+    ListPage
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -34,15 +36,16 @@ import { FirestoreService } from '../services/firestoreService';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-	LoginPage,
-	DashBoardPage
+    LoginPage,
+    DashBoardPage,
+    ListPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     SiteStore,
     FirestoreService,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
-  ]  
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
+  ]
 })
-export class AppModule {}
+export class AppModule { }

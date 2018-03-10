@@ -4,6 +4,8 @@ import { SiteStore } from '../../services/siteStore';
 import { DashBoardPage } from '../dashboard/dashboard'
 import { FirestoreService } from '../../services/firestoreService';
 import { User } from '../../models/user';
+import { ListPage } from '../list/list';
+import { List } from '../../models/list';
 
 
 interface LoginModel {
@@ -27,12 +29,8 @@ export class LoginPage {
         this.firestoreService.getUserByName(this.loginModel.username, (user: User) => {
             this.store.setUser(user);
             this.nav.push(DashBoardPage);
+            // this.nav.push(ListPage, { list: <List> { Name: "Groceries", Items: [{ Text: "Black bags", State: { checked: false }}] } });
         });
-
-
-       
-        
-
     }
 
 }
