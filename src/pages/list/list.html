@@ -10,10 +10,10 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-list>
-        <ion-item *ngFor="let item of items">
+    <ion-card *ngFor="let item of items">
+        <button ion-item (click)="itemCheck(item.Id)">
             <ion-checkbox [(ngModel)]="item.State.checked" color="secondary"></ion-checkbox>
             <ion-label>{{item.Text}}</ion-label>
-        </ion-item>
-    </ion-list>
+        </button>
+    </ion-card>
 </ion-content>

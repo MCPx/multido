@@ -16,4 +16,8 @@ export class ListPage {
         this.items = this.list.Items;
     }
 
+    itemCheck(itemId: string) {
+        var item = this.items.find(i => i.Id == itemId);
+        item.State.checked = !item.State.checked;
+    }
 }
