@@ -14,9 +14,19 @@ export class DashBoardPage {
     {
         this.firestoreService.getListsForUser(this.store.getUser(), lists => {
             this.lists = lists;
-            // TODO: Remove when page is implemented
-            this.nav.push(ListPage, { list: lists[0] });
-        });
-        
+        });        
+    }
+
+    navigateToList(list) {
+        this.nav.push(ListPage, { list });
+    }
+
+    getListSubtext(numItems) {
+        return numItems + " item" + (numItems > 1 ? "s": "");
+    };
+
+    handleAddListClick()
+    {
+        console.log("Add list FAB pressed");
     }
 }

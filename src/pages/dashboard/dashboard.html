@@ -1,11 +1,18 @@
-<ion-content padding>
-    <h1>Lists</h1>
-
-    <ul>
-        <li *ngFor="let list of lists">{{list.Name}}
-            <ul>
-                <li *ngFor="let item of list.Items">{{item.Text}}</li>
-            </ul>
-        </li>
-    </ul>
+<ion-content>
+    <ion-list>
+        <ion-list-header>
+            Lists
+        </ion-list-header>
+            <ion-item *ngFor="let list of lists" (click)="navigateToList(list)">
+                    <ion-avatar item-start>
+                        <img src="assets/icon/list-icon.png">
+                    </ion-avatar>
+                    <h2>{{list.Name}}</h2>
+                    <p>{{getListSubtext(list.Items.length)}}</p>
+            </ion-item>
+    
+        <ion-fab (click)="addList()">
+            <button ion-fab>+</button>
+        </ion-fab>
+    </ion-list>
 </ion-content>
