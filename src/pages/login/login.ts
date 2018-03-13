@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController, Loading } from 'ionic-angular';
 import { SiteStore } from '../../services/siteStore';
 import { DashBoardPage } from '../dashboard/dashboard'
 import { FirestoreService } from '../../services/firestoreService';
@@ -14,8 +14,12 @@ interface LoginModel {
 
 @Component({selector: 'page-login', templateUrl: 'login.html'})
 export class LoginPage {
-    constructor(private nav: NavController, private store: SiteStore, private firestoreService: FirestoreService){
 
+    loadingDialog: Loading;
+
+    constructor(private nav: NavController, private loadingCtrl: LoadingController, private store: SiteStore, private firestoreService: FirestoreService) {
+       
+        this.createLoadingDialog();        
     }
 
     loginModel: LoginModel = { username: null};
@@ -26,11 +30,21 @@ export class LoginPage {
 
 		console.log("Logging in", this.loginModel.username);
         
+        this.loadingDialog.present();
+
         this.firestoreService.getUserByName(this.loginModel.username, (user: User) => {
+            this.loadingDialog.dismiss();
             this.store.setUser(user);
             this.nav.push(DashBoardPage);
             // this.nav.push(ListPage, { list: <List> { Name: "Groceries", Items: [{ Text: "Black bags", State: { checked: false }}] } });
         });
     }
+
+    createLoadingDialog() {
+        this.loadingDialog = this.loadingCtrl.create({
+            content: 'Logging you in...'
+        });
+    }
+
 
 }

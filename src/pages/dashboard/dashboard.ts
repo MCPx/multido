@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, LoadingController, Loading } from 'ionic-angular';
 import { SiteStore } from '../../services/siteStore';
 import { FirestoreService } from '../../services/firestoreService';
 import { List } from '../../models/list';
@@ -10,11 +10,18 @@ export class DashBoardPage {
 
     lists: List[];
 
-    constructor(private nav : NavController, private store : SiteStore, private firestoreService : FirestoreService)
+    loadingDialog: Loading;
+
+    constructor(private nav : NavController, private loadingCtrl: LoadingController, private store : SiteStore, private firestoreService : FirestoreService)
     {
+        this.createLoadingDialog();
+
+        this.loadingDialog.present();
+
         this.firestoreService.getListsForUser(this.store.getUser(), lists => {
-            this.lists = lists;
-        });        
+            this.loadingDialog.dismiss();
+            this.lists = lists;            
+        });                
     }
 
     navigateToList(list) {
@@ -28,5 +35,11 @@ export class DashBoardPage {
     handleAddListClick()
     {
         console.log("Add list FAB pressed");
+    }
+
+    createLoadingDialog() {
+        this.loadingDialog = this.loadingCtrl.create({
+            content: 'Logging you in...'
+        });
     }
 }
