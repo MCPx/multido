@@ -12,6 +12,7 @@ import { SiteStore } from '../services/siteStore';
 import { DashBoardPage } from '../pages/dashboard/dashboard';
 import { FirestoreService } from '../services/firestoreService';
 import { ListPage } from '../pages/list/list';
+import { LoadingDialog } from '../assets/components/loadingdialog';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { ListPage } from '../pages/list/list';
     SplashScreen,
     SiteStore,
     FirestoreService,
+    LoadingDialog,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
