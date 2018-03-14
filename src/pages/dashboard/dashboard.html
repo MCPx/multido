@@ -1,17 +1,25 @@
-<ion-content>
+
+    <ion-header>
+        <ion-navbar hideBackButton>
+            <button ion-button icon-only menuToggle>
+                    <ion-icon name="menu"></ion-icon>
+            </button>
+            <ion-title>Dashboard</ion-title>
+            </ion-navbar>
+    </ion-header>
+    <ion-content>
     <ion-list>
-        <ion-list-header>
-            Lists
-        </ion-list-header>
-            <ion-item *ngFor="let list of lists" (click)="navigateToList(list)">
+            <ion-card *ngFor="let list of lists" (click)="navigateToList(list)">
+                <ion-item>
                     <ion-avatar item-start>
                         <img src="assets/icon/list-icon.png">
                     </ion-avatar>
                     <h2>{{list.Name}}</h2>
                     <p>{{getListSubtext(list.Items.length)}}</p>
-            </ion-item>
+                </ion-item>
+            </ion-card>
     
-        <ion-fab (click)="addList()">
+        <ion-fab (click)="handleAddListClick()">
             <button ion-fab>+</button>
         </ion-fab>
     </ion-list>

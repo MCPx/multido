@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { LoadingController, Loading } from 'ionic-angular';
 
-@Component({selector: 'page-dashboard', templateUrl: 'dashboard.html'})
+@Component({selector: 'component-loader'})
 export class LoadingDialog {
 
     loadingDialog: Loading;
