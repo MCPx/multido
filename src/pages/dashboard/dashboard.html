@@ -1,12 +1,15 @@
 
     <ion-header>
-        <ion-navbar hideBackButton>
-            <button ion-button icon-only menuToggle>
-                    <ion-icon name="menu"></ion-icon>
-            </button>
+        <ion-navbar hideBackButton>            
             <ion-title>Dashboard</ion-title>
-            </ion-navbar>
+            <ion-buttons end>            
+                <button ion-button icon-only color="primary" (click)="handleAddListClick()">
+                    <ion-icon name="add"></ion-icon>
+                </button>
+            </ion-buttons>            
+        </ion-navbar>
     </ion-header>
+
     <ion-content>
     <ion-list>
             <ion-card *ngFor="let list of lists" (click)="navigateToList(list)">
@@ -18,9 +21,5 @@
                     <p>{{getListSubtext(list.Items.length)}}</p>
                 </ion-item>
             </ion-card>
-    
-        <ion-fab (click)="handleAddListClick()">
-            <button ion-fab>+</button>
-        </ion-fab>
     </ion-list>
 </ion-content>

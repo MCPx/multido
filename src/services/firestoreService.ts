@@ -13,6 +13,7 @@ interface IFirestoreService {
     signOut();
 
     getListsForUser(user: User, callback:(lists: List[]) => void) : void;
+    addListForUser(user: User, name : string) : void;
 }
 
 @Injectable()
@@ -37,13 +38,14 @@ export class FirestoreService implements IFirestoreService {
             const id = documentSnapshot.id;
             const userData = documentSnapshot.data();
 
-            callback({id, name: userData.name, listIds: userData.listIds});
+            callback({id, userRef: document.ref, name: userData.name, listIds: userData.listIds});
             
         }).catch((error) => console.error("Error fetching user", error));
     }
 
     public getListsForUser(user : User, callback : (lists: List[]) => void) : void {
         console.log("Fetching lists for user: ", user);
+
         const promises = user.listIds.map((documentReference: DocumentReference) => documentReference.get());
 
         Promise.all(promises).then(documentSnapshots => 
@@ -52,6 +54,16 @@ export class FirestoreService implements IFirestoreService {
             callback(lists);
         });
     }
+
+    addListForUser(user: User, name: string): Promise<void> {
+
+        return this.angularFirestore.collection("lists").add({creatorId: user.userRef, name, items: [] }).then(docRef =>
+        {
+            user.listIds.push(docRef);
+            return this.angularFirestore.collection("users").doc(user.id).update({listIds: user.listIds});
+        }).catch(error => console.error("Error adding list", error));         
+    }
+    
 
     private mapList(documentSnapshot : DocumentSnapshot ) : List
     {

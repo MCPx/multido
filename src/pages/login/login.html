@@ -3,12 +3,15 @@
         <form (ngSubmit)="login()" #registerForm="ngForm">
             <ion-row>
                 <ion-col>
-                    <label for="username">Username</label>
-                    <ion-input type="text" id="username" name="username" [(ngModel)]="loginModel.username" required></ion-input>
+                    <label for="email">Email</label>
+                    <ion-input type="text" id="email" name="email" [(ngModel)]="loginModel.email" required></ion-input>
+
+                    <label for="password">Password</label>
+                    <ion-input type="password" id="password" name="password" [(ngModel)]="loginModel.password" required></ion-input>
                 </ion-col>
             </ion-row>
 
-            <button type="submit" ion-button>Continue</button>
+            <button ion-button type="submit">Continue</button>
         </form>
     </div>
 </ion-content>

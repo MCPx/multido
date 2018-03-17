@@ -2,7 +2,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule, ModalController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
@@ -13,14 +13,16 @@ import { SiteStore } from '../services/siteStore';
 import { DashBoardPage } from '../pages/dashboard/dashboard';
 import { FirestoreService } from '../services/firestoreService';
 import { ListPage } from '../pages/list/list';
-import { LoadingDialog } from '../assets/components/loadingdialog';
+import { LoadingDialog } from '../pages/components/loadingdialog';
+import { AddListPage } from '../pages/components/addList/addList';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
     DashBoardPage,
-    ListPage
+    ListPage,
+    AddListPage
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -40,7 +42,8 @@ import { LoadingDialog } from '../assets/components/loadingdialog';
     MyApp,
     LoginPage,
     DashBoardPage,
-    ListPage
+    ListPage,
+    AddListPage
   ],
   providers: [
     StatusBar,
@@ -49,6 +52,7 @@ import { LoadingDialog } from '../assets/components/loadingdialog';
     FirestoreService,
     AngularFireAuth,
     LoadingDialog,
+    ModalController,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
