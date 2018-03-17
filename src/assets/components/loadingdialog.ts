@@ -9,7 +9,7 @@ export class LoadingDialog {
     constructor(private loadingCtrl: LoadingController){}
 
     public present(text: string, options?: object)
-    {
+    {        
         this.loadingDialog = this.loadingCtrl.create({
             content: text || "Loading...",
             ...options

@@ -4,9 +4,13 @@ import { User } from "../models/user";
 import { AngularFirestore } from "angularfire2/firestore";
 import { DocumentReference, DocumentSnapshot } from "@firebase/firestore-types";
 import { Injectable } from "@angular/core";
+import { AngularFireAuth } from 'angularfire2/auth';
 
 interface IFirestoreService {
-    getUserByName(username: string, callback:(user: User) => void) : void;
+    getUserById(id: string, callback:(user: User) => void) : void;
+
+    signIn(email: string, password: string) : void
+    signOut();
 
     getListsForUser(user: User, callback:(lists: List[]) => void) : void;
 }
@@ -14,30 +18,33 @@ interface IFirestoreService {
 @Injectable()
 export class FirestoreService implements IFirestoreService {
 
-    
-    constructor(private angularFirestore : AngularFirestore) {
+    constructor(private angularFirestore : AngularFirestore, private angularFireAuth : AngularFireAuth) {
     }
 
-    getUserByName(username: string, callback: Function): void 
-    {
-        console.log("Fetching user: ", username);
-        let query = this.angularFirestore.collection('users').ref.where("name", "==", username);
-   
-        query.get().then(querySnapshot => {
-            const userDoc = querySnapshot.docs[0];
-            const Id = userDoc.id;
-            const userData = userDoc.data();
+    public signIn(email : string, password : string) : Promise<any> {
+        return this.angularFireAuth.auth.signInWithEmailAndPassword(email, password);          
+    }
 
-            callback({Id, Name: userData.name, ListIds: userData.listIds});
+    public signOut() {
+        this.angularFireAuth.auth.signOut();
+    }
+
+    public getUserById(id : string, callback : (user: User) => void): void {
+        console.log("Fetching user: ", id);
+        let document = this.angularFirestore.collection('users').doc(id);
+   
+        document.ref.get().then(documentSnapshot => {
+            const id = documentSnapshot.id;
+            const userData = documentSnapshot.data();
+
+            callback({id, name: userData.name, listIds: userData.listIds});
             
         }).catch((error) => console.error("Error fetching user", error));
     }
 
-    getListsForUser(user: User, callback:(lists: List[]) => void): void {
+    public getListsForUser(user : User, callback : (lists: List[]) => void) : void {
         console.log("Fetching lists for user: ", user);
-        const promises = user.ListIds.map((documentReference: DocumentReference) => {
-            return documentReference.get();  
-        });
+        const promises = user.listIds.map((documentReference: DocumentReference) => documentReference.get());
 
         Promise.all(promises).then(documentSnapshots => 
         { 
@@ -46,17 +53,15 @@ export class FirestoreService implements IFirestoreService {
         });
     }
 
-    private mapList(documentSnapshot: DocumentSnapshot ) : List
+    private mapList(documentSnapshot : DocumentSnapshot ) : List
     {
         const listData = documentSnapshot.data();
         const Id = documentSnapshot.id;
         return { Id, Name: listData.name, CreatorId: listData.creatorId, Items: listData.items.map(mapItem)};         
-    }
-
-    
+    }    
 }
 
-const mapItem = (item: any) : Item =>
+const mapItem = (item : any) : Item =>
 {
     return {
         Id: item.id,

@@ -28,10 +28,23 @@ export class LoginPage {
         
         this.loadingDialog.present("Logging you in...");
 
-        this.firestoreService.getUserByName(this.loginModel.username, (user: User) => {
+        this.firestoreService.signIn(this.loginModel.username, "password")
+            .then(response => {
+                console.log("login response", response);
+                this.firestoreService.getUserById(response.uid, (user: User) => {
+                    this.loadingDialog.dismiss();
+                    this.store.setUser(user);
+                    this.nav.push(DashBoardPage);
+                });
+            }).catch(error => {
+                this.loadingDialog.dismiss();
+                this.loadingDialog.present("you suck", { enableBackdropDismiss: true });
+            });
+
+        /*this.firestoreService.getUserByName(this.loginModel.username, (user: User) => {
             this.loadingDialog.dismiss();
             this.store.setUser(user);
             this.nav.push(DashBoardPage);
-        });
+        });*/
     }
 }

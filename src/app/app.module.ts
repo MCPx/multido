@@ -6,6 +6,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
+import { AngularFireAuth } from 'angularfire2/auth';
 import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { SiteStore } from '../services/siteStore';
@@ -46,6 +47,7 @@ import { LoadingDialog } from '../assets/components/loadingdialog';
     SplashScreen,
     SiteStore,
     FirestoreService,
+    AngularFireAuth,
     LoadingDialog,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
