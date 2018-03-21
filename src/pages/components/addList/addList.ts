@@ -11,7 +11,7 @@ export class AddListPage
     addListModel : AddListModel = { name: null };
 
     isValid() {
-        return this.addListModel.name !== null;
+        return this.addListModel.name && this.addListModel.name.length > 0;
     }
 
     constructor(public viewCtrl: ViewController){

@@ -6,7 +6,7 @@
 
 <ion-content padding>
     <label for="listName">Name</label>
-    <ion-input type="text" id="listName" name="listName" [(ngModel)]="addListModel.name" required></ion-input>
+    <ion-input autofocus type="text" id="listName" name="listName" [(ngModel)]="addListModel.name" required></ion-input>
     <button ion-button clear (click)="dismiss()">Cancel</button>
     <button float-right ion-button [disabled]="!isValid()" (click)="save()">Save</button>
 </ion-content>

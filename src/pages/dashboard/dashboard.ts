@@ -41,7 +41,7 @@ export class DashBoardPage {
             if (!data) return;
             
             this.isLoading = true;
-            this.lists.push({name: data.name, id: "", creatorId: "", items:[]}) // add list locally, should be updated with properties when getLists is called
+            this.lists.push({name: data.name, id: "", creatorId: "", items:[]}) // add list locally, will be updated with properties when getLists is called
             this.firestoreService.addListForUser(this.store.getUser(), data.name).then(() => this.getLists());
         });
         
