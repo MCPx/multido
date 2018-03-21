@@ -1,14 +1,20 @@
 <ion-header>
     <ion-navbar>
         <ion-title>{{list.name}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only>
+                <ion-icon name="cloud-done" color="inactive" [hidden]="isUpdating"></ion-icon>
+                <ion-spinner color="inactive" [hidden]="!isUpdating"></ion-spinner>
+            </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-card *ngFor="let item of items">
+    <ion-card *ngFor="let item of list.items">
         <ion-item>
-            <ion-checkbox [(ngModel)]="item.State.checked" color="secondary"></ion-checkbox>
-            <ion-label>{{item.Text}}</ion-label>
+            <ion-checkbox [(ngModel)]="item.state.checked" color="secondary"></ion-checkbox>
+            <ion-label>{{item.text}}</ion-label>
             <button ion-button icon-only item-right clear (click)="delete(item)">
                 <ion-icon color="inactive" name="more"></ion-icon>
             </button>

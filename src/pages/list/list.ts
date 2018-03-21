@@ -8,29 +8,31 @@ import { Item } from '../../models/item';
 export class ListPage {
 
     list : List;
-    items : Item[] = [];
-
+    isUpdating: boolean = false;
     newItem : string;
 
     constructor(private navParams : NavParams, private firestoreService : FirestoreService) {
         this.list = navParams.get('list');
-        this.items = this.list.items;
+        console.log(this.list);
     }
 
     public itemCheck(itemId : string) {
-        var item = this.items.find(i => i.Id == itemId);
-        item.State.checked = !item.State.checked;
+        var item = this.list.items.find(i => i.id == itemId);
+        item.state.checked = !item.state.checked;
     }
 
     public onBlur() {
         console.log(`Triggered on blur with newItem value: '${this.newItem}'`);
         if (this.newItem) {
-            this.items.push({ Id: "newId", State: { checked: false }, Text: this.newItem });
+            this.list.items.push({ id: "newId", state: { checked: false }, text: this.newItem });
             this.newItem = null;
+            this.isUpdating = true;
+            this.firestoreService.updateListItems(this.list)
+                .then(() => { this.isUpdating = false });
         }
     }
 
     public delete(item : Item) {
-        console.log(`Deleting item: ${item.Text}`);
+        console.log(`Deleting item: ${item.text}`);
     }
 }

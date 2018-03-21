@@ -1,11 +1,9 @@
 interface State {
     checked: boolean;
-    
 }
 
 export interface Item {
-    Id: string;
-    Text: string;
-    State: State;
+    id: string;
+    text: string;
+    state: State;
 }
-
