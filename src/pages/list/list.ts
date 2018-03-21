@@ -14,7 +14,7 @@ export class ListPage {
 
     constructor(private navParams : NavParams, private firestoreService : FirestoreService) {
         this.list = navParams.get('list');
-        this.items = this.list.Items;
+        this.items = this.list.items;
     }
 
     public itemCheck(itemId : string) {

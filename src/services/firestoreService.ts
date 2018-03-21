@@ -14,6 +14,7 @@ interface IFirestoreService {
 
     getListsForUser(user: User, callback:(lists: List[]) => void) : void;
     addListForUser(user: User, name : string) : void;
+    removeListForUser(user: User, listToRemove: List): Promise<void>;
 }
 
 @Injectable()
@@ -43,12 +44,12 @@ export class FirestoreService implements IFirestoreService {
         }).catch((error) => console.error("Error fetching user", error));
     }
 
-    public getListsForUser(user : User, callback : (lists: List[]) => void) : void {
+    public getListsForUser(user : User, callback : (lists: List[]) => void) : Promise<void> {
         console.log("Fetching lists for user: ", user);
 
         const promises = user.listIds.map((documentReference: DocumentReference) => documentReference.get());
 
-        Promise.all(promises).then(documentSnapshots => 
+        return Promise.all(promises).then(documentSnapshots => 
         { 
             const lists = documentSnapshots.map(this.mapList);
             callback(lists);
@@ -63,13 +64,19 @@ export class FirestoreService implements IFirestoreService {
             return this.angularFirestore.collection("users").doc(user.id).update({listIds: user.listIds});
         }).catch(error => console.error("Error adding list", error));         
     }
-    
+
+    removeListForUser(user: User, listToRemove: List): Promise<void> {
+
+        user.listIds = user.listIds.filter(list => list.id != listToRemove.id);
+
+        return this.angularFirestore.collection("users").doc(user.id).update({listIds: user.listIds});         
+    }    
 
     private mapList(documentSnapshot : DocumentSnapshot ) : List
     {
         const listData = documentSnapshot.data();
-        const Id = documentSnapshot.id;
-        return { Id, Name: listData.name, CreatorId: listData.creatorId, Items: listData.items.map(mapItem)};         
+        const id = documentSnapshot.id;
+        return { id, name: listData.name, creatorId: listData.creatorId, items: listData.items.map(mapItem)};         
     }    
 }
 

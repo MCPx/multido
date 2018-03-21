@@ -1,25 +1,35 @@
-
-    <ion-header>
-        <ion-navbar hideBackButton>            
+<ion-header>
+    <ion-toolbar>
+        <ion-row>
             <ion-title>Dashboard</ion-title>
-            <ion-buttons end>            
+            <ion-buttons end>
+                <button ion-button icon-only color="inactive">
+                    <ion-icon name="cloud-done" [hidden]="isLoading"></ion-icon>
+                    <ion-spinner color="inactive" [hidden]="!isLoading"></ion-spinner>
+                </button>
                 <button ion-button icon-only color="primary" (click)="handleAddListClick()">
                     <ion-icon name="add"></ion-icon>
                 </button>
-            </ion-buttons>            
-        </ion-navbar>
-    </ion-header>
+            </ion-buttons>
+        </ion-row>
+    </ion-toolbar>
+</ion-header>
 
-    <ion-content>
+<ion-content>
+    <ion-refresher (ionRefresh)="handleDashboardRefresh($event)">
+        <ion-refresher-content>
+        </ion-refresher-content>
+    </ion-refresher>
     <ion-list>
-            <ion-card *ngFor="let list of lists" (click)="navigateToList(list)">
-                <ion-item>
-                    <ion-avatar item-start>
-                        <img src="assets/icon/list-icon.png">
-                    </ion-avatar>
-                    <h2>{{list.Name}}</h2>
-                    <p>{{getListSubtext(list.Items.length)}}</p>
-                </ion-item>
-            </ion-card>
+        <ion-card *ngFor="let list of lists" (click)="navigateToList(list)">
+            <ion-item>
+                <ion-avatar item-start>
+                    <img src="assets/icon/list-icon.png">
+                </ion-avatar>
+                <h2>{{list.name}}</h2>
+                <p>{{getListSubtext(list.items)}}</p>
+                <button ion-button outline color="danger" item-right (click)="handleDeleteClick($event, list)">x</button>
+            </ion-item>
+        </ion-card>
     </ion-list>
 </ion-content>
