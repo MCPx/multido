@@ -6,6 +6,7 @@ import { List } from '../../models/list';
 import { ListPage } from '../list/list';
 import { AddListPage } from '../components/addList/addList';
 import { Item } from '../../models/item';
+import { AlertController } from 'ionic-angular';
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -13,7 +14,7 @@ export class DashBoardPage {
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private modalController: ModalController, private store: SiteStore, private firestoreService: FirestoreService) {
+    constructor(private nav: NavController, private alertCtrl : AlertController,  private modalController: ModalController, private store: SiteStore, private firestoreService: FirestoreService) {
         this.getLists();
     }
 
@@ -47,13 +48,29 @@ export class DashBoardPage {
 
     // update lists locally, then on firestore
     handleDeleteClick(e, listToRemove) {
+
+        const deleteConfirm = this.alertCtrl.create({
+            title: 'Confirm Delete',
+            buttons: [
+                'Cancel',
+                {
+                    text: 'Delete',
+                    handler: () => this.removeList(listToRemove)                
+                }],
+          });
+
+        deleteConfirm.present();      
+        
+        e.stopPropagation(); // don't trigger click on surrounding card
+    }
+
+    removeList(listToRemove)
+    {
         this.isLoading = true;
         this.lists = this.lists.filter(list => list.id != listToRemove.id);
         this.firestoreService.removeListForUser(this.store.getUser(), listToRemove)
             .then(() => this.getLists())
             .catch(error => { this.lists.push(listToRemove); this.isLoading=false; });
-        
-        e.stopPropagation(); // don't trigger click on surrounding card
     }
 
     handleDashboardRefresh(e)

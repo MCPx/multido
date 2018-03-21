@@ -15,7 +15,7 @@ interface LoginModel {
 @Component({selector: 'page-login', templateUrl: 'login.html'})
 export class LoginPage {
 
-    loginModel: LoginModel = { email: "marcelcprinsloo@gmail.com", password: "password" };
+    loginModel: LoginModel = { email: "jbell@live.co.za", password: "password" };
 
     constructor(private nav: NavController, private loadingDialog: LoadingDialog, private store: SiteStore, private firestoreService: FirestoreService) {           
     }

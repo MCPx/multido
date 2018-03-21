@@ -3,8 +3,8 @@
         <ion-row>
             <ion-title>Dashboard</ion-title>
             <ion-buttons end>
-                <button ion-button icon-only color="inactive">
-                    <ion-icon name="cloud-done" [hidden]="isLoading"></ion-icon>
+                <button ion-button icon-only >
+                    <ion-icon name="cloud-done" color="inactive" [hidden]="isLoading"></ion-icon>
                     <ion-spinner color="inactive" [hidden]="!isLoading"></ion-spinner>
                 </button>
                 <button ion-button icon-only color="primary" (click)="handleAddListClick()">
@@ -17,8 +17,6 @@
 
 <ion-content>
     <ion-refresher (ionRefresh)="handleDashboardRefresh($event)">
-        <ion-refresher-content>
-        </ion-refresher-content>
     </ion-refresher>
     <ion-list>
         <ion-card *ngFor="let list of lists" (click)="navigateToList(list)">
@@ -28,7 +26,9 @@
                 </ion-avatar>
                 <h2>{{list.name}}</h2>
                 <p>{{getListSubtext(list.items)}}</p>
-                <button ion-button outline color="danger" item-right (click)="handleDeleteClick($event, list)">x</button>
+                <button ion-button icon-only item-right clear (click)="handleDeleteClick($event, list)">
+                    <ion-icon color="inactive" name="close-circle"></ion-icon>
+                </button>
             </ion-item>
         </ion-card>
     </ion-list>
