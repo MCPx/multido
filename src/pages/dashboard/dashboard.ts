@@ -38,6 +38,8 @@ export class DashBoardPage {
         const addListModal = this.modalController.create(AddListPage, {});
         
         addListModal.onDidDismiss(data => {
+            if (!data) return;
+            
             this.isLoading = true;
             this.lists.push({name: data.name, id: "", creatorId: "", items:[]}) // add list locally, should be updated with properties when getLists is called
             this.firestoreService.addListForUser(this.store.getUser(), data.name).then(() => this.getLists());

@@ -1,20 +1,21 @@
 <ion-header>
-    <ion-toolbar>
-            <ion-title>Dashboard</ion-title>
-            <ion-buttons end>
-                <button ion-button icon-only >
-                    <ion-icon name="cloud-done" color="inactive" [hidden]="isLoading"></ion-icon>
-                    <ion-spinner color="inactive" [hidden]="!isLoading"></ion-spinner>
-                </button>
-                <button ion-button icon-only color="primary" (click)="handleAddListClick()">
-                    <ion-icon name="add"></ion-icon>
-                </button>
-            </ion-buttons>
-    </ion-toolbar>
+    <ion-navbar hideBackButton>
+        <ion-title>Dashboard</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only>
+                <ion-icon name="cloud-done" color="tertiary" [hidden]="isLoading"></ion-icon>
+                <ion-spinner color="tertiary" [hidden]="!isLoading"></ion-spinner>
+            </button>
+            <button ion-button icon-only color="primary" (click)="handleAddListClick()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
 
 <ion-content>
-    <ion-refresher (ionRefresh)="handleDashboardRefresh($event)">
+    <ion-refresher color="tertiary" (ionRefresh)="handleDashboardRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-list>
         <ion-card *ngFor="let list of lists" (click)="navigateToList(list)">
@@ -25,7 +26,7 @@
                 <h2>{{list.name}}</h2>
                 <p>{{getListSubtext(list.items)}}</p>
                 <button ion-button icon-only item-right clear (click)="handleDeleteClick($event, list)">
-                    <ion-icon color="inactive" name="close-circle"></ion-icon>
+                    <ion-icon color="tertiary" name="close-circle"></ion-icon>
                 </button>
             </ion-item>
         </ion-card>
