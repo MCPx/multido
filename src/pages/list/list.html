@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{list.Name}}</ion-title>
+        <ion-title>{{list.name}}</ion-title>
     </ion-navbar>
 </ion-header>
 
@@ -9,7 +9,9 @@
         <ion-item>
             <ion-checkbox [(ngModel)]="item.State.checked" color="secondary"></ion-checkbox>
             <ion-label>{{item.Text}}</ion-label>
-            <button ion-button outline color="danger" item-right (click)="delete(item)">Delete</button>
+            <button ion-button icon-only item-right clear (click)="delete(item)">
+                <ion-icon color="inactive" name="more"></ion-icon>
+            </button>
         </ion-item>
     </ion-card>
     <ion-card>
