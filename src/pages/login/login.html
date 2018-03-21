@@ -3,15 +3,21 @@
         <form (ngSubmit)="login()" #registerForm="ngForm">
             <ion-row>
                 <ion-col>
-                    <label for="email">Email</label>
-                    <ion-input type="text" id="email" name="email" [(ngModel)]="loginModel.email" required></ion-input>
+                    <ion-item>
+                        <ion-label floating for="email">Email</ion-label>
+                        <ion-input type="text" id="email" name="email" [(ngModel)]="loginModel.email" required></ion-input>
+                    </ion-item>
 
-                    <label for="password">Password</label>
-                    <ion-input type="password" id="password" name="password" [(ngModel)]="loginModel.password" required></ion-input>
+                    <ion-item>
+                        <ion-label floating for="password">Password</ion-label>
+                        <ion-input type="password" id="password" name="password" [(ngModel)]="loginModel.password" required></ion-input>
+                    </ion-item>
                 </ion-col>
             </ion-row>
 
-            <button ion-button type="submit">Continue</button>
+            <div padding>
+                <button ion-button block type="submit">Continue</button>
+            </div>
         </form>
     </div>
 </ion-content>

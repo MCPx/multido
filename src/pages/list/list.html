@@ -12,10 +12,10 @@
 
 <ion-content padding>
     <ion-card *ngFor="let item of list.items">
-        <ion-item>
+        <ion-item class="item">
             <ion-checkbox [(ngModel)]="item.state.checked" color="secondary"></ion-checkbox>
             <ion-label>{{item.text}}</ion-label>
-            <button ion-button icon-only item-right clear (click)="delete(item)">
+            <button ion-button icon-only item-right clear (click)="presentActionSheet(item)">
                 <ion-icon color="inactive" name="more"></ion-icon>
             </button>
         </ion-item>
