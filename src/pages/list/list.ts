@@ -26,9 +26,7 @@ export class ListPage {
         if (this.newItem) {
             this.list.items.push({ id: "newId", state: { checked: false }, text: this.newItem });
             this.newItem = null;
-            this.isUpdating = true;
-            this.firestoreService.updateListItems(this.list)
-                .then(() => { this.isUpdating = false });
+            this.updateItems();
         }
     }
 
@@ -57,5 +55,13 @@ export class ListPage {
 
     public delete(item : Item) {
         console.log(`Deleting item: ${item.text}`);
+        this.list.items = this.list.items.filter(i => i !== item);
+        this.updateItems();
+    }
+
+    public updateItems() {
+        this.isUpdating = true;
+        this.firestoreService.updateListItems(this.list)
+            .then(() => { this.isUpdating = false });
     }
 }
