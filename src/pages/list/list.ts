@@ -30,7 +30,7 @@ export class ListPage {
         }
     }
 
-    public presentActionSheet(item : Item) {
+    public presentActionSheet(item: Item) {
         let actionSheet = this.actionSheetCtrl.create({
             title: 'Edit item',
             buttons: [
@@ -53,9 +53,14 @@ export class ListPage {
         actionSheet.present();
     }
 
-    public delete(item : Item) {
+    public delete(item: Item) {
         console.log(`Deleting item: ${item.text}`);
         this.list.items = this.list.items.filter(i => i !== item);
+        this.updateItems();
+    }
+
+    public updateItem(item: Item) {
+        console.log(`Editing item: ${item.text}`);
         this.updateItems();
     }
 
