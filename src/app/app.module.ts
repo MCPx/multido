@@ -15,6 +15,7 @@ import { FirestoreService } from '../services/firestoreService';
 import { ListPage } from '../pages/list/list';
 import { LoadingDialog } from '../pages/components/loadingdialog';
 import { AddListPage } from '../pages/components/addList/addList';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AddListPage } from '../pages/components/addList/addList';
     }, 'angularfs'),
     AngularFirestoreModule,
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -53,6 +55,7 @@ import { AddListPage } from '../pages/components/addList/addList';
     AngularFireAuth,
     LoadingDialog,
     ModalController,
+    Storage,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
