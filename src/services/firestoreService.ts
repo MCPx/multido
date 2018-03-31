@@ -9,7 +9,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 interface IFirestoreService {
     getUserById(id: string, callback: (user: User) => void): void;
 
-    signIn(email: string, password: string): void
+    signIn(email: string, password: string): void;
+    register(email: string, name: string, password: string): Promise<any>;
     signOut();
 
     getListsForUser(user: User, callback: (lists: List[]) => void): void;
@@ -31,6 +32,13 @@ export class FirestoreService implements IFirestoreService {
 
     public signOut() {
         this.angularFireAuth.auth.signOut();
+    }
+
+    public register(email: string, name: string, password: string) : Promise<any>
+    {
+        return this.angularFireAuth.auth.createUserWithEmailAndPassword(email, password).then(response => {
+            this.angularFirestore.collection('users').doc(response.uid).set({name})
+        });
     }
 
     public getUserById(id: string, callback: (user: User) => void): void {
