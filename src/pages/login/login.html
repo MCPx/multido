@@ -10,13 +10,21 @@
 
                     <ion-item>
                         <ion-label floating for="password">Password</ion-label>
-                        <ion-input type="password" id="password" name="password" [(ngModel)]="loginModel.password" required></ion-input>
+                        <ion-input type="password" id="password" name="password" [(ngModel)]="loginModel.password" required *ngIf="!showPasswordText"></ion-input>
+                        <ion-input type="text" id="password" name="password" [(ngModel)]="loginModel.password" required *ngIf="showPasswordText"></ion-input>
+
+                        <button ion-button clear icon-only color="tertiary" type="button" item-right (click)="showPasswordText = !showPasswordText">
+                            <ion-icon name="eye" *ngIf="!showPasswordText"> </ion-icon>
+                            <ion-icon name="eye-off" *ngIf="showPasswordText"> </ion-icon>
+                        </button>
+                        
                     </ion-item>
                 </ion-col>
             </ion-row>
 
             <div padding>
                 <button ion-button block type="submit">Continue</button>
+                <button ion-button block (click)="register()">Register</button>
             </div>
         </form>
     </div>
