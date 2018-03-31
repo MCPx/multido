@@ -29,7 +29,7 @@ export class LoginPage {
 
         this.firestoreService.signIn(this.loginForm.value.email, this.loginForm.value.password)
             .then(response => {
-                this.firestoreService.getUserById(response.uid, (user: User) => {
+                this.firestoreService.getUserById(response.uid).then((user: User) => {
                     this.loadingDialog.dismiss();
                     this.store.setUser(user);
                     this.storage.set(storageKey.UserId, user.id);

@@ -28,7 +28,7 @@ export class MyApp {
         {
           if (!id) return Promise.reject("Id was null");
           
-          this.firestoreService.getUserById(id, (user : User) => {
+          this.firestoreService.getUserById(id).then((user : User) => {
             this.store.setUser(user);
             splashScreen.hide();
             this.rootPage = DashBoardPage;

@@ -12,7 +12,7 @@ export class ListPage {
     newItem: string;
 
     constructor(private navParams: NavParams, private firestoreService: FirestoreService, public actionSheetCtrl: ActionSheetController) {
-        this.list = navParams.get('list');
+        this.list = this.navParams.get('list');
         console.log(this.list);
     }
 

@@ -7,13 +7,13 @@ import { Injectable } from "@angular/core";
 import { AngularFireAuth } from 'angularfire2/auth';
 
 interface IFirestoreService {
-    getUserById(id: string, callback: (user: User) => void): void;
+    getUserById(id: string): Promise<User>;
 
     signIn(email: string, password: string): void;
     register(email: string, name: string, password: string): Promise<any>;
     signOut();
 
-    getListsForUser(user: User, callback: (lists: List[]) => void): void;
+    getListsForUser(user: User): Promise<List[]>;
     addListForUser(user: User, name: string): void;
     removeListForUser(user: User, listToRemove: List): Promise<void>;
 
@@ -43,30 +43,33 @@ export class FirestoreService implements IFirestoreService {
         });
     }
 
-    public getUserById(id: string, callback: (user: User) => void): void {
+    public getUserById(id: string): Promise<User> {
         
         let document = this.angularFirestore.collection('users').doc(id);
 
-        document.ref.get().then(documentSnapshot => {
+        return document.ref.get().then(documentSnapshot => {
             const id = documentSnapshot.id;
             const userData = documentSnapshot.data();
 
-            callback({ id, userRef: document.ref, name: userData.name, listIds: userData.listIds });
+            return <User>{ id, userRef: document.ref, name: userData.name, listIds: userData.listIds };
 
-        }).catch((error) => console.error("Error fetching user", error));
+        }).catch(error => {
+            console.error("Error fetching user", error);
+            return Promise.reject(error);
+        });
     }
 
-    public getListsForUser(user: User, callback: (lists: List[]) => void): Promise<void> {
+    public getListsForUser(user: User): Promise<List[]> {
         
         const promises = user.listIds.map((documentReference: DocumentReference) => documentReference.get());
 
         return Promise.all(promises).then(documentSnapshots => {
             const lists = documentSnapshots.map(this.mapList);
-            callback(lists);
+            return lists;
         });
     }
 
-    addListForUser(user: User, name: string): Promise<void> {
+    public addListForUser(user: User, name: string): Promise<void> {
 
         return this.angularFirestore.collection("lists").add({ creatorId: user.userRef, name, items: [] }).then(docRef => {
             user.listIds.push(docRef);
@@ -74,7 +77,7 @@ export class FirestoreService implements IFirestoreService {
         }).catch(error => console.error("Error adding list", error));
     }
 
-    removeListForUser(user: User, listToRemove: List): Promise<void> {
+    public removeListForUser(user: User, listToRemove: List): Promise<void> {
 
         user.listIds = user.listIds.filter(list => list.id != listToRemove.id);
 
@@ -84,7 +87,7 @@ export class FirestoreService implements IFirestoreService {
     public updateListItems(list: List) : Promise<void> {
         return list.listRef.update({
             items: list.items
-        })
+        });
     }
 
     private mapList(documentSnapshot: DocumentSnapshot): List {

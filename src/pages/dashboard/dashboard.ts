@@ -28,7 +28,7 @@ export class DashBoardPage {
 
     getLists() {
         this.isLoading = true;
-        return this.firestoreService.getListsForUser(this.store.getUser(), lists => {
+        return this.firestoreService.getListsForUser(this.store.getUser()).then(lists => {
             this.lists = lists;
             this.isLoading = false;
         });
