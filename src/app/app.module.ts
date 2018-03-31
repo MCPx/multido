@@ -16,11 +16,13 @@ import { ListPage } from '../pages/list/list';
 import { LoadingDialog } from '../pages/components/loadingdialog';
 import { AddListPage } from '../pages/components/addList/addList';
 import { IonicStorageModule } from '@ionic/storage';
+import { RegisterPage } from '../pages/register/register';
 
 @NgModule({
   declarations: [
     MyApp,
     LoginPage,
+    RegisterPage,
     DashBoardPage,
     ListPage,
     AddListPage
@@ -43,6 +45,7 @@ import { IonicStorageModule } from '@ionic/storage';
   entryComponents: [
     MyApp,
     LoginPage,
+    RegisterPage,
     DashBoardPage,
     ListPage,
     AddListPage

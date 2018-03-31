@@ -8,32 +8,31 @@ import { storageKey } from '../../enums/storageKeys';
 import { LoadingDialog } from '../components/loadingdialog';
 import { Storage } from '@ionic/storage';
 import { firestoreError } from '../../enums/firestoreError';
-
-interface LoginModel {
-    email: string;
-    password: string;
-}
+import { RegisterPage } from '../register/register';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({selector: 'page-login', templateUrl: 'login.html'})
 export class LoginPage {
 
-    loginModel: LoginModel = { email: undefined, password: undefined };
+    loginForm : FormGroup;
 
-    constructor(private nav: NavController, private loadingDialog: LoadingDialog, private store: SiteStore, private firestoreService: FirestoreService, private storage: Storage) {           
+    constructor(private nav: NavController, private formBuilder : FormBuilder, private loadingDialog: LoadingDialog, private store: SiteStore, private firestoreService: FirestoreService, private storage: Storage) {           
+        this.loginForm = this.formBuilder.group({
+            email: ['', Validators.compose([Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)])],
+            password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
+        });
     }
 
-    public login()
-    {
-        if (!this.loginModel.email) return;
-        
+    private login()
+    {        
         this.loadingDialog.present("Logging you in...");
 
-        this.firestoreService.signIn(this.loginModel.email, this.loginModel.password)
+        this.firestoreService.signIn(this.loginForm.value.email, this.loginForm.value.password)
             .then(response => {
                 this.firestoreService.getUserById(response.uid, (user: User) => {
                     this.loadingDialog.dismiss();
                     this.store.setUser(user);
-                    this.saveUser(user);
+                    this.storage.set(storageKey.UserId, user.id);
                     this.nav.push(DashBoardPage);
                 });
             }).catch(error => {
@@ -45,8 +44,9 @@ export class LoginPage {
             });
     }
 
-    private saveUser({id, name} : User)
-    {
-        this.storage.set(storageKey.UserId, id);
+    private handleRegisterClick(e)
+    {        
+        this.nav.push(RegisterPage, { ...this.loginForm.value });
+        e.preventDefault();
     }
 }

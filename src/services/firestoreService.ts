@@ -37,12 +37,14 @@ export class FirestoreService implements IFirestoreService {
     public register(email: string, name: string, password: string) : Promise<any>
     {
         return this.angularFireAuth.auth.createUserWithEmailAndPassword(email, password).then(response => {
-            this.angularFirestore.collection('users').doc(response.uid).set({name})
+            this.angularFirestore.collection('users').doc(response.uid).set({name, listIds: []});
+
+            return response;
         });
     }
 
     public getUserById(id: string, callback: (user: User) => void): void {
-        console.log("Fetching user: ", id);
+        
         let document = this.angularFirestore.collection('users').doc(id);
 
         document.ref.get().then(documentSnapshot => {
@@ -55,8 +57,7 @@ export class FirestoreService implements IFirestoreService {
     }
 
     public getListsForUser(user: User, callback: (lists: List[]) => void): Promise<void> {
-        console.log("Fetching lists for user: ", user);
-
+        
         const promises = user.listIds.map((documentReference: DocumentReference) => documentReference.get());
 
         return Promise.all(promises).then(documentSnapshots => {
