@@ -22,7 +22,7 @@
     </ion-card>
     <ion-card>
         <ion-item>
-            <ion-input text-center type="text" placeholder="+ Add Item" (ionBlur)="onBlur()" [(ngModel)]="newItem"></ion-input>
+            <ion-input text-center type="text" placeholder="+ Add Item" (ionBlur)="onBlur()" [(ngModel)]="newItem" (keypress)="handleKeyPress($event.keyCode)"></ion-input>
         </ion-item>
     </ion-card>
 </ion-content>

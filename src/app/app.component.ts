@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -14,6 +14,7 @@ import { FirestoreService } from '../services/firestoreService';
   templateUrl: 'app.html'
 })
 export class MyApp {
+
   rootPage:any;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: SiteStore, private firestoreService: FirestoreService) {
@@ -23,21 +24,18 @@ export class MyApp {
       statusBar.styleDefault();
 
       // try to fetch UserId from storage - if not then send to LoginPage
-      this.storage.get(storageKey.UserId)
+      return this.storage.get(storageKey.UserId)
         .then((id: string) => 
         {
-          if (!id) return Promise.reject("Id was null");
+          if (!id) return Promise.reject("User Id was null");
           
-          this.firestoreService.getUserById(id).then((user : User) => {
-            this.store.setUser(user);
-            splashScreen.hide();
-            this.rootPage = DashBoardPage;
+          return this.firestoreService.getUserById(id).then((user : User) => {
+              this.store.setUser(user);
+              this.rootPage = DashBoardPage;
           });
         })
-        .catch((error) => {
-          splashScreen.hide();
-          this.rootPage = LoginPage;
-        })
+        .catch(error => this.rootPage = LoginPage)
+        .then(() => splashScreen.hide());
     });
   }
 }
