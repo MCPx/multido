@@ -11,7 +11,7 @@ interface IFirestoreService {
 
     signIn(email: string, password: string): void;
     register(email: string, name: string, password: string): Promise<any>;
-    signOut();
+    signOut(): Promise<any>;
 
     getListsForUser(user: User): Promise<List[]>;
     addListForUser(user: User, name: string): void;
@@ -30,21 +30,20 @@ export class FirestoreService implements IFirestoreService {
         return this.angularFireAuth.auth.signInWithEmailAndPassword(email, password);
     }
 
-    public signOut() {
-        this.angularFireAuth.auth.signOut();
+    public signOut(): Promise<any> {
+        return this.angularFireAuth.auth.signOut();
     }
 
-    public register(email: string, name: string, password: string) : Promise<any>
-    {
+    public register(email: string, name: string, password: string): Promise<any> {
         return this.angularFireAuth.auth.createUserWithEmailAndPassword(email, password).then(response => {
-            this.angularFirestore.collection('users').doc(response.uid).set({name, listIds: []});
+            this.angularFirestore.collection('users').doc(response.uid).set({ name, listIds: [] });
 
             return response;
         });
     }
 
     public getUserById(id: string): Promise<User> {
-        
+
         let document = this.angularFirestore.collection('users').doc(id);
 
         return document.ref.get().then(documentSnapshot => {
@@ -60,7 +59,7 @@ export class FirestoreService implements IFirestoreService {
     }
 
     public getListsForUser(user: User): Promise<List[]> {
-        
+
         const promises = user.listIds.map((documentReference: DocumentReference) => documentReference.get());
 
         return Promise.all(promises).then(documentSnapshots => {
@@ -84,7 +83,7 @@ export class FirestoreService implements IFirestoreService {
         return this.angularFirestore.collection("users").doc(user.id).update({ listIds: user.listIds });
     }
 
-    public updateListItems(list: List) : Promise<void> {
+    public updateListItems(list: List): Promise<void> {
         return list.listRef.update({
             items: list.items
         });

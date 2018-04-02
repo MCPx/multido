@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
- 
+
 @Injectable()
 export class SiteStore {
 
@@ -13,8 +13,12 @@ export class SiteStore {
 		console.log('Setting user to: ', user);
 		this.user = user;
 	}
-	
-    getUser() : User{
-        return this.user;
-    }
+
+	getUser(): User {
+		return this.user;
+	}
+
+	clearUser() {
+		this.user = null;
+	}
 }

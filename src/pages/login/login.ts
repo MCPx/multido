@@ -15,10 +15,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginPage {
 
     loginForm : FormGroup;
+    showPasswordText: false;
 
     constructor(private nav: NavController, private formBuilder : FormBuilder, private loadingDialog: LoadingDialog, private store: SiteStore, private firestoreService: FirestoreService, private storage: Storage) {           
         this.loginForm = this.formBuilder.group({
-            email: ['', Validators.compose([Validators.required, Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)])],
+            email: ['', Validators.compose([Validators.required, Validators.email])],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
         });
     }
@@ -33,7 +34,7 @@ export class LoginPage {
                     this.loadingDialog.dismiss();
                     this.store.setUser(user);
                     this.storage.set(storageKey.UserId, user.id);
-                    this.nav.push(DashBoardPage);
+                    this.nav.setRoot(DashBoardPage);
                 });
             }).catch(error => {
                 let message = "Unable to log you in";

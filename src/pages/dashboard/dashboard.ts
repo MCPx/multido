@@ -14,7 +14,7 @@ export class DashBoardPage {
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl : AlertController,  private modalController: ModalController, private store: SiteStore, private firestoreService: FirestoreService) {
+    constructor(private nav: NavController, private alertCtrl: AlertController, private modalController: ModalController, private store: SiteStore, private firestoreService: FirestoreService) {
         this.getLists();
     }
 
@@ -36,15 +36,15 @@ export class DashBoardPage {
 
     handleAddListClick() {
         const addListModal = this.modalController.create(AddListPage, {});
-        
+
         addListModal.onDidDismiss(data => {
             if (!data) return;
-            
+
             this.isLoading = true;
-            this.lists.push({name: data.name, id: "", creatorId: "", items:[], listRef: null}) // add list locally, should be updated with properties when getLists is called
+            this.lists.push({ name: data.name, id: "", creatorId: "", items: [], listRef: null }) // add list locally, should be updated with properties when getLists is called
             this.firestoreService.addListForUser(this.store.getUser(), data.name).then(() => this.getLists());
         });
-        
+
         addListModal.present();
     }
 
@@ -57,26 +57,24 @@ export class DashBoardPage {
                 'Cancel',
                 {
                     text: 'Delete',
-                    handler: () => this.removeList(listToRemove)                
+                    handler: () => this.removeList(listToRemove)
                 }],
-          });
+        });
 
-        deleteConfirm.present();      
-        
+        deleteConfirm.present();
+
         e.stopPropagation(); // don't trigger click on surrounding card
     }
 
-    removeList(listToRemove)
-    {
+    removeList(listToRemove) {
         this.isLoading = true;
         this.lists = this.lists.filter(list => list.id != listToRemove.id);
         this.firestoreService.removeListForUser(this.store.getUser(), listToRemove)
             .then(() => this.getLists())
-            .catch(error => { this.lists.push(listToRemove); this.isLoading=false; });
+            .catch(error => { this.lists.push(listToRemove); this.isLoading = false; });
     }
 
-    handleDashboardRefresh(e)
-    {
+    handleDashboardRefresh(e) {
         this.getLists().then(() => e.complete());
     }
 }
