@@ -11,26 +11,21 @@ export class ListPage {
     isUpdating: boolean = false;
     newItem: string;
 
-    constructor(private navParams: NavParams, private firestoreService: FirestoreService, public actionSheetCtrl: ActionSheetController) {
+    constructor(private navParams: NavParams, private firestoreService: FirestoreService, private actionSheetCtrl: ActionSheetController) {
         this.list = this.navParams.get('list');
         console.log(this.list);
     }
-
-    public itemCheck(itemId: string) {
-        var item = this.list.items.find(i => i.id == itemId);
-        item.state.checked = !item.state.checked;
-    }
-
-    public onBlur() {
+    
+    private onBlur() {
         console.log(`Triggered on blur with newItem value: '${this.newItem}'`);
         if (this.newItem) {
             this.list.items.push({ id: "newId", state: { checked: false }, text: this.newItem });
             this.newItem = null;
-            this.updateItems();
+            this.updateList();
         }
     }
 
-    public presentActionSheet(item: Item) {
+    private presentActionSheet(item: Item) {
         let actionSheet = this.actionSheetCtrl.create({
             title: 'Edit item',
             buttons: [
@@ -38,7 +33,7 @@ export class ListPage {
                     text: 'Delete',
                     role: 'destructive',
                     handler: () => {
-                        this.delete(item);
+                        this.deleteItem(item);
                     }
                 },
                 {
@@ -53,18 +48,21 @@ export class ListPage {
         actionSheet.present();
     }
 
-    public delete(item: Item) {
+    private deleteItem(item: Item) {
         console.log(`Deleting item: ${item.text}`);
         this.list.items = this.list.items.filter(i => i !== item);
-        this.updateItems();
+        this.updateList();
     }
 
-    public updateItem(item: Item) {
-        console.log(`Editing item: ${item.text}`);
-        this.updateItems();
+    private updateItem(item: Item, value: string) 
+    {
+        if (item.text === value) return;
+
+        item.text = value;
+        this.updateList();        
     }
 
-    public updateItems() {
+    private updateList() {
         this.isUpdating = true;
         this.firestoreService.updateListItems(this.list)
             .then(() => { this.isUpdating = false });
