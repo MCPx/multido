@@ -69,10 +69,4 @@ export class ListPage {
         this.firestoreService.updateListItems(this.list)
             .then(() => { this.isUpdating = false });
     }
-
-    public handleKeyPress(keycode)
-    {
-        // return key
-        if (keycode === 13) this.onBlur();
-    }
 }
