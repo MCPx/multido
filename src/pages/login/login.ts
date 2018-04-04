@@ -4,7 +4,7 @@ import { SiteStore } from '../../services/siteStore';
 import { DashBoardPage } from '../dashboard/dashboard'
 import { FirestoreService } from '../../services/firestoreService';
 import { User } from '../../models/user';
-import { storageKey } from '../../enums/storageKeys';
+import { storageKey } from '../../enums/storageKey';
 import { LoadingDialog } from '../components/loadingdialog';
 import { Storage } from '@ionic/storage';
 import { firestoreError } from '../../enums/firestoreError';
@@ -33,7 +33,7 @@ export class LoginPage {
                 this.firestoreService.getUserById(response.uid).then((user: User) => {
                     this.loadingDialog.dismiss();
                     this.store.setUser(user);
-                    this.storage.set(storageKey.UserId, user.id);
+                    this.storage.set(storageKey.userId, user.id);
                     this.nav.setRoot(DashBoardPage);
                 });
             }).catch(error => {

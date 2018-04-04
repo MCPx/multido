@@ -7,7 +7,7 @@ import { LoginPage } from '../pages/login/login';
 import { DashBoardPage } from '../pages/dashboard/dashboard';
 import { SiteStore } from '../services/siteStore';
 import { User } from '../models/user';
-import { storageKey } from '../enums/storageKeys';
+import { storageKey } from '../enums/storageKey';
 import { FirestoreService } from '../services/firestoreService';
 
 @Component({
@@ -17,8 +17,7 @@ export class MyApp {
     @ViewChild('content') nav
 
     rootPage: any;
-
-
+    
     constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: SiteStore, private firestoreService: FirestoreService) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
@@ -26,7 +25,7 @@ export class MyApp {
             statusBar.styleDefault();
 
             // try to fetch UserId from storage - if not then send to LoginPage
-            return this.storage.get(storageKey.UserId)
+            return this.storage.get(storageKey.userId)
                 .then((id: string) => {
                     if (!id) return Promise.reject("User Id was null");
 
