@@ -1,4 +1,4 @@
-export enum storageKey {
-    userId = "userId",
-    credentials = "credentials"
+export enum StorageKey {
+    UserId = "userId",
+    Credentials = "credentials"
 }

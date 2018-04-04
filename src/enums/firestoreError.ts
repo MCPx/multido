@@ -1,7 +1,7 @@
-export enum firestoreError
+export enum FirestoreError
 {
-    unknownUser = "auth/user-not-found",
-    wrongPassword = "auth/wrong-password",
-    emailAlreadyExists = "auth/email-already-in-use",
-    invalidEmail = "auth/invalid-email" // The email address is badly formatted
+    UnknownUser = "auth/user-not-found",
+    WrongPassword = "auth/wrong-password",
+    EmailAlreadyExists = "auth/email-already-in-use",
+    InvalidEmail = "auth/invalid-email" // The email address is badly formatted
 }

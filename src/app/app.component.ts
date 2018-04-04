@@ -7,7 +7,7 @@ import { LoginPage } from '../pages/login/login';
 import { DashBoardPage } from '../pages/dashboard/dashboard';
 import { SiteStore } from '../services/siteStore';
 import { User } from '../models/user';
-import { storageKey } from '../enums/storageKey';
+import { StorageKey } from '../enums/storageKey';
 import { FirestoreService } from '../services/firestoreService';
 
 @Component({
@@ -25,7 +25,7 @@ export class MyApp {
             statusBar.styleDefault();
 
             // try to fetch UserId from storage - if not then send to LoginPage
-            return this.storage.get(storageKey.userId)
+            return this.storage.get(StorageKey.UserId)
                 .then((id: string) => {
                     if (!id) return Promise.reject("User Id was null");
 
