@@ -4,12 +4,18 @@
             <ion-row>
                 <ion-col>
                     <ion-item>
-                        <ion-label floating for="email">Email</ion-label>
+                        <ion-label floating>       
+                            <ion-icon name="mail" item-start class="text-primary"></ion-icon>                     
+                            Email
+                          </ion-label>
                         <ion-input formControlName="email" type="email" id="email" name="email" required></ion-input>
                     </ion-item>
 
                     <ion-item>
-                        <ion-label floating for="password">Password</ion-label>
+                        <ion-label floating for="password">
+                            <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+                            Password
+                        </ion-label>
                         <ion-input formControlName="password" type="password" id="password" name="password" required *ngIf="!showPasswordText"></ion-input>
                         <ion-input formControlName="password" type="text" id="password" name="password" required *ngIf="showPasswordText"></ion-input>
 

@@ -4,15 +4,16 @@ import { NavParams, ActionSheetController, AlertController } from 'ionic-angular
 import { FirestoreService } from '../../services/firestoreService';
 import { Item } from '../../models/item';
 import { SiteStore } from '../../services/siteStore';
+import { uuid } from '../../util/utility';
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {
 
     list: List;
     isUpdating: boolean = false;
-    newItem: string;
+    newItemName: string;
 
-    constructor(private navParams: NavParams, private firestoreService: FirestoreService, private store: SiteStore, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
+    constructor(private navParams: NavParams, private firestoreService: FirestoreService, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
         this.list = this.navParams.get('list');
         const addListPromise = this.navParams.get('addListPromise');
 
@@ -27,16 +28,32 @@ export class ListPage {
     }
 
     ionViewWillEnter() {
-        console.log("entering", this.navParams.get('list'));
-
+        this.updateList();        
     }
 
+    // reorder on check
+    private handleItemCheck(item: Item) {
+        this.sort(item);
+    }
+
+    private sort(item: Item) {
+        const uncheckedItems = this.list.items.filter(x => !x.state.checked && x.id !== item.id);
+        const checkedItems = this.list.items.filter(x => x.state.checked && x.id !== item.id);
+        
+        uncheckedItems.push(item);
+        this.list.items = uncheckedItems.concat(checkedItems);
+        
+        this.updateList();
+    }
+
+    
     private onBlur() {
-        console.log(`Triggered on blur with newItem value: '${this.newItem}'`);
-        if (this.newItem) {
-            this.list.items.push({ id: "newId", state: { checked: false }, text: this.newItem });
-            this.newItem = null;
-            this.updateList();
+        console.log(`Triggered on blur with newItem value: '${this.newItemName}'`);
+        if (this.newItemName) {
+            const newItem = <Item>{ id: uuid(), state: { checked: false }, text: this.newItemName };
+            this.list.items.push(newItem);
+            this.sort(newItem);
+            this.newItemName = null;            
         }
     }
 
