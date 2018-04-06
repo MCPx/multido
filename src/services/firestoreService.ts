@@ -18,6 +18,7 @@ interface IFirestoreService {
     removeListForUser(user: User, listToRemove: List): Promise<void>;
 
     updateList(list: List);
+    getUpdatedList(list: List);
 }
 
 @Injectable()
@@ -92,6 +93,10 @@ export class FirestoreService implements IFirestoreService {
             name: list.name,
             items: list.items
         });
+    }
+
+    public getUpdatedList(list: List): Promise<List> {
+        return list.listRef.get().then(this.mapList);
     }
 
     private mapList(documentSnapshot : DocumentSnapshot): List {

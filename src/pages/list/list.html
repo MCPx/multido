@@ -11,18 +11,23 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-card *ngFor="let item of list.items">
-        <ion-item class="item">
-            <ion-checkbox [(ngModel)]="item.state.checked" color="secondary"></ion-checkbox>
-            <ion-input type="text" [ngModel]="item.text" (ionBlur)="updateItem(item, $event.value)"></ion-input>
-            <button ion-button icon-only item-right clear (click)="presentActionSheet(item)">
-                <ion-icon color="inactive" name="more"></ion-icon>
-            </button>
-        </ion-item>
-    </ion-card>
-    <ion-card>
-        <ion-item>
-            <ion-input type="text" placeholder="+ item" (ionBlur)="onBlur()" [(ngModel)]="newItem" (keyup.enter)="onBlur()"></ion-input>
-        </ion-item>
-    </ion-card>
+    <ion-refresher color="tertiary" (ionRefresh)="refreshList($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <ion-list>
+        <ion-card *ngFor="let item of list.items">
+            <ion-item class="item">
+                <ion-checkbox [(ngModel)]="item.state.checked" color="secondary"></ion-checkbox>
+                <ion-input type="text" [ngModel]="item.text" (ionBlur)="updateItem(item, $event.value)"></ion-input>
+                <button ion-button icon-only item-right clear (click)="presentActionSheet(item)">
+                    <ion-icon color="inactive" name="more"></ion-icon>
+                </button>
+            </ion-item>
+        </ion-card>
+        <ion-card>
+            <ion-item>
+                <ion-input type="text" placeholder="+ item" (ionBlur)="onBlur()" [(ngModel)]="newItem" (keyup.enter)="onBlur()"></ion-input>
+            </ion-item>
+        </ion-card>
+    </ion-list>
 </ion-content>

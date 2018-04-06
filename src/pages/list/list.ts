@@ -17,7 +17,7 @@ export class ListPage {
         const addListPromise = this.navParams.get('addListPromise');
 
         // adding list to firestore is triggered from DashboardPage - merge response with local when it completes
-        if (addListPromise) 
+        if (addListPromise)
             addListPromise.then(addedList => {
                 const items = this.list.items.concat(addedList.items)
                 this.list = addedList;
@@ -28,9 +28,9 @@ export class ListPage {
 
     ionViewWillEnter() {
         console.log("entering", this.navParams.get('list'));
-        
+
     }
-    
+
     private onBlur() {
         console.log(`Triggered on blur with newItem value: '${this.newItem}'`);
         if (this.newItem) {
@@ -69,12 +69,11 @@ export class ListPage {
         this.updateList();
     }
 
-    private updateItem(item: Item, value: string) 
-    {
+    private updateItem(item: Item, value: string) {
         if (item.text === value) return;
 
         item.text = value;
-        this.updateList();        
+        this.updateList();
     }
 
     private updateList() {
@@ -83,8 +82,14 @@ export class ListPage {
             .then(() => this.isUpdating = false);
     }
 
-    private handleListNameClick()
-    {
+    private refreshList(e) {
+        this.firestoreService.getUpdatedList(this.list)
+            .then(list => {
+                this.list = list;
+            }).then(() => e.complete());
+    }
+
+    private handleListNameClick() {
         const nameEditAlert = this.alertCtrl.create({
             title: 'Edit name',
             inputs: [{
