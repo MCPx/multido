@@ -31,6 +31,11 @@ export class ListPage {
         this.updateList();        
     }
 
+    ionViewWillLeave() {
+        console.log("leaving", this.navParams.get('list'));
+        this.updateList();
+    }
+
     // reorder on check
     private handleItemCheck(item: Item) {
         this.sort(item);
@@ -46,7 +51,6 @@ export class ListPage {
         this.updateList();
     }
 
-    
     private onBlur() {
         console.log(`Triggered on blur with newItem value: '${this.newItemName}'`);
         if (this.newItemName) {
