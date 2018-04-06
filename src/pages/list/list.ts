@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { List } from '../../models/list';
-import { NavParams, ActionSheetController } from 'ionic-angular';
+import { NavParams, ActionSheetController, AlertController } from 'ionic-angular';
 import { FirestoreService } from '../../services/firestoreService';
 import { Item } from '../../models/item';
+import { SiteStore } from '../../services/siteStore';
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {
@@ -11,9 +12,23 @@ export class ListPage {
     isUpdating: boolean = false;
     newItem: string;
 
-    constructor(private navParams: NavParams, private firestoreService: FirestoreService, private actionSheetCtrl: ActionSheetController) {
+    constructor(private navParams: NavParams, private firestoreService: FirestoreService, private store: SiteStore, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
         this.list = this.navParams.get('list');
-        console.log(this.list);
+        const addListPromise = this.navParams.get('addListPromise');
+
+        // adding list to firestore is triggered from DashboardPage - merge response with local when it completes
+        if (addListPromise) 
+            addListPromise.then(addedList => {
+                const items = this.list.items.concat(addedList.items)
+                this.list = addedList;
+                this.list.items = items;
+                this.updateList();
+            });
+    }
+
+    ionViewWillEnter() {
+        console.log("entering", this.navParams.get('list'));
+        
     }
     
     private onBlur() {

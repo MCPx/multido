@@ -68,12 +68,14 @@ export class FirestoreService implements IFirestoreService {
         });
     }
 
-    public addListForUser(user: User, name: string): Promise<void> {
+    public addListForUser(user: User, name: string) : Promise<List> {
 
-        return this.angularFirestore.collection("lists").add({ creatorId: user.userRef, name, items: [] }).then(docRef => {
+        return this.angularFirestore.collection("lists").add({ creatorId: user.userRef, name, items: [] }).then((docRef : DocumentReference) => {
             user.listIds.push(docRef);
-            return this.angularFirestore.collection("users").doc(user.id).update({ listIds: user.listIds });
-        }).catch(error => console.error("Error adding list", error));
+            this.angularFirestore.collection("users").doc(user.id).update({ listIds: user.listIds });
+
+            return docRef.get().then(snapshot => this.mapList(snapshot));
+        });
     }
 
     public removeListForUser(user: User, listToRemove: List): Promise<void> {
@@ -84,13 +86,15 @@ export class FirestoreService implements IFirestoreService {
     }
 
     public updateList(list: List): Promise<void> {
+        if (!list.listRef) return Promise.resolve();
+
         return list.listRef.update({
             name: list.name,
             items: list.items
         });
     }
 
-    private mapList(documentSnapshot: DocumentSnapshot): List {
+    private mapList(documentSnapshot : DocumentSnapshot): List {
         const listData = documentSnapshot.data();
         const id = documentSnapshot.id;
         return { id, name: listData.name, creatorId: listData.creatorId, items: listData.items.map(mapItem), listRef: documentSnapshot.ref };

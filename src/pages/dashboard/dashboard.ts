@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { SiteStore } from '../../services/siteStore';
 import { FirestoreService } from '../../services/firestoreService';
 import { List } from '../../models/list';
 import { ListPage } from '../list/list';
-import { AddListPage } from '../components/addList/addList';
 import { Item } from '../../models/item';
 import { AlertController } from 'ionic-angular';
 
@@ -14,43 +13,55 @@ export class DashBoardPage {
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl: AlertController, private modalController: ModalController, private store: SiteStore, private firestoreService: FirestoreService) {
-        this.getLists();
+    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private firestoreService: FirestoreService) {
     }
 
-    navigateToList(list: List) {
-        this.nav.push(ListPage, { list });
+    ionViewWillEnter() {
+        this.loadLists();
     }
 
-    getListSubtext(items: Item[] = []) {
-        return items.length + " item" + (items.length == 1 ? "" : "s");
-    };
-
-    getLists() {
+    private loadLists() {
         this.isLoading = true;
         return this.firestoreService.getListsForUser(this.store.getUser()).then(lists => {
             this.lists = lists;
             this.isLoading = false;
         });
     }
+    
+    private handleListClick(list: List) {
+        this.nav.push(ListPage, { list });
+    }
 
-    handleAddListClick() {
-        const addListModal = this.modalController.create(AddListPage, {});
+    private getListSubtext(items: Item[] = []) {
+        return items.length + " item" + (items.length == 1 ? "" : "s");
+    };    
 
-        addListModal.onDidDismiss(data => {
-            if (!data) return;
-
-            this.isLoading = true;
-            this.lists.push({ name: data.name, id: "", creatorId: "", items: [], listRef: null }) // add list locally, should be updated with properties when getLists is called
-            this.firestoreService.addListForUser(this.store.getUser(), data.name).then(() => this.getLists());
+    private handleAddListClick() {
+        const addListAlert = this.alertCtrl.create({
+            title: 'Edit name',
+            inputs: [{
+                type: "text",
+                name: "name"
+            }],
+            buttons: [
+                'Cancel',
+                {
+                    text: 'Save',
+                    handler: data => {
+                        const newList = <List>{ name: data.name, items: [] };                        
+                       
+                        this.lists.push(newList); // add list locally, should be updated with properties when getLists is called
+                        const addListPromise = this.firestoreService.addListForUser(this.store.getUser(), newList.name)
+                        this.nav.push(ListPage, { list: newList, addListPromise });
+                    }
+                }],
         });
 
-        addListModal.present();
+        addListAlert.present();
     }
 
     // update lists locally, then on firestore
-    handleDeleteClick(e, listToRemove) {
-
+    private handleDeleteClick(e, listToRemove) {
         const deleteConfirm = this.alertCtrl.create({
             title: 'Confirm Delete',
             buttons: [
@@ -66,36 +77,42 @@ export class DashBoardPage {
         e.stopPropagation(); // don't trigger click on surrounding card
     }
 
-    removeList(listToRemove) {
+    private removeList(listToRemove) {
         this.isLoading = true;
         this.lists = this.lists.filter(list => list.id != listToRemove.id);
         this.firestoreService.removeListForUser(this.store.getUser(), listToRemove)
-            .then(() => this.getLists())
+            .then(() => this.loadLists())
             .catch(error => { this.lists.push(listToRemove); this.isLoading = false; });
     }
 
-    handleDashboardRefresh(e) {
-        this.getLists().then(() => e.complete());
+    private handleDashboardRefresh(e) {
+        this.loadLists().then(() => e.complete());
     }
 
-    handleListImageClick(e, list: List)
-    {
+    private handleListImageClick(e, list: List) {
         console.log("image click!", e, list);
         e.stopPropagation(); // don't trigger click on surrounding card
     }
 
-    handleLongPress(list: List)
-    {
-        const editListModal = this.modalController.create(AddListPage, {name: list.name});
-
-        editListModal.onDidDismiss(data => {
-            if (!data) return;
-
-            this.isLoading = true;
-            list.name = data.name;
-            this.firestoreService.updateList(list).then(() => this.getLists());
+    handleLongPress(listToEdit: List) {
+        const nameEditAlert = this.alertCtrl.create({
+            title: 'Edit name',
+            inputs: [{
+                type: "text",
+                value: listToEdit.name,
+                name: "name"
+            }],
+            buttons: [
+                'Cancel',
+                {
+                    text: 'Save',
+                    handler: data => {
+                        listToEdit.name = data.name;
+                        this.firestoreService.updateList(listToEdit).then(() => this.loadLists());
+                    }
+                }],
         });
 
-        editListModal.present();
+        nameEditAlert.present();
     }
 }

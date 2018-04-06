@@ -14,7 +14,6 @@ import { DashBoardPage } from '../pages/dashboard/dashboard';
 import { FirestoreService } from '../services/firestoreService';
 import { ListPage } from '../pages/list/list';
 import { LoadingDialog } from '../pages/components/loadingdialog';
-import { AddListPage } from '../pages/components/addList/addList';
 import { IonicStorageModule } from '@ionic/storage';
 import { RegisterPage } from '../pages/register/register';
 
@@ -24,8 +23,7 @@ import { RegisterPage } from '../pages/register/register';
     LoginPage,
     RegisterPage,
     DashBoardPage,
-    ListPage,
-    AddListPage
+    ListPage
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -47,8 +45,7 @@ import { RegisterPage } from '../pages/register/register';
     LoginPage,
     RegisterPage,
     DashBoardPage,
-    ListPage,
-    AddListPage
+    ListPage
   ],
   providers: [
     StatusBar,

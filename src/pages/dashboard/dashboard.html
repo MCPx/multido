@@ -23,7 +23,7 @@
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-list>
-        <ion-card *ngFor="let list of lists" (click)="navigateToList(list)" (press)="handleLongPress(list)">
+        <ion-card *ngFor="let list of lists" (click)="handleListClick(list)" (press)="handleLongPress(list)">
             <ion-item>
                 <ion-avatar item-start (click)="handleListImageClick($event, list)">
                     <img src="assets/icon/list-icon.png">
