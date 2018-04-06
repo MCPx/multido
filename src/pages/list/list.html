@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{list.name}}</ion-title>
+        <ion-title (click)="handleListNameClick()">{{list.name}}</ion-title>
         <ion-buttons end>
             <button ion-button icon-only>
                 <ion-icon name="cloud-done" color="inactive" [hidden]="isUpdating"></ion-icon>

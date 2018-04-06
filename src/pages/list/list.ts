@@ -65,6 +65,29 @@ export class ListPage {
     private updateList() {
         this.isUpdating = true;
         this.firestoreService.updateList(this.list)
-            .then(() => { this.isUpdating = false });
+            .then(() => this.isUpdating = false);
+    }
+
+    private handleListNameClick()
+    {
+        const nameEditAlert = this.alertCtrl.create({
+            title: 'Edit name',
+            inputs: [{
+                type: "text",
+                value: this.list.name,
+                name: "name"
+            }],
+            buttons: [
+                'Cancel',
+                {
+                    text: 'Save',
+                    handler: data => {
+                        this.list.name = data.name;
+                        this.firestoreService.updateList(this.list).then(() => this.isUpdating = false);
+                    }
+                }],
+        });
+
+        nameEditAlert.present();
     }
 }
