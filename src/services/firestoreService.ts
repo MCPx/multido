@@ -17,7 +17,7 @@ interface IFirestoreService {
     addListForUser(user: User, name: string): void;
     removeListForUser(user: User, listToRemove: List): Promise<void>;
 
-    updateListItems(list: List);
+    updateList(list: List);
 }
 
 @Injectable()
@@ -83,8 +83,9 @@ export class FirestoreService implements IFirestoreService {
         return this.angularFirestore.collection("users").doc(user.id).update({ listIds: user.listIds });
     }
 
-    public updateListItems(list: List): Promise<void> {
+    public updateList(list: List): Promise<void> {
         return list.listRef.update({
+            name: list.name,
             items: list.items
         });
     }

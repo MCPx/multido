@@ -64,7 +64,7 @@ export class ListPage {
 
     private updateList() {
         this.isUpdating = true;
-        this.firestoreService.updateListItems(this.list)
+        this.firestoreService.updateList(this.list)
             .then(() => { this.isUpdating = false });
     }
 }

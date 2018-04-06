@@ -77,4 +77,25 @@ export class DashBoardPage {
     handleDashboardRefresh(e) {
         this.getLists().then(() => e.complete());
     }
+
+    handleListImageClick(e, list: List)
+    {
+        console.log("image click!", e, list);
+        e.stopPropagation(); // don't trigger click on surrounding card
+    }
+
+    handleLongPress(list: List)
+    {
+        const editListModal = this.modalController.create(AddListPage, {name: list.name});
+
+        editListModal.onDidDismiss(data => {
+            if (!data) return;
+
+            this.isLoading = true;
+            list.name = data.name;
+            this.firestoreService.updateList(list).then(() => this.getLists());
+        });
+
+        editListModal.present();
+    }
 }

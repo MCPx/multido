@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { ViewController } from "ionic-angular";
+import { ViewController, NavParams } from "ionic-angular";
 
 interface AddListModel{
     name : string;
@@ -8,13 +8,14 @@ interface AddListModel{
 @Component({selector: 'page-addcollection', templateUrl: 'addList.html'})
 export class AddListPage
 {
-    addListModel : AddListModel = { name: null };
+    addListModel : AddListModel = { name: undefined };
 
     isValid() {
         return this.addListModel.name && this.addListModel.name.length > 0;
     }
 
-    constructor(public viewCtrl: ViewController){
+    constructor(public viewCtrl: ViewController, private params: NavParams) {
+        this.addListModel.name = params.get("name");
     }
 
     save() {
