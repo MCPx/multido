@@ -1,40 +1,30 @@
 <ion-content padding>
     <div class="login-box">
         <form (ngSubmit)="this.login()" [formGroup]="loginForm">
-            <ion-grid>
-                <ion-row>
-                    <ion-col>
-                        <ion-item>
-                            <ion-label floating for="email">Email</ion-label>
-                            <ion-input formControlName="email" type="email" id="email" name="email" required></ion-input>
-                        </ion-item>
-                    </ion-col>
-                </ion-row>
-                <ion-row>
-                    <ion-col>
-                        <ion-item>
-                            <ion-label floating for="password">Password</ion-label>
-                            <ion-input formControlName="password" type="password" id="password" name="password" required *ngIf="!showPasswordText"></ion-input>
-                            <ion-input formControlName="password" type="text" id="password" name="password" required *ngIf="showPasswordText"></ion-input>
+            <ion-row>
+                <ion-col>
+                    <ion-item>
+                        <ion-label floating for="email">Email</ion-label>
+                        <ion-input formControlName="email" type="email" id="email" name="email" required></ion-input>
+                    </ion-item>
 
-                            <button ion-button clear icon-only color="tertiary" type="button" item-right (click)="showPasswordText = !showPasswordText">
-                                <ion-icon name="eye" *ngIf="!showPasswordText"></ion-icon>
-                                <ion-icon name="eye-off" *ngIf="showPasswordText"></ion-icon>
-                            </button>
-                        </ion-item>
-                    </ion-col>
-                </ion-row>
+                    <ion-item>
+                        <ion-label floating for="password">Password</ion-label>
+                        <ion-input formControlName="password" type="password" id="password" name="password" required *ngIf="!showPasswordText"></ion-input>
+                        <ion-input formControlName="password" type="text" id="password" name="password" required *ngIf="showPasswordText"></ion-input>
 
-                <ion-row>
-                    <ion-col>
-                        <div padding>
-                            <button ion-button type="submit" [disabled]="!loginForm.valid">Log in</button>
-                            <button ion-button outline (click)="this.handleRegisterClick($event)">Register</button>
-                        </div>
-                    </ion-col>
-                </ion-row>
+                        <button ion-button clear icon-only color="tertiary" type="button" item-right (click)="showPasswordText = !showPasswordText">
+                            <ion-icon name="eye" *ngIf="!showPasswordText"></ion-icon>
+                            <ion-icon name="eye-off" *ngIf="showPasswordText"></ion-icon>
+                        </button>                        
+                    </ion-item>
+                </ion-col>
+            </ion-row>
 
-            </ion-grid>
+            <div padding>
+                <button ion-button type="submit" [disabled]="!loginForm.valid">Log in</button>
+                <button ion-button outline (click)="this.handleRegisterClick($event)">Register</button>
+            </div>
         </form>
     </div>
 </ion-content>
