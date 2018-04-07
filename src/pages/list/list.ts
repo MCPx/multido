@@ -54,7 +54,7 @@ export class ListPage {
     private onBlur() {
         console.log(`Triggered on blur with newItem value: '${this.newItemName}'`);
         if (this.newItemName) {
-            const newItem = <Item>{ id: uuid(), state: { checked: false }, text: this.newItemName };
+            const newItem = new Item({ id: uuid(), state: { checked: false }, text: this.newItemName });
             this.list.items.push(newItem);
             this.sort(newItem);
             this.newItemName = null;            

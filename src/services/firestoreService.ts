@@ -91,7 +91,7 @@ export class FirestoreService implements IFirestoreService {
 
         return list.listRef.update({
             name: list.name,
-            items: list.items
+            items: list.items.map(item => { return { id: item.id, text: item.text, state: item.state }})
         });
     }
 
@@ -102,14 +102,7 @@ export class FirestoreService implements IFirestoreService {
     private mapList(documentSnapshot : DocumentSnapshot): List {
         const listData = documentSnapshot.data();
         const id = documentSnapshot.id;
-        return { id, name: listData.name, creatorId: listData.creatorId, items: listData.items.map(mapItem), listRef: documentSnapshot.ref };
+        return { id, name: listData.name, creatorId: listData.creatorId, items: listData.items.map(item => new Item(item)), listRef: documentSnapshot.ref };
     }
 }
 
-const mapItem = (item: any): Item => {
-    return {
-        id: item.id,
-        text: item.text,
-        state: { checked: item.state ? item.state.checked : false }
-    };
-}
