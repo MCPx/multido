@@ -1,0 +1,34 @@
+
+<ion-content padding>
+    
+    <ion-searchbar [ngClass]="{ 'email-invalid': !isValid() }" autofocus class="email-searchbar" type="email" showCancelButton
+        [(ngModel)]="addPersonModel.email" (ionInput)="search($event.target.value)" (keyup.enter)="addEmail()" placeholder="Email"></ion-searchbar>
+
+    <ion-list [hidden]="searchResults.length === 0">
+        <ion-card>
+            <ion-card-header ><h4 color="tertiary">Suggested</h4></ion-card-header>
+            <ion-item *ngFor="let result of searchResults" (click)="handleMatchingEmailClick(result)">
+                <h2>{{result}}</h2>
+            </ion-item>
+        </ion-card>
+    </ion-list>
+
+    <ion-list>
+        <ion-card>
+            <ion-item *ngFor="let existingEmail of modifiedList">
+                <ion-avatar item-start>
+                    <button ion-button icon-only clear>
+                        <ion-icon name="person"></ion-icon>
+                    </button>
+                </ion-avatar>
+                <h2>{{ existingEmail }}</h2>
+                <button ion-button icon-only item-right clear (click)="handleRemoveUserClick(existingEmail)">
+                    <ion-icon color="tertiary" name="close"></ion-icon>
+                </button>
+            </ion-item>
+        </ion-card>
+    </ion-list>
+
+    <button ion-button clear (click)="dismiss()">Cancel</button>
+    <button float-right ion-button [disabled]="!isValid()" (click)="save()">Save</button>
+</ion-content>

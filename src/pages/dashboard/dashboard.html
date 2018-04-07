@@ -2,7 +2,7 @@
     <ion-navbar hideBackButton>
         <ion-buttons left>
             <button ion-button icon-only [menuToggle]>
-                <ion-icon name="contact" color="primary"></ion-icon>
+                <ion-icon name="menu" color="primary"></ion-icon>
             </button>
         </ion-buttons>
         <ion-title>Dashboard</ion-title>
@@ -31,7 +31,7 @@
                 <h2>{{list.name}}</h2>
                 <p>{{getListSubtext(list.items)}}</p>
                 <button ion-button icon-only item-right clear (click)="handleDeleteClick($event, list)">
-                    <ion-icon color="tertiary" name="close-circle"></ion-icon>
+                    <ion-icon color="tertiary" name="close"></ion-icon>
                 </button>
             </ion-item>
         </ion-card>

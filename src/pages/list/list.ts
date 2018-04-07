@@ -1,23 +1,24 @@
 import { Component } from '@angular/core';
 import { List } from '../../models/list';
-import { NavParams, ActionSheetController, AlertController } from 'ionic-angular';
+import { NavParams, ActionSheetController, AlertController, ModalController } from 'ionic-angular';
 import { FirestoreService } from '../../services/firestoreService';
 import { Item } from '../../models/item';
-import { SiteStore } from '../../services/siteStore';
 import { uuid } from '../../util/utility';
 import { Subject } from 'rxjs/Subject';
 import "rxjs/add/operator/debounceTime";
-import { ViewContainerData } from '@angular/core/src/view';
+import { SiteStore } from '../../services/siteStore';
+import { ManagePeoplePage } from '../components/managePeople/managePeople';
+import { DocumentSnapshot } from '@firebase/firestore-types';
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {
-ViewContainerData
+
     list: List;
     isUpdating: boolean = false;
     newItemName: string;
     debounceUpdate: Subject<void> = new Subject();
 
-    constructor(private navParams: NavParams, private firestoreService: FirestoreService, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
+    constructor(private navParams: NavParams, private firestoreService: FirestoreService, private store: SiteStore, private modalCtrl: ModalController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
         this.list = this.navParams.get('list');
         const addListPromise = this.navParams.get('addListPromise');
 
@@ -30,11 +31,11 @@ ViewContainerData
                 this.debounceUpdate.next();
             });
 
-        this.debounceUpdate.debounceTime(500).subscribe({next: () => this.updateList()});
+        this.debounceUpdate.debounceTime(500).subscribe({ next: () => this.updateList() });
     }
 
     ionViewWillEnter() {
-        this.debounceUpdate.next();        
+        this.debounceUpdate.next();
     }
 
     ionViewWillLeave() {
@@ -50,10 +51,10 @@ ViewContainerData
     private sort(item: Item) {
         const uncheckedItems = this.list.items.filter(x => !x.state.checked && x.id !== item.id);
         const checkedItems = this.list.items.filter(x => x.state.checked && x.id !== item.id);
-        
+
         uncheckedItems.push(item);
         this.list.items = uncheckedItems.concat(checkedItems);
-        
+
         this.debounceUpdate.next();
     }
 
@@ -63,8 +64,22 @@ ViewContainerData
             const newItem = new Item({ id: uuid(), state: { checked: false }, text: this.newItemName });
             this.list.items.push(newItem);
             this.sort(newItem);
-            this.newItemName = null;            
+            this.newItemName = null;
         }
+    }
+
+    private handleAddPeopleClick() {
+        
+        let addPersonAlert = this.modalCtrl.create(ManagePeoplePage, { knownUserEmails: this.store.getUser().knownUserEmails, list: this.list });
+        
+        addPersonAlert.present();
+    }
+
+    private addPersonToList(email: string) {
+        if (!email) return;
+
+        this.isUpdating = true;
+        this.firestoreService.addUserToList(this.list, this.store.getUser(), email).then(() => this.isUpdating = false);
     }
 
     private presentActionSheet(item: Item) {

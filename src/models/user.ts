@@ -1,9 +1,11 @@
 import { DocumentReference } from "@firebase/firestore-types";
 
-export interface User
+export class User
 {
     id: string;
     userRef: DocumentReference;
     name: string;
+    email: string;
+    knownUserEmails: string[];
     listIds: DocumentReference[];
 }

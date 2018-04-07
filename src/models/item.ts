@@ -7,7 +7,7 @@ export class Item {
     text: string;
     state: State;
 
-    constructor({ id, text, state }: { id: string, text: string, state?: { checked?: boolean } }) {
+    constructor({ id, text, state }: Item) {
         this.id = id;
         this.text = text;
         this.state = { checked: state ? state.checked : false };

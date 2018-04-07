@@ -16,6 +16,7 @@ import { ListPage } from '../pages/list/list';
 import { LoadingDialog } from '../pages/components/loadingdialog';
 import { IonicStorageModule } from '@ionic/storage';
 import { RegisterPage } from '../pages/register/register';
+import { ManagePeoplePage } from '../pages/components/managePeople/managePeople';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { RegisterPage } from '../pages/register/register';
     LoginPage,
     RegisterPage,
     DashBoardPage,
-    ListPage
+    ListPage,    
+    ManagePeoplePage
   ],
   imports: [
     AngularFireModule.initializeApp({
@@ -45,7 +47,8 @@ import { RegisterPage } from '../pages/register/register';
     LoginPage,
     RegisterPage,
     DashBoardPage,
-    ListPage
+    ListPage,
+    ManagePeoplePage
   ],
   providers: [
     StatusBar,
