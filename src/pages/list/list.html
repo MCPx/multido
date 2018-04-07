@@ -21,7 +21,7 @@
         <ion-card *ngFor="let item of list.items">
             <ion-item class="item">
                 <ion-checkbox [(ngModel)]="item.state.checked" color="secondary" (ionChange)="handleItemCheck(item)"></ion-checkbox>
-                <ion-input type="text" [ngModel]="item.text" (ionBlur)="updateItem(item, $event.value)" *ngIf="!item.state.checked"></ion-input>
+                <ion-input class="no-validate" type="text" [ngModel]="item.text" (ionBlur)="updateItem(item, $event.value)" *ngIf="!item.state.checked"></ion-input>
                 <ion-label *ngIf="item.state.checked" [ngClass]="{ itemchecked: item.state.checked }">{{item.text}}</ion-label>
                 <button ion-button icon-only item-right clear (click)="presentActionSheet(item)">
                     <ion-icon color="tertiary" name="more"></ion-icon>

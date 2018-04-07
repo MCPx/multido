@@ -34,16 +34,16 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
-  secondary:  #32db64,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
+  primary:    #c62828,
+  secondary:  #ff5f52,
+  danger:     #8e0000,
+  light:      #ff5f52,
   dark:       #222,
   tertiary:   #9c9c9c,
 );
 
-$refresher-icon-color: #666666;
-$refresher-text-color: #666666;
+$refresher-icon-color: #9c9c9c;
+$refresher-text-color: #9c9c9c;
 
 // App iOS Variables
 // --------------------------------------------------
@@ -56,13 +56,15 @@ $refresher-text-color: #666666;
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+$text-input-highlight-color-valid: none;
+$text-input-highlight-color-invalid: none;
+$text-input-md-highlight-color: none;
 
 
 
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
 
 
 
