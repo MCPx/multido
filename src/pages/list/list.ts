@@ -5,13 +5,17 @@ import { FirestoreService } from '../../services/firestoreService';
 import { Item } from '../../models/item';
 import { SiteStore } from '../../services/siteStore';
 import { uuid } from '../../util/utility';
+import { Subject } from 'rxjs/Subject';
+import "rxjs/add/operator/debounceTime";
+import { ViewContainerData } from '@angular/core/src/view';
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {
-
+ViewContainerData
     list: List;
     isUpdating: boolean = false;
     newItemName: string;
+    debounceUpdate: Subject<void> = new Subject();
 
     constructor(private navParams: NavParams, private firestoreService: FirestoreService, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
         this.list = this.navParams.get('list');
@@ -23,12 +27,14 @@ export class ListPage {
                 const items = this.list.items.concat(addedList.items)
                 this.list = addedList;
                 this.list.items = items;
-                this.updateList();
+                this.debounceUpdate.next();
             });
+
+        this.debounceUpdate.debounceTime(500).subscribe({next: () => this.updateList()});
     }
 
     ionViewWillEnter() {
-        this.updateList();        
+        this.debounceUpdate.next();        
     }
 
     ionViewWillLeave() {
@@ -48,7 +54,7 @@ export class ListPage {
         uncheckedItems.push(item);
         this.list.items = uncheckedItems.concat(checkedItems);
         
-        this.updateList();
+        this.debounceUpdate.next();
     }
 
     private onBlur() {
@@ -87,14 +93,14 @@ export class ListPage {
     private deleteItem(item: Item) {
         console.log(`Deleting item: ${item.text}`);
         this.list.items = this.list.items.filter(i => i !== item);
-        this.updateList();
+        this.debounceUpdate.next();
     }
 
     private updateItem(item: Item, value: string) {
         if (item.text === value) return;
 
         item.text = value;
-        this.updateList();
+        this.debounceUpdate.next();
     }
 
     private updateList() {
