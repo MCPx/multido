@@ -69,9 +69,9 @@ export class ListPage {
     }
 
     private handleAddPeopleClick() {
-        
+
         let addPersonAlert = this.modalCtrl.create(ManagePeoplePage, { knownUserEmails: this.store.getUser().knownUserEmails, list: this.list });
-        
+
         addPersonAlert.present();
     }
 

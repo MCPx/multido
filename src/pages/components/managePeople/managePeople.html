@@ -1,12 +1,10 @@
-
-<ion-content padding>
-    
+<ion-content>
     <ion-searchbar [ngClass]="{ 'email-invalid': !isValid() }" autofocus class="email-searchbar" type="email" showCancelButton
         [(ngModel)]="addPersonModel.email" (ionInput)="search($event.target.value)" (keyup.enter)="addEmail()" placeholder="Email"></ion-searchbar>
 
     <ion-list [hidden]="searchResults.length === 0">
+            <ion-list-header>Suggested</ion-list-header>
         <ion-card>
-            <ion-card-header ><h4 color="tertiary">Suggested</h4></ion-card-header>
             <ion-item *ngFor="let result of searchResults" (click)="handleMatchingEmailClick(result)">
                 <h2>{{result}}</h2>
             </ion-item>
@@ -30,5 +28,5 @@
     </ion-list>
 
     <button ion-button clear (click)="dismiss()">Cancel</button>
-    <button float-right ion-button [disabled]="!isValid()" (click)="save()">Save</button>
+    <button item-right ion-button [disabled]="!isValid()" (click)="save()">Save</button>
 </ion-content>

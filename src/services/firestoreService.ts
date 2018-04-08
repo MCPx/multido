@@ -63,17 +63,31 @@ export class FirestoreService implements IFirestoreService {
                     userRef: querySnapshot.docs[0].ref
                 };
 
+                const batch = this.angularFirestore.firestore.batch();
+
                 // add list to user's list
                 userToAdd.listIds.push(list.listRef);
-                userToAdd.userRef.update({ listIds: userToAdd.listIds });
+                batch.update(userToAdd.userRef, { listIds: userToAdd.listIds });
 
                 // add user to list's ids
                 list.userIds.push(userToAdd.userRef);
-                list.listRef.update({ userIds: list.userIds });
+                batch.update(list.listRef, { userIds: list.userIds });
 
                 // add addeduser to users commonusers                
                 user.knownUserEmails.push(email);
-                user.userRef.update({ knownUserEmails: user.knownUserEmails });
+                batch.update(user.userRef, { knownUserEmails: user.knownUserEmails });
+
+                return batch.commit();
+                // userToAdd.listIds.push(list.listRef);
+                // userToAdd.userRef.update({ listIds: userToAdd.listIds });
+
+                // // add user to list's ids
+                // list.userIds.push(userToAdd.userRef);
+                // list.listRef.update({ userIds: list.userIds });
+
+                // // add addeduser to users commonusers                
+                // user.knownUserEmails.push(email);
+                // user.userRef.update({ knownUserEmails: user.knownUserEmails });
 
             });
     }
