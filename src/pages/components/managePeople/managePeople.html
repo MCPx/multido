@@ -1,5 +1,5 @@
 <ion-content>
-    <ion-searchbar [ngClass]="{ 'email-invalid': !isValid() }" autofocus class="email-searchbar" type="email" showCancelButton
+    <ion-searchbar [ngClass]="{ 'email-invalid': !isValid() }" autofocus class="email-searchbar" type="email"
         [(ngModel)]="addPersonModel.email" (ionInput)="search($event.target.value)" (keyup.enter)="addEmail()" placeholder="Email"></ion-searchbar>
 
     <ion-list [hidden]="searchResults.length === 0">
