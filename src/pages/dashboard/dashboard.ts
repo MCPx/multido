@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, ModalController } from 'ionic-angular';
 import { SiteStore } from '../../services/siteStore';
 import { FirestoreService } from '../../services/firestoreService';
 import { List } from '../../models/list';
 import { ListPage } from '../list/list';
 import { Item } from '../../models/item';
 import { AlertController } from 'ionic-angular';
+import { ManagePeoplePage } from '../components/managePeople/managePeople';
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -13,7 +14,7 @@ export class DashBoardPage {
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private firestoreService: FirestoreService) {
+    constructor(private nav: NavController, private alertCtrl: AlertController, private modalCtrl : ModalController, private store: SiteStore, private firestoreService: FirestoreService) {
     }
 
     ionViewWillEnter() {
@@ -38,7 +39,7 @@ export class DashBoardPage {
 
     private handleAddListClick() {
         const addListAlert = this.alertCtrl.create({
-            title: 'Edit name',
+            title: 'Add',
             inputs: [{
                 type: "text",
                 name: "name"
@@ -80,7 +81,7 @@ export class DashBoardPage {
     private removeList(listToRemove) {
         this.isLoading = true;
         this.lists = this.lists.filter(list => list.id != listToRemove.id);
-        this.firestoreService.removeListForUser(this.store.getUser(), listToRemove)
+        this.firestoreService.removeListForCurrentUser(this.store.getUser(), listToRemove)
             .then(() => this.loadLists())
             .catch(error => { this.lists.push(listToRemove); this.isLoading = false; });
     }
@@ -95,24 +96,12 @@ export class DashBoardPage {
     }
 
     handleLongPress(listToEdit: List) {
-        const nameEditAlert = this.alertCtrl.create({
-            title: 'Edit name',
-            inputs: [{
-                type: "text",
-                value: listToEdit.name,
-                name: "name"
-            }],
-            buttons: [
-                'Cancel',
-                {
-                    text: 'Save',
-                    handler: data => {
-                        listToEdit.name = data.name;
-                        this.firestoreService.updateList(listToEdit).then(() => this.loadLists());
-                    }
-                }],
-        });
+        this.displayManagePage(listToEdit);
+    }
 
-        nameEditAlert.present();
+    private displayManagePage(list: List) {
+        let addPersonAlert = this.modalCtrl.create(ManagePeoplePage, { knownUserEmails: this.store.getUser().knownUserEmails, list });
+
+        addPersonAlert.present();
     }
 }

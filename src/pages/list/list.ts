@@ -69,17 +69,9 @@ export class ListPage {
     }
 
     private handleAddPeopleClick() {
-
         let addPersonAlert = this.modalCtrl.create(ManagePeoplePage, { knownUserEmails: this.store.getUser().knownUserEmails, list: this.list });
 
         addPersonAlert.present();
-    }
-
-    private addPersonToList(email: string) {
-        if (!email) return;
-
-        this.isUpdating = true;
-        this.firestoreService.addUserToList(this.list, this.store.getUser(), email).then(() => this.isUpdating = false);
     }
 
     private presentActionSheet(item: Item) {

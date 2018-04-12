@@ -2,7 +2,7 @@ import { List } from "../models/list";
 import { Item } from "../models/item";
 import { User } from "../models/user";
 import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
-import { DocumentReference, DocumentSnapshot, QuerySnapshot } from "@firebase/firestore-types";
+import { DocumentReference, DocumentSnapshot, QuerySnapshot, DocumentData } from "@firebase/firestore-types";
 import { Injectable } from "@angular/core";
 import { AngularFireAuth } from 'angularfire2/auth';
 import 'rxjs/add/operator/first';
@@ -13,8 +13,12 @@ import { FirestoreCollection } from "../enums/firestoreCollection";
 interface IFirestoreService {
     // user operations
     getUserById(id: string): Promise<User>;
+    getUserByEmail(id: string): Promise<User>;
     addUserToList(list: List, user: User, email: string): Promise<void>;
-
+    addUsersToList(list: List, user: User, emails: string[]): Promise<void[]>;
+    removeListForUsers(listToRemove: List, emails: string[]): Promise<void[]>;
+    removeListForUser(listToRemove: List, email: string): Promise<void>;
+    
     // auth
     signIn(email: string, password: string): void;
     register(email: string, name: string, password: string): Promise<any>;
@@ -23,7 +27,7 @@ interface IFirestoreService {
     // list operations
     getListsForUser(user: User): Promise<List[]>;
     addListForUser(user: User, name: string): void;
-    removeListForUser(user: User, listToRemove: List): Promise<void>;
+    removeListForCurrentUser(user: User, listToRemove: List): Promise<void>;
     updateList(list: List);
     getUpdatedList(list: List);
 }
@@ -39,8 +43,54 @@ export class FirestoreService implements IFirestoreService {
         this.lists = this.angularFirestore.collection(FirestoreCollection.Lists);
     }
 
-    public addUserToList(list: List, user: User, email: string): Promise<void> {
+    public addUsersToList(list: List, user: User, emails: string[]): Promise<void[]> {
+        return Promise.all(emails.map(email => this.addUserToList(list, user, email)));
+    }
 
+    public addUserToList(list: List, user: User, email: string): Promise<void> {
+        return this.getUserByEmail(email).then((userToAdd: User) => {        
+
+                const batch = this.angularFirestore.firestore.batch();
+
+                // add list to user's list
+                userToAdd.listIds.push(list.listRef);
+                batch.update(userToAdd.userRef, { listIds: userToAdd.listIds });
+
+                // add user to list's ids
+                list.userIds.push(userToAdd.userRef);
+                batch.update(list.listRef, { userIds: list.userIds });
+
+                // add added-user to users common-users                
+                user.knownUserEmails.push(email);
+                batch.update(user.userRef, { knownUserEmails: user.knownUserEmails });
+
+                return batch.commit();
+            });
+    }
+
+    public removeListForUsers(list: List, emails: string[]): Promise<void[]> {
+        return Promise.all(emails.map(email => this.removeListForUser(list, email)));
+    }
+
+    public removeListForUser(listToRemove: List, email: string): Promise<void> {
+        return this.getUserByEmail(email).then((userToRemove: User) => {   
+
+            const batch = this.angularFirestore.firestore.batch();
+
+            // remove list from user
+            const listIds = userToRemove.listIds.filter(x => x.id !== listToRemove.id);
+            batch.update(userToRemove.userRef, { listIds });
+
+            // remove user from list
+            const userIds = listToRemove.userIds.filter(x => x.id !== userToRemove.id);
+            batch.update(listToRemove.listRef, { userIds });
+
+            return batch.commit();
+        });
+    }
+
+
+    public getUserByEmail(email: string): Promise<User> {
         return this.angularFirestore.firestore.collection(FirestoreCollection.Users).where('email', '==', email.toLowerCase()).get()
             .then((querySnapshot: QuerySnapshot) => {
                 
@@ -53,31 +103,15 @@ export class FirestoreService implements IFirestoreService {
                     return;
                 }
 
-                const data = querySnapshot.docs[0].data()
+                var data = querySnapshot.docs[0].data();
 
-                const userToAdd = <User>{
+                return <User> {
                     id: querySnapshot.docs[0].id,
                     name: data.name,
                     email: data.email,
                     listIds: data.listIds || [],
                     userRef: querySnapshot.docs[0].ref
                 };
-
-                const batch = this.angularFirestore.firestore.batch();
-
-                // add list to user's list
-                userToAdd.listIds.push(list.listRef);
-                batch.update(userToAdd.userRef, { listIds: userToAdd.listIds });
-
-                // add user to list's ids
-                list.userIds.push(userToAdd.userRef);
-                batch.update(list.listRef, { userIds: list.userIds });
-
-                // add addeduser to users commonusers                
-                user.knownUserEmails.push(email);
-                batch.update(user.userRef, { knownUserEmails: user.knownUserEmails });
-
-                return batch.commit();
             });
     }
 
@@ -127,7 +161,7 @@ export class FirestoreService implements IFirestoreService {
 
     public addListForUser(user: User, name: string): Promise<List> {
 
-        return this.lists.add({ creatorId: user.userRef, name, items: [] }).then((docRef: DocumentReference) => {
+        return this.lists.add({ creatorId: user.userRef, name, items: [], userIds: [user.userRef] }).then((docRef: DocumentReference) => {
             user.listIds.push(docRef);
             this.users.doc(user.id).update({ listIds: user.listIds });
 
@@ -135,7 +169,7 @@ export class FirestoreService implements IFirestoreService {
         });
     }
 
-    public removeListForUser(user: User, listToRemove: List): Promise<void> {
+    public removeListForCurrentUser(user: User, listToRemove: List): Promise<void> {
 
         user.listIds = user.listIds.filter(list => list.id != listToRemove.id);
 
