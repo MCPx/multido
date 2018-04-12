@@ -78,17 +78,6 @@ export class FirestoreService implements IFirestoreService {
                 batch.update(user.userRef, { knownUserEmails: user.knownUserEmails });
 
                 return batch.commit();
-                // userToAdd.listIds.push(list.listRef);
-                // userToAdd.userRef.update({ listIds: userToAdd.listIds });
-
-                // // add user to list's ids
-                // list.userIds.push(userToAdd.userRef);
-                // list.listRef.update({ userIds: list.userIds });
-
-                // // add addeduser to users commonusers                
-                // user.knownUserEmails.push(email);
-                // user.userRef.update({ knownUserEmails: user.knownUserEmails });
-
             });
     }
 
