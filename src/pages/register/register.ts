@@ -26,8 +26,9 @@ export class RegisterPage {
     private register()
     {
         this.loadingDialog.present("Registering...");
+        console.log("Registering...", this.registerForm);
 
-        this.firestoreService.register(this.registerForm.value.email.toLower(), this.registerForm.value.username, this.registerForm.value.password)
+        this.firestoreService.register(this.registerForm.value.email.toLowerCase(), this.registerForm.value.username, this.registerForm.value.password)
         .then(response => {
             this.firestoreService.getUserById(response.uid).then((user: User) => {
                 this.loadingDialog.dismiss();
