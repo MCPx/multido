@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform, NavController } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
@@ -8,17 +8,19 @@ import { DashBoardPage } from '../pages/dashboard/dashboard';
 import { SiteStore } from '../services/siteStore';
 import { User } from '../models/user';
 import { StorageKey } from '../enums/storageKey';
-import { FirestoreService } from '../services/firestoreService';
+import { FirestoreAuthService } from "../services/firestoreAuthService";
+import { FirestoreUserService } from "../services/firestoreUserService";
 
 @Component({
     templateUrl: 'app.html'
 })
 export class MyApp {
-    @ViewChild('content') nav
+    @ViewChild('content') nav;
 
     rootPage: any;
-    
-    constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: SiteStore, private firestoreService: FirestoreService) {
+
+    constructor(
+        platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: SiteStore, private authService: FirestoreAuthService, private userService: FirestoreUserService) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -29,7 +31,7 @@ export class MyApp {
                 .then((id: string) => {
                     if (!id) return Promise.reject("User Id was null");
 
-                    return this.firestoreService.getUserById(id).then((user: User) => {
+                    return this.userService.getUserById(id).then((user: User) => {
                         this.store.setUser(user);
                         this.rootPage = DashBoardPage;
                     });
@@ -40,9 +42,9 @@ export class MyApp {
     }
 
     public logOut() {
-        this.firestoreService.signOut().then(result => {
+        this.authService.signOut().then(result => {
             this.store.clearUser();
-            this.nav.setRoot(LoginPage);
+            return this.nav.setRoot(LoginPage);
         })
     }
 }

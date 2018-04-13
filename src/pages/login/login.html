@@ -5,8 +5,8 @@
             <ion-row>
                 <ion-col>
                     <ion-item>
-                        <ion-label floating>       
-                            <ion-icon name="mail" item-start class="text-primary"></ion-icon>                     
+                        <ion-label floating>
+                            <ion-icon name="mail" item-start class="text-primary"></ion-icon>
                             Email
                           </ion-label>
                         <ion-input formControlName="email" type="email" id="email" name="email" required></ion-input>
@@ -17,8 +17,7 @@
                             <ion-icon name="lock" item-start class="text-primary"></ion-icon>
                             Password
                         </ion-label>
-                        <ion-input formControlName="password" type="password" id="password" name="password" required *ngIf="!showPasswordText"></ion-input>
-                        <ion-input formControlName="password" type="text" id="password" name="password" required *ngIf="showPasswordText"></ion-input>
+                        <ion-input formControlName="password" [type]="!showPasswordText ? 'password' : 'text'" id="password" name="password" required></ion-input>
 
                         <button ion-button clear icon-only color="tertiary" type="button" item-end (click)="showPasswordText = !showPasswordText">
                             <ion-icon name="eye" *ngIf="!showPasswordText"></ion-icon>
@@ -29,7 +28,7 @@
             </ion-row>
 
             <ion-row justify-content-end padding>
-                <button ion-button outline (click)="this.handleRegisterClick($event)">Register</button>
+                <button ion-button type="button" outline (click)="this.handleRegisterClick($event)">Register</button>
                 <button ion-button type="submit" [disabled]="!loginForm.valid">Log in</button>
             </ion-row>
             </ion-grid>

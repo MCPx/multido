@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ModalController } from 'ionic-angular';
 import { SiteStore } from '../../services/siteStore';
-import { FirestoreService } from '../../services/firestoreService';
+import { FirestoreListService } from '../../services/firestoreListService';
 import { List } from '../../models/list';
 import { ListPage } from '../list/list';
 import { Item } from '../../models/item';
@@ -14,7 +14,7 @@ export class DashBoardPage {
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl: AlertController, private modalCtrl : ModalController, private store: SiteStore, private firestoreService: FirestoreService) {
+    constructor(private nav: NavController, private alertCtrl: AlertController, private modalCtrl : ModalController, private store: SiteStore, private listService: FirestoreListService) {
     }
 
     ionViewWillEnter() {
@@ -23,19 +23,19 @@ export class DashBoardPage {
 
     private loadLists() {
         this.isLoading = true;
-        return this.firestoreService.getListsForUser(this.store.getUser()).then(lists => {
+        return this.listService.getListsForUser(this.store.getUser()).then(lists => {
             this.lists = lists;
             this.isLoading = false;
         });
     }
-    
-    private handleListClick(list: List) {
-        this.nav.push(ListPage, { list });
+
+    private async handleListClick(list: List) {
+        return this.nav.push(ListPage, { list });
     }
 
     private getListSubtext(items: Item[] = []) {
         return items.length + " item" + (items.length == 1 ? "" : "s");
-    };    
+    };
 
     private handleAddListClick() {
         const addListAlert = this.alertCtrl.create({
@@ -49,10 +49,10 @@ export class DashBoardPage {
                 {
                     text: 'Save',
                     handler: data => {
-                        const newList = <List>{ name: data.name, items: [] };                        
-                       
+                        const newList = <List>{ name: data.name, items: [] };
+
                         this.lists.push(newList); // add list locally, should be updated with properties when getLists is called
-                        const addListPromise = this.firestoreService.addListForUser(this.store.getUser(), newList.name)
+                        const addListPromise = this.listService.addListForUser(this.store.getUser(), newList.name);
                         this.nav.push(ListPage, { list: newList, addListPromise });
                     }
                 }],
@@ -81,7 +81,7 @@ export class DashBoardPage {
     private removeList(listToRemove) {
         this.isLoading = true;
         this.lists = this.lists.filter(list => list.id != listToRemove.id);
-        this.firestoreService.removeListForCurrentUser(this.store.getUser(), listToRemove)
+        this.listService.removeListForCurrentUser(this.store.getUser(), listToRemove)
             .then(() => this.loadLists())
             .catch(error => { this.lists.push(listToRemove); this.isLoading = false; });
     }

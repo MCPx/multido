@@ -11,55 +11,59 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { SiteStore } from '../services/siteStore';
 import { DashBoardPage } from '../pages/dashboard/dashboard';
-import { FirestoreService } from '../services/firestoreService';
 import { ListPage } from '../pages/list/list';
 import { LoadingDialog } from '../pages/components/loadingdialog';
 import { IonicStorageModule } from '@ionic/storage';
 import { RegisterPage } from '../pages/register/register';
 import { ManagePeoplePage } from '../pages/components/managePeople/managePeople';
+import { FirestoreListService } from '../services/firestoreListService';
+import { FirestoreUserService } from "../services/firestoreUserService";
+import { FirestoreAuthService } from "../services/firestoreAuthService";
 
 @NgModule({
-  declarations: [
-    MyApp,
-    LoginPage,
-    RegisterPage,
-    DashBoardPage,
-    ListPage,    
-    ManagePeoplePage
-  ],
-  imports: [
-    AngularFireModule.initializeApp({
-      apiKey: "AIzaSyBWglBGLsT9VKKhnBF4mnAd7_rhL4vzjfs",
-      authDomain: "multido-4f75f.firebaseapp.com",
-      databaseURL: "https://multido-4f75f.firebaseio.com",
-      projectId: "multido-4f75f",
-      storageBucket: "",
-      messagingSenderId: "793639388905"
-    }, 'angularfs'),
-    AngularFirestoreModule,
-    BrowserModule,
-    IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    LoginPage,
-    RegisterPage,
-    DashBoardPage,
-    ListPage,
-    ManagePeoplePage
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    SiteStore,
-    FirestoreService,
-    AngularFireAuth,
-    LoadingDialog,
-    ModalController,
-    Storage,
-    { provide: ErrorHandler, useClass: IonicErrorHandler }
-  ]
+    declarations: [
+        MyApp,
+        LoginPage,
+        RegisterPage,
+        DashBoardPage,
+        ListPage,
+        ManagePeoplePage
+    ],
+    imports: [
+        AngularFireModule.initializeApp({
+            apiKey: "AIzaSyBWglBGLsT9VKKhnBF4mnAd7_rhL4vzjfs",
+            authDomain: "multido-4f75f.firebaseapp.com",
+            databaseURL: "https://multido-4f75f.firebaseio.com",
+            projectId: "multido-4f75f",
+            storageBucket: "",
+            messagingSenderId: "793639388905"
+        }, 'angularfs'),
+        AngularFirestoreModule,
+        BrowserModule,
+        IonicModule.forRoot(MyApp),
+        IonicStorageModule.forRoot()
+    ],
+    bootstrap: [IonicApp],
+    entryComponents: [
+        MyApp,
+        LoginPage,
+        RegisterPage,
+        DashBoardPage,
+        ListPage,
+        ManagePeoplePage
+    ],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        SiteStore,
+        FirestoreUserService,
+        FirestoreListService,
+        FirestoreAuthService,
+        AngularFireAuth,
+        LoadingDialog,
+        ModalController,
+        Storage,
+        { provide: ErrorHandler, useClass: IonicErrorHandler }
+    ]
 })
 export class AppModule { }

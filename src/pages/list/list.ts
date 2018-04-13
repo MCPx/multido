@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { List } from '../../models/list';
-import { NavParams, ActionSheetController, AlertController, ModalController } from 'ionic-angular';
-import { FirestoreService } from '../../services/firestoreService';
+import { ActionSheetController, AlertController, ModalController, NavParams } from 'ionic-angular';
+import { FirestoreListService } from '../../services/firestoreListService';
 import { Item } from '../../models/item';
 import { uuid } from '../../util/utility';
 import { Subject } from 'rxjs/Subject';
 import "rxjs/add/operator/debounceTime";
 import { SiteStore } from '../../services/siteStore';
 import { ManagePeoplePage } from '../components/managePeople/managePeople';
-import { DocumentSnapshot } from '@firebase/firestore-types';
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {
@@ -18,14 +17,14 @@ export class ListPage {
     newItemName: string;
     debounceUpdate: Subject<void> = new Subject();
 
-    constructor(private navParams: NavParams, private firestoreService: FirestoreService, private store: SiteStore, private modalCtrl: ModalController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
+    constructor(private navParams: NavParams, private listService: FirestoreListService, private store: SiteStore, private modalCtrl: ModalController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
         this.list = this.navParams.get('list');
         const addListPromise = this.navParams.get('addListPromise');
 
         // adding list to firestore is triggered from DashboardPage - merge response with local when it completes
         if (addListPromise)
             addListPromise.then(addedList => {
-                const items = this.list.items.concat(addedList.items)
+                const items = this.list.items.concat(addedList.items);
                 this.list = addedList;
                 this.list.items = items;
                 this.debounceUpdate.next();
@@ -69,7 +68,10 @@ export class ListPage {
     }
 
     private handleAddPeopleClick() {
-        let addPersonAlert = this.modalCtrl.create(ManagePeoplePage, { knownUserEmails: this.store.getUser().knownUserEmails, list: this.list });
+        let addPersonAlert = this.modalCtrl.create(ManagePeoplePage, {
+            knownUserEmails: this.store.getUser().knownUserEmails,
+            list: this.list
+        });
 
         addPersonAlert.present();
     }
@@ -112,12 +114,12 @@ export class ListPage {
 
     private updateList() {
         this.isUpdating = true;
-        this.firestoreService.updateList(this.list)
+        this.listService.updateList(this.list)
             .then(() => this.isUpdating = false);
     }
 
     private refreshList(e) {
-        this.firestoreService.getUpdatedList(this.list)
+        this.listService.getUpdatedList(this.list)
             .then(list => {
                 this.list = list;
             }).then(() => e.complete());
@@ -137,7 +139,7 @@ export class ListPage {
                     text: 'Save',
                     handler: data => {
                         this.list.name = data.name;
-                        this.firestoreService.updateList(this.list).then(() => this.isUpdating = false);
+                        this.listService.updateList(this.list).then(() => this.isUpdating = false);
                     }
                 }],
         });

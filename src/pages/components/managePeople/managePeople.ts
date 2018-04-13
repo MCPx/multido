@@ -4,34 +4,31 @@ import _ from "lodash";
 import { List } from "../../../models/list";
 import { DocumentReference } from "@firebase/firestore-types";
 import { SiteStore } from "../../../services/siteStore";
-import { User } from "../../../models/user";
-import { FirestoreService } from "../../../services/firestoreService";
+import { FirestoreListService } from "../../../services/firestoreListService";
 
-interface AddPersonModel{
-    email : string;
+interface AddPersonModel {
+    email: string;
 }
 
-@Component({selector: 'page-managepeople', templateUrl: 'managePeople.html'})
-export class ManagePeoplePage
-{
-    addPersonModel : AddPersonModel = { email: undefined };
-    knownUserEmails: string[];    
-    existingEmails: string[] = [];    
+@Component({ selector: 'page-managepeople', templateUrl: 'managePeople.html' })
+export class ManagePeoplePage {
+    addPersonModel: AddPersonModel = { email: undefined };
+    knownUserEmails: string[];
+    existingEmails: string[] = [];
     modifiedList: string[] = [];
     searchResults: string[] = [];
     isLoading: boolean = true;
-    list: List; 
+    list: List;
 
     isValid() {
         return this.addPersonModel.email && this.addPersonModel.email.length > 0;
     }
 
-    constructor(public viewCtrl: ViewController, private params: NavParams, private store: SiteStore, private firestoreService: FirestoreService) {
+    constructor(public viewCtrl: ViewController, params: NavParams, private store: SiteStore, private listService: FirestoreListService) {
         this.knownUserEmails = params.get("knownUserEmails") || [];
         this.list = params.get("list");
-        
-        this.fetchUserEmails(this.list.userIds).then((emails: string[]) => 
-        {    
+
+        ManagePeoplePage.fetchUserEmails(this.list.userIds).then((emails: string[]) => {
             if (!emails) return;
 
             console.log("users in list", emails);
@@ -39,10 +36,10 @@ export class ManagePeoplePage
             this.modifiedList = _.uniq(this.modifiedList.concat([...emails]));
             this.existingEmails = [...emails];
             this.isLoading = false;
-        });        
+        });
     }
 
-    private fetchUserEmails(userRefs: DocumentReference[]): Promise<string[]> {
+    private static fetchUserEmails(userRefs: DocumentReference[]): Promise<string[]> {
         return Promise.all(userRefs.map(userRef => userRef.get().then(documentSnapshot => {
             const userData = documentSnapshot.data();
             return userData.email;
@@ -61,19 +58,18 @@ export class ManagePeoplePage
             this.searchResults = [];
             return;
         }
-        
+
         this.searchResults = this.knownUserEmails
-                                .filter(email => email.indexOf(value.toLowerCase()) >= 0) // include known 
-                                .filter(email => this.modifiedList.indexOf(email) < 0); // exclude if already in modified list
+            .filter(email => email.indexOf(value.toLowerCase()) >= 0) // include known
+            .filter(email => this.modifiedList.indexOf(email) < 0); // exclude if already in modified list
     }
 
-    private clearForm()
-    {
-        this.addPersonModel.email = "";        
+    private clearForm() {
+        this.addPersonModel.email = "";
         this.searchResults = [];
     }
 
-    private handleMatchingEmailClick(email: string) {         
+    private handleMatchingEmailClick(email: string) {
         this.clearForm();
 
         if (this.modifiedList.indexOf(email) >= 0) return;
@@ -90,11 +86,11 @@ export class ManagePeoplePage
     }
 
     private removeEmailsFromList(): Promise<void> {
-        const emailsToRemove =  _.difference(this.existingEmails, this.modifiedList);
+        const emailsToRemove = _.difference(this.existingEmails, this.modifiedList);
 
         if (_.some(emailsToRemove))
-            return this.firestoreService.removeListForUsers(this.list, emailsToRemove).then(() => console.log("done removing", emailsToRemove));
-        
+            return this.listService.removeListForUsers(this.list, emailsToRemove).then(() => console.log("done removing", emailsToRemove));
+
         return Promise.resolve();
     }
 
@@ -102,15 +98,15 @@ export class ManagePeoplePage
         const emailsToAdd = _.difference(this.modifiedList, this.existingEmails);
 
         if (_.some(emailsToAdd))
-            return this.firestoreService.addUsersToList(this.list, this.store.getUser(), emailsToAdd).then(() => console.log("done adding", emailsToAdd));
-        
+            return this.listService.addUsersToList(this.list, this.store.getUser(), emailsToAdd).then(() => console.log("done adding", emailsToAdd));
+
         return Promise.resolve();
     }
 
-    save() {        
-        const savingListPromise = Promise.all([this.addEmailsToList(), this.removeEmailsFromList()]).then( () => console.log("adding and removing done"));
-        
-        this.viewCtrl.dismiss({savingListPromise});
+    save() {
+        const savingListPromise = Promise.all([this.addEmailsToList(), this.removeEmailsFromList()]).then(() => console.log("adding and removing done"));
+
+        this.viewCtrl.dismiss({ savingListPromise });
     }
 
     dismiss() {
