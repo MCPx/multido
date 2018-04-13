@@ -1,13 +1,13 @@
-import { List } from "../models/list";
-import { Item } from "../models/item";
-import { User } from "../models/user";
-import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
-import { DocumentReference, DocumentSnapshot } from "@firebase/firestore-types";
 import { Injectable } from "@angular/core";
+import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
 import { AngularFireAuth } from 'angularfire2/auth';
+import { DocumentReference, DocumentSnapshot } from "@firebase/firestore-types";
+import { List } from "models/list";
+import { Item } from "models/item";
+import { User } from "models/user";
+import { FirestoreCollection } from "enums/firestoreCollection";
+import { FirestoreUserService } from "services/firestoreUserService";
 import 'rxjs/add/operator/first';
-import { FirestoreCollection } from "../enums/firestoreCollection";
-import { FirestoreUserService } from "./firestoreUserService";
 
 @Injectable()
 export class FirestoreListService {

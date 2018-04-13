@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { List } from '../../models/list';
 import { ActionSheetController, AlertController, ModalController, NavParams } from 'ionic-angular';
-import { FirestoreListService } from '../../services/firestoreListService';
-import { Item } from '../../models/item';
-import { uuid } from '../../util/utility';
+import { FirestoreListService } from 'services/firestoreListService';
+import { SiteStore } from 'services/siteStore';
+import { List } from 'models/list';
+import { Item } from 'models/item';
+import { uuid } from 'util/utility';
+import { ManagePeoplePage } from 'pages/components/managePeople/managePeople';
 import { Subject } from 'rxjs/Subject';
 import "rxjs/add/operator/debounceTime";
-import { SiteStore } from '../../services/siteStore';
-import { ManagePeoplePage } from '../components/managePeople/managePeople';
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {

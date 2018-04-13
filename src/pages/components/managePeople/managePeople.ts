@@ -1,10 +1,10 @@
 import { Component } from "@angular/core";
 import { ViewController, NavParams } from "ionic-angular";
 import _ from "lodash";
-import { List } from "../../../models/list";
+import { List } from "models/list";
 import { DocumentReference } from "@firebase/firestore-types";
-import { SiteStore } from "../../../services/siteStore";
-import { FirestoreListService } from "../../../services/firestoreListService";
+import { SiteStore } from "services/siteStore";
+import { FirestoreListService } from "services/firestoreListService";
 
 interface AddPersonModel {
     email: string;

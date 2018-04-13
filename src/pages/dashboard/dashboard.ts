@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
-import { SiteStore } from '../../services/siteStore';
-import { FirestoreListService } from '../../services/firestoreListService';
-import { List } from '../../models/list';
-import { ListPage } from '../list/list';
-import { Item } from '../../models/item';
-import { AlertController } from 'ionic-angular';
-import { ManagePeoplePage } from '../components/managePeople/managePeople';
+import { AlertController, ModalController, NavController } from 'ionic-angular';
+import { SiteStore } from 'services/siteStore';
+import { FirestoreListService } from 'services/firestoreListService';
+import { List } from 'models/list';
+import { Item } from 'models/item';
+import { ListPage } from 'pages/list/list';
+import { ManagePeoplePage } from 'pages/components/managePeople/managePeople';
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {

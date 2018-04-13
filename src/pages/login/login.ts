@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { SiteStore } from '../../services/siteStore';
-import { DashBoardPage } from '../dashboard/dashboard'
-import { User } from '../../models/user';
-import { StorageKey } from '../../enums/storageKey';
-import { LoadingDialog } from '../components/loadingdialog';
-import { Storage } from '@ionic/storage';
-import { FirestoreError } from '../../enums/firestoreError';
-import { RegisterPage } from '../register/register';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FirestoreUserService } from "../../services/firestoreUserService";
-import { FirestoreAuthService } from "../../services/firestoreAuthService";
+import { NavController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { SiteStore } from 'services/siteStore';
+import { FirestoreUserService } from "services/firestoreUserService";
+import { FirestoreAuthService } from "services/firestoreAuthService";
+import { DashBoardPage } from 'pages/dashboard/dashboard'
+import { LoadingDialog } from 'pages/components/loadingdialog';
+import { RegisterPage } from 'pages/register/register';
+import { User } from 'models/user';
+import { StorageKey } from 'enums/storageKey';
+import { FirestoreError } from 'enums/firestoreError';
 
 @Component({ selector: 'page-login', templateUrl: 'login.html' })
 export class LoginPage {

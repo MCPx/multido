@@ -5,20 +5,20 @@ import { ErrorHandler, NgModule } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule, ModalController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { IonicStorageModule } from '@ionic/storage';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { MyApp } from './app.component';
-import { LoginPage } from '../pages/login/login';
-import { SiteStore } from '../services/siteStore';
-import { DashBoardPage } from '../pages/dashboard/dashboard';
-import { ListPage } from '../pages/list/list';
-import { LoadingDialog } from '../pages/components/loadingdialog';
-import { IonicStorageModule } from '@ionic/storage';
-import { RegisterPage } from '../pages/register/register';
-import { ManagePeoplePage } from '../pages/components/managePeople/managePeople';
-import { FirestoreListService } from '../services/firestoreListService';
-import { FirestoreUserService } from "../services/firestoreUserService";
-import { FirestoreAuthService } from "../services/firestoreAuthService";
+import { LoginPage } from 'pages/login/login';
+import { DashBoardPage } from 'pages/dashboard/dashboard';
+import { ListPage } from 'pages/list/list';
+import { LoadingDialog } from 'pages/components/loadingdialog';
+import { RegisterPage } from 'pages/register/register';
+import { ManagePeoplePage } from 'pages/components/managePeople/managePeople';
+import { SiteStore } from 'services/siteStore';
+import { FirestoreListService } from 'services/firestoreListService';
+import { FirestoreUserService } from "services/firestoreUserService";
+import { FirestoreAuthService } from "services/firestoreAuthService";
 
 @NgModule({
     declarations: [

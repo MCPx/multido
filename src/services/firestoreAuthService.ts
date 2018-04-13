@@ -1,7 +1,7 @@
 import { AngularFireAuth } from "angularfire2/auth";
-import { FirestoreCollection } from "../enums/firestoreCollection";
 import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
 import { Injectable } from "@angular/core";
+import { FirestoreCollection } from "enums/firestoreCollection";
 
 @Injectable()
 export class FirestoreAuthService {

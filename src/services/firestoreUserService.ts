@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
-import { FirestoreCollection } from "../enums/firestoreCollection";
-import { User } from "../models/user";
 import { QuerySnapshot } from "@firebase/firestore-types";
+import { FirestoreCollection } from "enums/firestoreCollection";
+import { User } from "models/user";
 
 @Injectable()
 export class FirestoreUserService {
