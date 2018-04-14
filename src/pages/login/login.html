@@ -1,14 +1,13 @@
-<ion-content padding>
-    <div class="login-box">
-        <form (ngSubmit)="this.login()" [formGroup]="loginForm">
-            <ion-grid>
+<ion-content padding class="no-scroll">
+    <form class="login-box" (ngSubmit)="this.login()" [formGroup]="loginForm">
+        <ion-grid class="no-scroll">
             <ion-row>
                 <ion-col>
                     <ion-item>
                         <ion-label floating>
                             <ion-icon name="mail" item-start class="text-primary"></ion-icon>
                             Email
-                          </ion-label>
+                        </ion-label>
                         <ion-input formControlName="email" type="email" id="email" name="email" required></ion-input>
                     </ion-item>
 
@@ -17,9 +16,11 @@
                             <ion-icon name="lock" item-start class="text-primary"></ion-icon>
                             Password
                         </ion-label>
-                        <ion-input formControlName="password" [type]="!showPasswordText ? 'password' : 'text'" id="password" name="password" required></ion-input>
+                        <ion-input formControlName="password" [type]="!showPasswordText ? 'password' : 'text'"
+                                   id="password" name="password" required></ion-input>
 
-                        <button ion-button clear icon-only color="tertiary" type="button" item-end (click)="showPasswordText = !showPasswordText">
+                        <button ion-button clear icon-only color="tertiary" type="button" item-end
+                                (click)="showPasswordText = !showPasswordText">
                             <ion-icon name="eye" *ngIf="!showPasswordText"></ion-icon>
                             <ion-icon name="eye-off" *ngIf="showPasswordText"></ion-icon>
                         </button>
@@ -31,7 +32,6 @@
                 <button ion-button type="button" outline (click)="this.handleRegisterClick($event)">Register</button>
                 <button ion-button type="submit" [disabled]="!loginForm.valid">Log in</button>
             </ion-row>
-            </ion-grid>
-        </form>
-    </div>
+        </ion-grid>
+    </form>
 </ion-content>
