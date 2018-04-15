@@ -28,9 +28,11 @@
                 </ion-col>
             </ion-row>
 
-            <ion-row justify-content-end padding>
-                <button ion-button type="button" outline (click)="this.handleRegisterClick($event)">Register</button>
-                <button ion-button type="submit" [disabled]="!loginForm.valid">Log in</button>
+            <ion-row padding-top>
+                <button ion-button block large type="submit" [disabled]="!loginForm.valid">Log in</button>
+            </ion-row>
+            <ion-row>
+                <button ion-button type="button" outline block (click)="this.handleRegisterClick($event)">Register</button>
             </ion-row>
         </ion-grid>
     </form>
