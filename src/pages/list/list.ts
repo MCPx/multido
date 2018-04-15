@@ -5,7 +5,7 @@ import { SiteStore } from 'services/siteStore';
 import { List } from 'models/list';
 import { Item } from 'models/item';
 import { uuid } from 'util/utility';
-import { ManagePeoplePage } from 'pages/components/managePeople/managePeople';
+import { ManageListPage } from 'pages/components/manageList/manageList';
 import { Subject } from 'rxjs/Subject';
 import "rxjs/add/operator/debounceTime";
 
@@ -68,7 +68,7 @@ export class ListPage {
     }
 
     private handleAddPeopleClick() {
-        let addPersonAlert = this.modalCtrl.create(ManagePeoplePage, {
+        let addPersonAlert = this.modalCtrl.create(ManageListPage, {
             knownUserEmails: this.store.getUser().knownUserEmails,
             list: this.list
         });

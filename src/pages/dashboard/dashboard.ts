@@ -5,7 +5,7 @@ import { FirestoreListService } from 'services/firestoreListService';
 import { List } from 'models/list';
 import { Item } from 'models/item';
 import { ListPage } from 'pages/list/list';
-import { ManagePeoplePage } from 'pages/components/managePeople/managePeople';
+import { ManageListPage } from 'pages/components/manageList/manageList';
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -99,7 +99,7 @@ export class DashBoardPage {
     }
 
     private displayManagePage(list: List) {
-        let addPersonAlert = this.modalCtrl.create(ManagePeoplePage, { knownUserEmails: this.store.getUser().knownUserEmails, list });
+        let addPersonAlert = this.modalCtrl.create(ManageListPage, { knownUserEmails: this.store.getUser().knownUserEmails, list });
 
         addPersonAlert.present();
     }

@@ -10,8 +10,8 @@ interface AddPersonModel {
     email: string;
 }
 
-@Component({ selector: 'page-managepeople', templateUrl: 'managePeople.html' })
-export class ManagePeoplePage {
+@Component({ selector: 'page-managelist', templateUrl: 'manageList.html' })
+export class ManageListPage {
     addPersonModel: AddPersonModel = { email: undefined };
     knownUserEmails: string[];
     existingEmails: string[] = [];
@@ -28,7 +28,7 @@ export class ManagePeoplePage {
         this.knownUserEmails = params.get("knownUserEmails") || [];
         this.list = params.get("list");
 
-        ManagePeoplePage.fetchUserEmails(this.list.userIds).then((emails: string[]) => {
+        ManageListPage.fetchUserEmails(this.list.userIds).then((emails: string[]) => {
             if (!emails) return;
 
             console.log("users in list", emails);

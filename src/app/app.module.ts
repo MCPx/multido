@@ -14,7 +14,7 @@ import { DashBoardPage } from 'pages/dashboard/dashboard';
 import { ListPage } from 'pages/list/list';
 import { LoadingDialog } from 'pages/components/loadingdialog';
 import { RegisterPage } from 'pages/register/register';
-import { ManagePeoplePage } from 'pages/components/managePeople/managePeople';
+import { ManageListPage } from 'pages/components/manageList/manageList';
 import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { FirestoreUserService } from "services/firestoreUserService";
@@ -27,7 +27,7 @@ import { FirestoreAuthService } from "services/firestoreAuthService";
         RegisterPage,
         DashBoardPage,
         ListPage,
-        ManagePeoplePage
+        ManageListPage
     ],
     imports: [
         AngularFireModule.initializeApp({
@@ -50,7 +50,7 @@ import { FirestoreAuthService } from "services/firestoreAuthService";
         RegisterPage,
         DashBoardPage,
         ListPage,
-        ManagePeoplePage
+        ManageListPage
     ],
     providers: [
         StatusBar,
