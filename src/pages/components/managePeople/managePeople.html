@@ -12,7 +12,9 @@
     </ion-list>
 
     <ion-list>
+        <p ion-text padding-left no-margin margin-top color="tertiary">Shared with</p>
         <ion-card>
+            <ion-item padding [hidden]="!isLoading"><ion-spinner color="primary" ></ion-spinner></ion-item>
             <ion-item *ngFor="let existingEmail of modifiedList">
                 <ion-avatar item-start>
                     <button ion-button icon-only clear>
