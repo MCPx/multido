@@ -63,11 +63,11 @@ export class DashBoardPage {
     // update lists locally, then on firestore
     private handleDeleteClick(e, listToRemove) {
         const deleteConfirm = this.alertCtrl.create({
-            title: 'Confirm Delete',
+            title: 'Remove yourself from this list?',
             buttons: [
                 'Cancel',
                 {
-                    text: 'Delete',
+                    text: 'Remove me',
                     handler: () => this.removeList(listToRemove)
                 }],
         });

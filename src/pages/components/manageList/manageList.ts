@@ -5,14 +5,11 @@ import { List } from "models/list";
 import { DocumentReference } from "@firebase/firestore-types";
 import { SiteStore } from "services/siteStore";
 import { FirestoreListService } from "services/firestoreListService";
-
-interface AddPersonModel {
-    email: string;
-}
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 
 @Component({ selector: 'page-managelist', templateUrl: 'manageList.html' })
-export class ManageListPage {
-    addPersonModel: AddPersonModel = { email: undefined };
+export class ManageListPage {    
+    addEmailForm: FormGroup;
     knownUserEmails: string[];
     existingEmails: string[] = [];
     modifiedList: string[] = [];
@@ -20,11 +17,15 @@ export class ManageListPage {
     isLoading: boolean = true;
     list: List;
 
-    isValid() {
-        return this.addPersonModel.email && this.addPersonModel.email.length > 0;
+    hasChanged() {
+        return _.some(_.difference(this.modifiedList, this.existingEmails).concat(_.difference(this.existingEmails, this.modifiedList)));
     }
 
-    constructor(public viewCtrl: ViewController, params: NavParams, private store: SiteStore, private listService: FirestoreListService) {
+    constructor(public viewCtrl: ViewController, params: NavParams, private formBuilder: FormBuilder, private store: SiteStore, private listService: FirestoreListService) {
+        this.addEmailForm = formBuilder.group({
+            email: ['', Validators.compose([Validators.required, Validators.email])]
+        });
+
         this.knownUserEmails = params.get("knownUserEmails") || [];
         this.list = params.get("list");
 
@@ -47,8 +48,8 @@ export class ManageListPage {
     }
 
     private addEmail() {
-        if (this.isValid()) {
-            this.modifiedList.push(this.addPersonModel.email.toLowerCase());
+        if (this.addEmailForm.valid) {
+            this.modifiedList.push(this.addEmailForm.value.email.toLowerCase());
             this.clearForm();
         }
     }
@@ -65,7 +66,7 @@ export class ManageListPage {
     }
 
     private clearForm() {
-        this.addPersonModel.email = "";
+        this.addEmailForm.value.email = "";
         this.searchResults = [];
     }
 
@@ -81,10 +82,6 @@ export class ManageListPage {
         this.modifiedList = this.modifiedList.filter(email => email !== emailToRemove)
     }
 
-    private hasChanged() {
-        return this.modifiedList.length > 0;
-    }
-
     private removeEmailsFromList(): Promise<void> {
         const emailsToRemove = _.difference(this.existingEmails, this.modifiedList);
 
@@ -98,7 +95,7 @@ export class ManageListPage {
         const emailsToAdd = _.difference(this.modifiedList, this.existingEmails);
 
         if (_.some(emailsToAdd))
-            return this.listService.addUsersToList(this.list, this.store.getUser(), emailsToAdd).then(() => console.log("done adding", emailsToAdd));
+            return this.listService.addUsersToList(this.list, this.store.getUser(), emailsToAdd).then(() => console.log("done adding", emailsToAdd)).catch(error => console.log("error adding", error));
 
         return Promise.resolve();
     }

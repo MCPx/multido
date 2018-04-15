@@ -1,6 +1,8 @@
 <ion-content>
-    <ion-searchbar [ngClass]="{ 'email-invalid': !isValid() }" autofocus class="email-searchbar" type="email" [(ngModel)]="addPersonModel.email"
-        (ionInput)="search($event.target.value)" (keyup.enter)="addEmail()" placeholder="Email"></ion-searchbar>
+    <form (ngSubmit)="addEmail()" [formGroup]="addEmailForm">
+        <ion-searchbar formControlName="email" [ngClass]="{ 'email-invalid': !addEmailForm.valid }" autofocus class="email-searchbar" type="email"
+            (ionInput)="search($event.target.value)" placeholder="Email"></ion-searchbar>
+    </form>
 
     <ion-list [hidden]="searchResults.length === 0">
         <p ion-text padding-left no-margin margin-top color="tertiary">Suggested</p>

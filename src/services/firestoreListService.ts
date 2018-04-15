@@ -8,6 +8,7 @@ import { User } from "models/user";
 import { FirestoreCollection } from "enums/firestoreCollection";
 import { FirestoreUserService } from "services/firestoreUserService";
 import 'rxjs/add/operator/first';
+import _ from 'lodash';
 
 @Injectable()
 export class FirestoreListService {
@@ -39,7 +40,7 @@ export class FirestoreListService {
 
             // add added-user to users common-users
             user.knownUserEmails.push(email);
-            batch.update(user.userRef, { knownUserEmails: user.knownUserEmails });
+            batch.update(user.userRef, { knownUserEmails: _.uniq(user.knownUserEmails) });
 
             return batch.commit();
         });
