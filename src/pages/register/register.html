@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>Register</ion-title>        
+        <ion-title>Register</ion-title>
     </ion-navbar>
 </ion-header>
 
@@ -20,16 +20,16 @@
                         <ion-input type="text" formControlName="username" id="username" name="username"></ion-input>
                     </ion-item>
 
-                    <ion-item>
+                    <ion-item class="password-input">
                         <ion-label floating for="password">Password</ion-label>
-                        <ion-input formControlName="password" type="password" id="password" name="password" *ngIf="!showPasswordText"></ion-input>
-                        <ion-input formControlName="password" type="text" id="password" name="password" *ngIf="showPasswordText"></ion-input>
-                        
+                        <ion-input formControlName="password" [type]="!showPasswordText ? 'password' : 'text'"
+                                   id="password" name="password" required></ion-input>
+
                         <button ion-button clear icon-only color="tertiary" type="button" item-right (click)="showPasswordText = !showPasswordText">
                             <ion-icon name="eye" *ngIf="!showPasswordText"> </ion-icon>
                             <ion-icon name="eye-off" *ngIf="showPasswordText"> </ion-icon>
-                        </button>                                
-                    </ion-item>             
+                        </button>
+                    </ion-item>
                 </ion-col>
             </ion-row>
 
