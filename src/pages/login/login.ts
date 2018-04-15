@@ -17,6 +17,7 @@ export class LoginPage {
 
     loginForm: FormGroup;
     showPasswordText: boolean = false;
+    loading: boolean = false;
 
     constructor(private nav: NavController, formBuilder: FormBuilder, private loadingDialog: LoadingDialog, private store: SiteStore, private userService: FirestoreUserService, private authService: FirestoreAuthService, private storage: Storage) {
         this.loginForm = formBuilder.group({
@@ -26,12 +27,12 @@ export class LoginPage {
     }
 
     private login() {
-        this.loadingDialog.present("Logging you in...");
+        this.loading = true;
 
         this.authService.signIn(this.loginForm.value.email, this.loginForm.value.password)
             .then(response => {
                 this.userService.getUserById(response.uid).then((user: User) => {
-                    this.loadingDialog.dismiss();
+                    this.loading = false;
                     this.store.setUser(user);
                     return this.storage.set(StorageKey.UserId, user.id)
                         .then(value => this.nav.setRoot(DashBoardPage));
@@ -40,6 +41,7 @@ export class LoginPage {
             let message = "Unable to log you in";
             if (error.code === FirestoreError.UnknownUser || error.code === FirestoreError.WrongPassword) message = "Invalid username or password";
 
+            this.loading = false;
             this.loadingDialog.dismiss();
             this.loadingDialog.present(message, { spinner: "hide", enableBackdropDismiss: true });
         });

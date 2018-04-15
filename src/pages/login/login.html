@@ -29,7 +29,10 @@
             </ion-row>
 
             <ion-row padding-top>
-                <button ion-button block large type="submit" [disabled]="!loginForm.valid">Log in</button>
+                <button ion-button block large type="submit" [disabled]="!loginForm.valid || loading">
+                    <span *ngIf="!loading">Log in</span>
+                    <ion-spinner *ngIf="loading" name="crescent" color="secondary" margin-right></ion-spinner><span *ngIf="loading">Logging in...</span>
+                </button>
             </ion-row>
             <ion-row>
                 <button ion-button type="button" block large icon-only clear (click)="this.handleRegisterClick($event)">Register</button>
