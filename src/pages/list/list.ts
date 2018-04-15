@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, AlertController, ModalController, NavParams } from 'ionic-angular';
+import { ActionSheetController, AlertController, NavController, NavParams } from 'ionic-angular';
 import { FirestoreListService } from 'services/firestoreListService';
 import { SiteStore } from 'services/siteStore';
 import { List } from 'models/list';
 import { Item } from 'models/item';
 import { uuid } from 'util/utility';
-import { ManageListPage } from 'pages/components/manageList/manageList';
+import { ManageListPage } from 'pages/manageList/manageList';
 import { Subject } from 'rxjs/Subject';
 import "rxjs/add/operator/debounceTime";
 
@@ -17,7 +17,7 @@ export class ListPage {
     newItemName: string;
     debounceUpdate: Subject<void> = new Subject();
 
-    constructor(private navParams: NavParams, private listService: FirestoreListService, private store: SiteStore, private modalCtrl: ModalController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
+    constructor(private navParams: NavParams, private listService: FirestoreListService, private store: SiteStore, private nav: NavController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
         this.list = this.navParams.get('list');
         const addListPromise = this.navParams.get('addListPromise');
 
@@ -67,13 +67,11 @@ export class ListPage {
         }
     }
 
-    private handleAddPeopleClick() {
-        let addPersonAlert = this.modalCtrl.create(ManageListPage, {
+    private handleManageListClick() {
+        this.nav.push(ManageListPage, {
             knownUserEmails: this.store.getUser().knownUserEmails,
             list: this.list
         });
-
-        addPersonAlert.present();
     }
 
     private presentActionSheet(item: Item) {

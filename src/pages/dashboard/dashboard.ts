@@ -5,7 +5,7 @@ import { FirestoreListService } from 'services/firestoreListService';
 import { List } from 'models/list';
 import { Item } from 'models/item';
 import { ListPage } from 'pages/list/list';
-import { ManageListPage } from 'pages/components/manageList/manageList';
+import { ManageListPage } from 'pages/manageList/manageList';
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -13,7 +13,7 @@ export class DashBoardPage {
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl: AlertController, private modalCtrl : ModalController, private store: SiteStore, private listService: FirestoreListService) {
+    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private listService: FirestoreListService) {
     }
 
     ionViewWillEnter() {
@@ -99,8 +99,6 @@ export class DashBoardPage {
     }
 
     private displayManagePage(list: List) {
-        let addPersonAlert = this.modalCtrl.create(ManageListPage, { knownUserEmails: this.store.getUser().knownUserEmails, list });
-
-        addPersonAlert.present();
+        this.nav.push(ManageListPage, { knownUserEmails: this.store.getUser().knownUserEmails, list });
     }
 }

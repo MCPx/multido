@@ -1,9 +1,13 @@
-<ion-content>
-    <form (ngSubmit)="addEmail()" [formGroup]="addEmailForm">
-        <ion-searchbar formControlName="email" [ngClass]="{ 'email-invalid': !addEmailForm.valid }" autofocus class="email-searchbar" type="email"
-            (ionInput)="search($event.target.value)" placeholder="Email"></ion-searchbar>
-    </form>
+<ion-header>
+    <ion-toolbar>
+        <form (ngSubmit)="addEmail()" [formGroup]="addEmailForm">
+            <ion-searchbar formControlName="email" [ngClass]="{ 'email-invalid': !addEmailForm.valid }" autofocus class="email-searchbar"
+                type="email" (ionInput)="search($event.target.value)" placeholder="Email"></ion-searchbar>
+        </form>
+    </ion-toolbar>
+</ion-header>
 
+<ion-content>
     <ion-list [hidden]="searchResults.length === 0">
         <p ion-text padding-left no-margin margin-top color="tertiary">Suggested</p>
         <ion-card>
@@ -16,7 +20,9 @@
     <ion-list>
         <p ion-text padding-left no-margin margin-top color="tertiary">Shared with</p>
         <ion-card>
-            <ion-item padding [hidden]="!isLoading"><ion-spinner color="primary" ></ion-spinner></ion-item>
+            <ion-item padding [hidden]="!isLoading">
+                <ion-spinner color="primary"></ion-spinner>
+            </ion-item>
             <ion-item *ngFor="let existingEmail of modifiedList">
                 <ion-avatar item-start>
                     <button ion-button icon-only clear>
