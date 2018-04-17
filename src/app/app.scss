@@ -22,3 +22,28 @@
     display: flex;
     align-items: flex-end;
 }
+
+ion-content.logged-out {
+    background-color: #c62828;
+    background: url(../assets/imgs/splash.png) no-repeat;
+    background-size: 200vmin 200vmin;
+    background-position: center -65vmin;
+
+    .logo {
+        width:80vw;
+        height:80vw;
+    }
+
+    ion-item {
+        background-color: transparent;
+        color: color($colors, light);
+
+        .item-inner {
+            border-bottom: 2px solid color($colors, light) !important;
+        }
+    }
+
+    ion-label {
+        color: color($colors, light) !important;
+    }
+}
