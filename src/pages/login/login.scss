@@ -1,5 +1,10 @@
+page-login {
+    background-color: color($colors, primary);
+}
+
 .login-box, .login-box form {
     height: 100vh;
+
 
     ion-label, ion-input {
         font-size: 2rem;

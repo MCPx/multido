@@ -1,6 +1,9 @@
-<ion-content padding class="no-scroll">
+<ion-content padding class="no-scroll logged-out">
     <form class="login-box" (ngSubmit)="this.login()" [formGroup]="loginForm">
         <ion-grid class="no-scroll">
+            <!--<ion-row>-->
+                <!--<img class="logo" src="assets/imgs/logo.png"/>-->
+            <!--</ion-row>-->
             <ion-row>
                 <ion-col>
                     <ion-item>
@@ -19,7 +22,7 @@
                         <ion-input formControlName="password" [type]="!showPasswordText ? 'password' : 'text'"
                                    id="password" name="password" required></ion-input>
 
-                        <button ion-button clear icon-only color="tertiary" type="button" item-end
+                        <button ion-button clear icon-only color="light" type="button" item-end
                                 (click)="showPasswordText = !showPasswordText">
                             <ion-icon name="eye" *ngIf="!showPasswordText"></ion-icon>
                             <ion-icon name="eye-off" *ngIf="showPasswordText"></ion-icon>
@@ -29,13 +32,13 @@
             </ion-row>
 
             <ion-row padding-top>
-                <button ion-button block large type="submit" [disabled]="!loginForm.valid || loading">
+                <button ion-button block large type="submit" color="light" [disabled]="!loginForm.valid || loading">
                     <span *ngIf="!loading">Log in</span>
-                    <ion-spinner *ngIf="loading" name="crescent" color="secondary" margin-right></ion-spinner><span *ngIf="loading">Logging in...</span>
+                    <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner><span *ngIf="loading">Logging in...</span>
                 </button>
             </ion-row>
             <ion-row>
-                <button ion-button type="button" block large icon-only clear (click)="this.handleRegisterClick($event)">Register</button>
+                <button ion-button type="button" block large icon-only clear color="secondary" (click)="this.handleRegisterClick($event)">Register</button>
             </ion-row>
         </ion-grid>
     </form>
