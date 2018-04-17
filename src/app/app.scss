@@ -24,15 +24,6 @@
 }
 
 ion-content.logged-out {
-    background-color: #c62828;
-    background: url(../assets/imgs/splash.png) no-repeat;
-    background-size: 200vmin 200vmin;
-    background-position: center -65vmin;
-
-    .logo {
-        width:80vw;
-        height:80vw;
-    }
 
     ion-item {
         background-color: transparent;
