@@ -1,44 +1,52 @@
 <ion-content padding class="no-scroll logged-out">
     <form class="login-box" (ngSubmit)="this.login()" [formGroup]="loginForm">
-        <ion-grid class="no-scroll">
-            <!--<ion-row>-->
-                <!--<img class="logo" src="assets/imgs/logo.png"/>-->
-            <!--</ion-row>-->
+        <ion-grid class="no-scroll login-page-grid">
+            <ion-row class="logo-row">
+                <img class="logo" src="assets/imgs/splash.png"/>
+            </ion-row>
             <ion-row>
-                <ion-col>
-                    <ion-item>
-                        <ion-label floating>
-                            <ion-icon name="mail" item-start class="text-primary"></ion-icon>
-                            Email
-                        </ion-label>
-                        <ion-input formControlName="email" type="email" id="email" name="email" required></ion-input>
-                    </ion-item>
+                <ion-grid class="login-form-grid">
+                    <ion-row>
+                        <ion-col>
+                            <ion-item>
+                                <ion-label floating>
+                                    <ion-icon name="mail" item-start class="text-primary"></ion-icon>
+                                    Email
+                                </ion-label>
+                                <ion-input formControlName="email" type="email" id="email" name="email"
+                                           required></ion-input>
+                            </ion-item>
 
-                    <ion-item class="password-input">
-                        <ion-label floating for="password">
-                            <ion-icon name="lock" item-start class="text-primary"></ion-icon>
-                            Password
-                        </ion-label>
-                        <ion-input formControlName="password" [type]="!showPasswordText ? 'password' : 'text'"
-                                   id="password" name="password" required></ion-input>
+                            <ion-item class="password-input">
+                                <ion-label floating for="password">
+                                    <ion-icon name="lock" item-start class="text-primary"></ion-icon>
+                                    Password
+                                </ion-label>
+                                <ion-input formControlName="password" [type]="!showPasswordText ? 'password' : 'text'"
+                                           id="password" name="password" required></ion-input>
 
-                        <button ion-button clear icon-only color="light" type="button" item-end
-                                (click)="showPasswordText = !showPasswordText">
-                            <ion-icon name="eye" *ngIf="!showPasswordText"></ion-icon>
-                            <ion-icon name="eye-off" *ngIf="showPasswordText"></ion-icon>
+                                <button ion-button clear icon-only color="light" type="button" item-end
+                                        (click)="showPasswordText = !showPasswordText">
+                                    <ion-icon name="eye" *ngIf="!showPasswordText"></ion-icon>
+                                    <ion-icon name="eye-off" *ngIf="showPasswordText"></ion-icon>
+                                </button>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row padding-top>
+                        <button ion-button block large type="submit" color="light"
+                                [disabled]="!loginForm.valid || loading">
+                            <span *ngIf="!loading">Log in</span>
+                            <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner>
+                            <span *ngIf="loading">Logging in...</span>
                         </button>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
-
-            <ion-row padding-top>
-                <button ion-button block large type="submit" color="light" [disabled]="!loginForm.valid || loading">
-                    <span *ngIf="!loading">Log in</span>
-                    <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner><span *ngIf="loading">Logging in...</span>
-                </button>
-            </ion-row>
-            <ion-row>
-                <button ion-button type="button" block large icon-only clear color="secondary" (click)="this.handleRegisterClick($event)">Register</button>
+                    </ion-row>
+                    <ion-row>
+                        <button ion-button type="button" block large icon-only clear color="secondary"
+                                (click)="this.handleRegisterClick($event)">Register
+                        </button>
+                    </ion-row>
+                </ion-grid>
             </ion-row>
         </ion-grid>
     </form>

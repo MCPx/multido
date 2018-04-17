@@ -1,5 +1,23 @@
 page-login {
     background-color: color($colors, primary);
+
+    ion-content, .content-ios, .content-md, .content-wp {
+        background-color: transparent;
+    }
+
+    .logo-row {
+        overflow: visible;
+        max-height: 20%;
+        max-width: 20%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .logo {
+        width:200vmin;
+        height:200vmin;
+        max-width: none;
+    }
 }
 
 .login-box, .login-box form {
@@ -11,7 +29,16 @@ page-login {
     }
 }
 
-ion-grid {
+.login-page-grid {
     height: 100vh;
-    justify-content: center;
+    justify-content: space-evenly;
+    align-items: center;
+
+    @media (orientation: landscape) {
+        flex-direction: row;
+    }
+    @media (orientation: portrait) {
+        flex-direction: column;
+    }
 }
+
