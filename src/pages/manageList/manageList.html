@@ -30,7 +30,7 @@
                     </button>
                 </ion-avatar>
                 <h2>{{ existingEmail }}</h2>
-                <button ion-button icon-only item-right clear (click)="handleRemoveUserClick(existingEmail)">
+                <button ion-button icon-only item-right clear (click)="handleRemoveUserClick(existingEmail)" [hidden]="!isOwnEmail(existingEmail)">
                     <ion-icon color="tertiary" name="close"></ion-icon>
                 </button>
             </ion-item>

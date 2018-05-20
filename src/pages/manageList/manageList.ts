@@ -34,7 +34,8 @@ export class ManageListPage {
 
             console.log("users in list", emails);
 
-            this.modifiedList = _.uniq(this.modifiedList.concat([...emails]));
+            this.modifiedList = _.uniq(this.modifiedList.concat([...emails]))
+                .sort((email1, email2) => this.isOwnEmail(email2) ? 1 : 0); // Own email at the top
             this.existingEmails = [...emails];
             this.isLoading = false;
         });
@@ -98,6 +99,10 @@ export class ManageListPage {
             return this.listService.addUsersToList(this.list, this.store.getUser(), emailsToAdd).then(() => console.log("done adding", emailsToAdd)).catch(error => console.log("error adding", error));
 
         return Promise.resolve();
+    }
+
+    private isOwnEmail(email : string) {
+        return email == this.store.getUser().email;
     }
 
     save() {
