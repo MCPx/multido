@@ -20,7 +20,8 @@ export class LoadingDialog {
 
     public dismiss()
     {
-        this.loadingDialog.dismiss();
+        if (this.loadingDialog)
+            this.loadingDialog.dismiss();
     }
 }
 

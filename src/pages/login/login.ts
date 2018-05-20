@@ -30,21 +30,21 @@ export class LoginPage {
         this.loading = true;
 
         this.authService.signIn(this.loginForm.value.email, this.loginForm.value.password)
-            .then(response => {
-                this.userService.getUserById(response.uid).then((user: User) => {
-                    this.loading = false;
-                    this.store.setUser(user);
-                    return this.storage.set(StorageKey.UserId, user.id)
-                        .then(value => this.nav.setRoot(DashBoardPage));
-                });
-            }).catch(error => {
-            let message = "Unable to log you in";
-            if (error.code === FirestoreError.UnknownUser || error.code === FirestoreError.WrongPassword) message = "Invalid username or password";
+            .then(response => this.userService.getUserById(response.uid))
+            .then((user: User) => {
+                this.loading = false;
+                this.store.setUser(user);
+                return this.storage.set(StorageKey.UserId, user.id);
+            })
+            .then(() => this.nav.setRoot(DashBoardPage))
+            .catch(error => {
+                let message = "Unable to log you in";
+                if (error.code === FirestoreError.UnknownUser || error.code === FirestoreError.WrongPassword) message = "Invalid username or password";
 
-            this.loading = false;
-            this.loadingDialog.dismiss();
-            this.loadingDialog.present(message, { spinner: "hide", enableBackdropDismiss: true });
-        });
+                this.loading = false;
+                this.loadingDialog.dismiss();
+                this.loadingDialog.present(message, { spinner: "hide", enableBackdropDismiss: true });
+            });
     }
 
     private handleRegisterClick(e) {
