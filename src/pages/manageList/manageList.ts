@@ -32,8 +32,6 @@ export class ManageListPage {
         ManageListPage.fetchUserEmails(this.list.userIds).then((emails: string[]) => {
             if (!emails) return;
 
-            console.log("users in list", emails);
-
             this.modifiedList = _.uniq(this.modifiedList.concat([...emails]))
                 .sort((email1, email2) => this.isOwnEmail(email2) ? 1 : 0); // Own email at the top
             this.existingEmails = [...emails];
@@ -87,16 +85,16 @@ export class ManageListPage {
         const emailsToRemove = _.difference(this.existingEmails, this.modifiedList);
 
         if (_.some(emailsToRemove))
-            return this.listService.removeListForUsers(this.list, emailsToRemove).then(() => console.log("done removing", emailsToRemove));
+            return this.listService.removeListForUsers(this.list, emailsToRemove).then(() => {});
 
         return Promise.resolve();
     }
 
-    private addEmailsToList(): Promise<void> {
+    private addEmailsToList(): Promise<any> {
         const emailsToAdd = _.difference(this.modifiedList, this.existingEmails);
 
         if (_.some(emailsToAdd))
-            return this.listService.addUsersToList(this.list, this.store.getUser(), emailsToAdd).then(() => console.log("done adding", emailsToAdd)).catch(error => console.log("error adding", error));
+            return this.listService.addUsersToList(this.list, this.store.getUser(), emailsToAdd);
 
         return Promise.resolve();
     }
@@ -106,7 +104,7 @@ export class ManageListPage {
     }
 
     save() {
-        const savingListPromise = Promise.all([this.addEmailsToList(), this.removeEmailsFromList()]).then(() => console.log("adding and removing done"));
+        const savingListPromise = Promise.all([this.addEmailsToList(), this.removeEmailsFromList()]);
 
         this.viewCtrl.dismiss({ savingListPromise });
     }

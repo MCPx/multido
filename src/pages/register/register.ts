@@ -27,7 +27,6 @@ export class RegisterPage {
     private register()
     {
         this.loadingDialog.present("Registering...");
-        console.log("Registering...", this.registerForm);
 
         this.authService.register(this.registerForm.value.email.toLowerCase(), this.registerForm.value.username, this.registerForm.value.password)
         .then(response => {
@@ -44,7 +43,6 @@ export class RegisterPage {
 
             this.loadingDialog.dismiss();
             this.loadingDialog.present(message, { spinner: "hide", enableBackdropDismiss: true });
-            console.log("error", error);
         });
     }
 }

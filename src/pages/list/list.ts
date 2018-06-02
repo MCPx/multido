@@ -38,7 +38,6 @@ export class ListPage {
     }
 
     ionViewWillLeave() {
-        console.log("leaving", this.navParams.get('list'));
         this.updateList();
     }
 
@@ -58,7 +57,6 @@ export class ListPage {
     }
 
     private onBlur() {
-        console.log(`Triggered on blur with newItem value: '${this.newItemName}'`);
         if (this.newItemName) {
             const newItem = new Item({ id: uuid(), state: { checked: false }, text: this.newItemName });
             this.list.items.push(newItem);
@@ -89,7 +87,6 @@ export class ListPage {
                     text: 'Cancel',
                     role: 'cancel',
                     handler: () => {
-                        console.log('Cancel clicked');
                     }
                 }
             ]
@@ -98,7 +95,6 @@ export class ListPage {
     }
 
     private deleteItem(item: Item) {
-        console.log(`Deleting item: ${item.text}`);
         this.list.items = this.list.items.filter(i => i !== item);
         this.debounceUpdate.next();
     }

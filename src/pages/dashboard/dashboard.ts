@@ -90,7 +90,6 @@ export class DashBoardPage {
     }
 
     private handleListImageClick(e, list: List) {
-        console.log("image click!", e, list);
         e.stopPropagation(); // don't trigger click on surrounding card
     }
 

@@ -10,7 +10,6 @@ export class SiteStore {
 	}
 
 	setUser(user: User) {
-		console.log('Setting user to: ', user);
 		this.user = user;
 	}
 

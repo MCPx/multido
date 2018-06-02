@@ -8,4 +8,13 @@ export class User
     email: string;
     knownUserEmails: string[];
     listIds: DocumentReference[];
+
+    constructor({id, userRef, name, email, knownUserEmails, listIds}: User) {
+        this.id = id;
+        this.userRef = userRef;
+        this.name = name;
+        this.email = email;
+        this.knownUserEmails = knownUserEmails;
+        this.listIds = listIds;
+    }
 }
