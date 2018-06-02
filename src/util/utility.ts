@@ -14,3 +14,14 @@ export function base64ToArrayBuffer(base64) {
     }
     return bytes.buffer;
 }
+
+export const arrayBufferToBase64 = (buffer) => uIntArrayToBase64(new Uint8Array( buffer ));
+
+export function uIntArrayToBase64(bytes) {
+    var binary = '';
+    var len = bytes.byteLength;
+    for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode( bytes[ i ] );
+    }
+    return window.btoa(binary);
+}

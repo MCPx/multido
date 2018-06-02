@@ -4,7 +4,7 @@ import { DocumentReference } from '@firebase/firestore-types';
 export class List {
     id: string;
     imageId: string;
-    imageUrl: string;
+    imageData: string;
     creatorId: string;
     userIds: DocumentReference[];
     name: string;

@@ -8,14 +8,16 @@ import { ListPage } from 'pages/list/list';
 import { ManageListPage } from 'pages/manageList/manageList';
 import { FirestoreFileService } from 'services/firestoreFileService';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { base64ToArrayBuffer, uuid } from 'util/utility'
+import { base64ToArrayBuffer, uIntArrayToBase64, uuid } from 'util/utility'
+import { CachingService } from 'services/cachingService';
+
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
 
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private listService: FirestoreListService, private fileService: FirestoreFileService, private camera: Camera) {
+    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private listService: FirestoreListService, private fileService: FirestoreFileService, private camera: Camera, private cachingService: CachingService) {
     }
 
     ionViewWillEnter() {
@@ -27,16 +29,19 @@ export class DashBoardPage {
         return this.listService.getListsForUser(this.store.getUser()).then(lists => {
             this.lists = lists;
             this.isLoading = false;
-
+            
             return lists;
         }).then(lists => {
             // fetch images
             lists.forEach(list => {
                 if (list.imageId === undefined) return;
 
-                this.fileService.getImageUrl(list.imageId).then(url => {
-                    list.imageUrl = url;
-                })
+                this.fileService.getImageById(list.imageId);
+
+                this.cachingService.tryGetOrAdd(list.imageId, () => {
+                    return this.fileService.getImageById(list.imageId);
+                }).then(data => list.imageData = data).catch(err => console.log("Error fetching list image", err));
+                        
             });
         });
     }
@@ -110,13 +115,12 @@ export class DashBoardPage {
             encodingType: this.camera.EncodingType.JPEG,
             mediaType: this.camera.MediaType.PICTURE
         }
-
+        
         this.camera.getPicture(options).then(imageData => {
 
-            var file = base64ToArrayBuffer(imageData);
             var imageId = uuid();
                         
-            this.fileService.uploadImage(imageId, file)
+            this.fileService.uploadImage(imageId, "data:image/jpeg;base64,"+imageData)
                 .then(() => this.listService.updateList({ imageId, ...list}));
         })
         .catch(err => {

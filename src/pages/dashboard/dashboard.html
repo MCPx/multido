@@ -26,7 +26,9 @@
         <ion-card *ngFor="let list of lists" (click)="handleListClick(list)" (press)="handleLongPress(list)">
             <ion-item>
                 <ion-avatar item-start (click)="handleListImageClick($event, list)">
-                    <img [src]="list.imageUrl || 'assets/icon/list-icon.png'">
+                    
+                    <ion-spinner [hidden]="!list.imageId || list.imageData"> </ion-spinner>
+                    <img [src]="list.imageData || 'assets/icon/list-icon.png'" [hidden]="list.imageId && !list.imageData">
                 </ion-avatar>
                 <h2>{{list.name}}</h2>
                 <p>{{getListSubtext(list.items)}}</p>

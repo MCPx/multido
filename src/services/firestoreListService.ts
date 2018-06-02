@@ -101,13 +101,17 @@ export class FirestoreListService {
     public updateList(list: List): Promise<void> {
         if (!list.listRef) return Promise.resolve();
 
-        return list.listRef.update({
-            name: list.name,
-            imageId: list.imageId,
+        const updatedList = <List>{
+            name: list.name,            
             items: list.items.map(item => {
                 return { id: item.id, text: item.text, state: item.state }
             })
-        });
+        };
+
+        if (list.imageId)
+            updatedList.imageId = list.imageId;
+
+        return list.listRef.update(updatedList);
     }
 
     public getUpdatedList(list: List): Promise<List> {

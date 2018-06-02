@@ -19,9 +19,11 @@ import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { FirestoreUserService } from "services/firestoreUserService";
 import { FirestoreAuthService } from "services/firestoreAuthService";
+import { CachingService } from 'services/cachingService'
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { FirestoreFileService } from 'services/firestoreFileService';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { HTTP } from '@ionic-native/http';
 
 @NgModule({
     declarations: [
@@ -64,10 +66,12 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
         FirestoreListService,
         FirestoreAuthService,
         FirestoreFileService,
+        CachingService,
         AngularFireAuth,
         LoadingDialog,
         ModalController,
         Camera,
+        HTTP,
         Storage,
         { provide: ErrorHandler, useClass: IonicErrorHandler }
     ]
