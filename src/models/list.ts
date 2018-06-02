@@ -3,14 +3,17 @@ import { DocumentReference } from '@firebase/firestore-types';
 
 export class List {
     id: string;
+    imageId: string;
+    imageUrl: string;
     creatorId: string;
     userIds: DocumentReference[];
     name: string;
     items: Item[];
     listRef: DocumentReference;
 
-    constructor({id, creatorId, userIds, name, items, listRef}: List) {
+    constructor({id, imageId, creatorId, userIds, name, items, listRef}: List) {
         this.id = id;
+        this.imageId = imageId;
         this.creatorId = creatorId;
         this.userIds = userIds;
         this.name = name;

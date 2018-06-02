@@ -6,14 +6,16 @@ import { List } from 'models/list';
 import { Item } from 'models/item';
 import { ListPage } from 'pages/list/list';
 import { ManageListPage } from 'pages/manageList/manageList';
-
+import { FirestoreFileService } from 'services/firestoreFileService';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { base64ToArrayBuffer, uuid } from 'util/utility'
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
 
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private listService: FirestoreListService) {
+    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private listService: FirestoreListService, private fileService: FirestoreFileService, private camera: Camera) {
     }
 
     ionViewWillEnter() {
@@ -25,6 +27,17 @@ export class DashBoardPage {
         return this.listService.getListsForUser(this.store.getUser()).then(lists => {
             this.lists = lists;
             this.isLoading = false;
+
+            return lists;
+        }).then(lists => {
+            // fetch images
+            lists.forEach(list => {
+                if (list.imageId === undefined) return;
+
+                this.fileService.getImageUrl(list.imageId).then(url => {
+                    list.imageUrl = url;
+                })
+            });
         });
     }
 
@@ -90,6 +103,27 @@ export class DashBoardPage {
     }
 
     private handleListImageClick(e, list: List) {
+        console.log("uploading pictures");
+
+        const options: CameraOptions = {
+            destinationType: this.camera.DestinationType.DATA_URL,
+            encodingType: this.camera.EncodingType.JPEG,
+            mediaType: this.camera.MediaType.PICTURE
+        }
+
+        this.camera.getPicture(options).then(imageData => {
+
+            var file = base64ToArrayBuffer(imageData);
+            var imageId = uuid();
+                        
+            this.fileService.uploadImage(imageId, file)
+                .then(() => this.listService.updateList({ imageId, ...list}));
+        })
+        .catch(err => {
+            // Handle error
+            console.error("Error uploading image.", err);
+        });
+
         e.stopPropagation(); // don't trigger click on surrounding card
     }
 

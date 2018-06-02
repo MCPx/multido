@@ -19,6 +19,9 @@ import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { FirestoreUserService } from "services/firestoreUserService";
 import { FirestoreAuthService } from "services/firestoreAuthService";
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { FirestoreFileService } from 'services/firestoreFileService';
+import { Camera, CameraOptions } from '@ionic-native/camera';
 
 @NgModule({
     declarations: [
@@ -35,10 +38,11 @@ import { FirestoreAuthService } from "services/firestoreAuthService";
             authDomain: "multido-4f75f.firebaseapp.com",
             databaseURL: "https://multido-4f75f.firebaseio.com",
             projectId: "multido-4f75f",
-            storageBucket: "",
+            storageBucket: "gs://multido-4f75f.appspot.com",
             messagingSenderId: "793639388905"
         }, 'angularfs'),
         AngularFirestoreModule,
+        AngularFireStorageModule,
         BrowserModule,
         IonicModule.forRoot(MyApp),
         IonicStorageModule.forRoot()
@@ -59,9 +63,11 @@ import { FirestoreAuthService } from "services/firestoreAuthService";
         FirestoreUserService,
         FirestoreListService,
         FirestoreAuthService,
+        FirestoreFileService,
         AngularFireAuth,
         LoadingDialog,
         ModalController,
+        Camera,
         Storage,
         { provide: ErrorHandler, useClass: IonicErrorHandler }
     ]

@@ -103,6 +103,7 @@ export class FirestoreListService {
 
         return list.listRef.update({
             name: list.name,
+            imageId: list.imageId,
             items: list.items.map(item => {
                 return { id: item.id, text: item.text, state: item.state }
             })
@@ -116,8 +117,9 @@ export class FirestoreListService {
     private mapList(documentSnapshot: DocumentSnapshot): List {
         const listData = documentSnapshot.data();
         const id = documentSnapshot.id;
-        return {
+        return <List>{
             id,
+            imageId: listData.imageId,
             name: listData.name,
             creatorId: listData.creatorId,
             items: listData.items.map(item => new Item(item)),
