@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="058e8dfd-b38b-4956-83d9-ea245b060f4f" name="Default" comment="" />
+    <list default="true" id="058e8dfd-b38b-4956-83d9-ea245b060f4f" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/MultiDo.Api/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MultiDo/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MultiDo/.idea/contentModel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.MultiDo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MultiDo/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MultiDo.Api/MultiDo.Api.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/MultiDo.Api.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MultiDo.Api/obj/MultiDo.Api.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/obj/MultiDo.Api.csproj.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MultiDo.Api/obj/MultiDo.Api.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/obj/MultiDo.Api.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MultiDo.Api/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MultiDo.Api/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/obj/project.packagespec.json" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -10,14 +19,14 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="ValuesController.cs" pinned="false" current-in-tab="true">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="ValuesController.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MultiDo.Api/Controllers/ValuesController.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+            <state relative-caret-position="435">
+              <caret line="31" column="56" selection-start-line="31" selection-start-column="56" selection-end-line="31" selection-end-column="56" />
               <folding>
-                <marker date="1527948279997" expanded="true" signature="6:79" ph="..." />
+                <marker date="1527948279997" expanded="false" signature="6:79" ph="..." />
                 <marker date="1527948279997" expanded="true" signature="114:870" ph="{...}" />
                 <marker date="1527948279997" expanded="true" signature="195:868" ph="{...}" />
                 <marker date="1527948279997" expanded="true" signature="286:360" ph="{...}" />
@@ -34,7 +43,7 @@
         <entry file="file://$PROJECT_DIR$/MultiDo.Api/Startup.cs">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="240">
-              <caret line="25" column="30" lean-forward="true" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
+              <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
               <folding>
                 <marker date="1527948114597" expanded="false" signature="6:330" ph="..." />
                 <marker date="1527948114597" expanded="true" signature="353:1133" ph="{...}" />
@@ -44,6 +53,24 @@
                 <marker date="1527948114597" expanded="true" signature="964:1125" ph="{...}" />
                 <marker date="1527948114597" expanded="true" signature="1011:1088" ph="{...}" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="appsettings.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MultiDo.Api/appsettings.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="7" lean-forward="true" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Dockerfile" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/MultiDo.Api/Dockerfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="15">
+              <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
             </state>
           </provider>
         </entry>
@@ -64,6 +91,9 @@
       </file>
     </leaf>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/MultiDo.Api/Startup.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/MultiDo.Api/Controllers/ValuesController.cs" root0="FORCE_HIGHLIGHTING" />
@@ -73,6 +103,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/MultiDo.Api/Controllers/ValuesController.cs" />
+        <option value="$PROJECT_DIR$/MultiDo.Api/Dockerfile" />
       </list>
     </option>
   </component>
@@ -83,11 +114,12 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1588" />
-    <option name="y" value="-955" />
+    <option name="x" value="1912" />
+    <option name="y" value="-162" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="SolutionExplorer" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -104,12 +136,6 @@
               <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
               <item name="MultiDo (1 project)" type="977d5f41:SolutionExplorerNodeRider" />
               <item name="MultiDo.Api" type="977d5f41:SolutionExplorerNodeRider" />
-            </path>
-            <path>
-              <item name="" type="13324e5d:SolutionExplorerViewPane$ProjectViewPaneTreeStructure$createRoot$1" />
-              <item name="MultiDo (1 project)" type="977d5f41:SolutionExplorerNodeRider" />
-              <item name="MultiDo.Api" type="977d5f41:SolutionExplorerNodeRider" />
-              <item name="Controllers" type="977d5f41:SolutionExplorerNodeRider" />
             </path>
           </expand>
           <select />
@@ -163,11 +189,12 @@
       <option name="presentableId" value="Default" />
       <updated>1527948105977</updated>
       <workItem from="1527948109480" duration="254000" />
+      <workItem from="1527948617842" duration="706000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="254000" />
+    <option name="totallyTimeSpent" value="960000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -179,31 +206,32 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1012" y="-1094" width="1936" height="1056" extended-state="6" />
+    <frame x="1912" y="-162" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Errors In Solution" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Unit Tests" />
-      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
-      <window_info anchor="bottom" id="REST Client" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="right" id="Errors In Solution" order="3" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Unit Tests" order="7" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="REST Client" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Terminal" />
-      <window_info anchor="bottom" id="NuGet" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25266525" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="right" id="Database" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="NuGet" order="7" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2553305" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,6 +241,23 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/MultiDo.Api/Controllers/ValuesController.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+          <folding>
+            <marker date="1527948279997" expanded="false" signature="6:79" ph="..." />
+            <marker date="1527948279997" expanded="true" signature="114:870" ph="{...}" />
+            <marker date="1527948279997" expanded="true" signature="195:868" ph="{...}" />
+            <marker date="1527948279997" expanded="true" signature="286:360" ph="{...}" />
+            <marker date="1527948279997" expanded="true" signature="449:497" ph="{...}" />
+            <marker date="1527948279997" expanded="true" signature="594:614" ph="{...}" />
+            <marker date="1527948279997" expanded="true" signature="726:746" ph="{...}" />
+            <marker date="1527948279997" expanded="true" signature="842:862" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/MultiDo.Api/Startup.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -241,12 +286,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MultiDo.Api/Program.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <marker date="1527948114581" expanded="false" signature="6:255" ph="..." />
+            <marker date="1527948114581" expanded="true" signature="278:599" ph="{...}" />
+            <marker date="1527948114581" expanded="true" signature="305:597" ph="{...}" />
+            <marker date="1527948114581" expanded="true" signature="358:416" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/MultiDo.Api/Controllers/ValuesController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="1" lean-forward="true" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        <state relative-caret-position="435">
+          <caret line="31" column="56" selection-start-line="31" selection-start-column="56" selection-end-line="31" selection-end-column="56" />
           <folding>
-            <marker date="1527948279997" expanded="true" signature="6:79" ph="..." />
+            <marker date="1527948279997" expanded="false" signature="6:79" ph="..." />
             <marker date="1527948279997" expanded="true" signature="114:870" ph="{...}" />
             <marker date="1527948279997" expanded="true" signature="195:868" ph="{...}" />
             <marker date="1527948279997" expanded="true" signature="286:360" ph="{...}" />
@@ -255,6 +312,36 @@
             <marker date="1527948279997" expanded="true" signature="726:746" ph="{...}" />
             <marker date="1527948279997" expanded="true" signature="842:862" ph="{...}" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiDo.Api/Startup.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="30" />
+          <folding>
+            <marker date="1527948114597" expanded="false" signature="6:330" ph="..." />
+            <marker date="1527948114597" expanded="true" signature="353:1133" ph="{...}" />
+            <marker date="1527948114597" expanded="true" signature="380:1131" ph="{...}" />
+            <marker date="1527948114597" expanded="true" signature="439:502" ph="{...}" />
+            <marker date="1527948114597" expanded="true" signature="725:776" ph="{...}" />
+            <marker date="1527948114597" expanded="true" signature="964:1125" ph="{...}" />
+            <marker date="1527948114597" expanded="true" signature="1011:1088" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiDo.Api/appsettings.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="7" lean-forward="true" selection-start-line="11" selection-start-column="7" selection-end-line="11" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MultiDo.Api/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
         </state>
       </provider>
     </entry>

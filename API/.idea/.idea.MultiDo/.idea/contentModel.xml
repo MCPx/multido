@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\James.NEWMEDIALABS\.Rider2018.1\system\resharper-host\Local\Transient\ReSharperHost\v12\SolutionCaches\_MultiDo.1770509513.00" t="ExcludeRecursive" />
-    <e p="C:\Users\James.NEWMEDIALABS\RiderProjects\MultiDo" t="IncludeFlat">
+    <e p="C:\Repos\MultiDo\API" t="IncludeFlat">
       <e p="MultiDo.Api" t="IncludeRecursive">
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
@@ -10,6 +9,7 @@
         <e p="Controllers" t="Include">
           <e p="ValuesController.cs" t="Include" />
         </e>
+        <e p="Dockerfile" t="Include" />
         <e p="MultiDo.Api.csproj" t="IncludeRecursive" />
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
@@ -25,5 +25,6 @@
       <e p="MultiDo.sln" t="IncludeFlat" />
       <e p="packages" t="ExcludeRecursive" />
     </e>
+    <e p="C:\Users\James.NEWMEDIALABS\.Rider2018.1\system\resharper-host\Local\Transient\ReSharperHost\v12\SolutionCaches\_MultiDo.1063232580.00" t="ExcludeRecursive" />
   </component>
 </project>

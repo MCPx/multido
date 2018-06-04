@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "C:\\Users\\James.NEWMEDIALABS\\RiderProjects\\MultiDo\\MultiDo.Api\\MultiDo.Api.csproj",
+    "projectUniqueName": "C:\\Repos\\multido\\API\\MultiDo.Api\\MultiDo.Api.csproj",
     "projectName": "MultiDo.Api",
-    "projectPath": "C:\\Users\\James.NEWMEDIALABS\\RiderProjects\\MultiDo\\MultiDo.Api\\MultiDo.Api.csproj",
-    "outputPath": "C:\\Users\\James.NEWMEDIALABS\\RiderProjects\\MultiDo\\MultiDo.Api\\obj\\",
+    "projectPath": "C:\\Repos\\multido\\API\\MultiDo.Api\\MultiDo.Api.csproj",
+    "outputPath": "C:\\Repos\\multido\\API\\MultiDo.Api\\obj\\",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
