@@ -1,3 +1,4 @@
+import FirestoreCredentials from './../firestoreCredentials';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { BrowserModule } from '@angular/platform-browser';
@@ -36,12 +37,12 @@ import { HTTP } from '@ionic-native/http';
     ],
     imports: [
         AngularFireModule.initializeApp({
-            apiKey: "AIzaSyBWglBGLsT9VKKhnBF4mnAd7_rhL4vzjfs",
-            authDomain: "multido-4f75f.firebaseapp.com",
-            databaseURL: "https://multido-4f75f.firebaseio.com",
-            projectId: "multido-4f75f",
-            storageBucket: "gs://multido-4f75f.appspot.com",
-            messagingSenderId: "793639388905"
+            apiKey: FirestoreCredentials.apiKey,
+            authDomain: FirestoreCredentials.authDomain,
+            databaseURL: FirestoreCredentials.databaseURL,
+            projectId: FirestoreCredentials.projectId,
+            storageBucket: FirestoreCredentials.storageBucket,
+            messagingSenderId: FirestoreCredentials.messagingSenderId
         }, 'angularfs'),
         AngularFirestoreModule,
         AngularFireStorageModule,

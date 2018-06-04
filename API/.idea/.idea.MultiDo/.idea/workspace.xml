@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="058e8dfd-b38b-4956-83d9-ea245b060f4f" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/MultiDo.Api/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.MultiDo/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MultiDo/.idea/contentModel.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.MultiDo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.MultiDo/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MultiDo.Api/MultiDo.Api.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/MultiDo.Api.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MultiDo.Api/obj/MultiDo.Api.csproj.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/obj/MultiDo.Api.csproj.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MultiDo.Api/obj/MultiDo.Api.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/obj/MultiDo.Api.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MultiDo.Api/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MultiDo.Api/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/MultiDo.Api/obj/project.packagespec.json" afterDir="false" />
-    </list>
+    <list default="true" id="058e8dfd-b38b-4956-83d9-ea245b060f4f" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -189,12 +180,12 @@
       <option name="presentableId" value="Default" />
       <updated>1527948105977</updated>
       <workItem from="1527948109480" duration="254000" />
-      <workItem from="1527948617842" duration="706000" />
+      <workItem from="1527948617842" duration="1309000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="960000" />
+    <option name="totallyTimeSpent" value="1563000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -207,11 +198,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-162" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="right" id="Errors In Solution" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32897604" />
       <window_info anchor="bottom" id="Unit Tests" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="REST Client" order="7" />
@@ -219,7 +209,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="NuGet" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2553305" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2553305" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
