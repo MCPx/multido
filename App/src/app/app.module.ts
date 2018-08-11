@@ -25,6 +25,8 @@ import { AngularFireStorageModule } from 'angularfire2/storage';
 import { FirestoreFileService } from 'services/firestoreFileService';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HTTP } from '@ionic-native/http';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { Platform } from 'ionic-angular';
 
 @NgModule({
     declarations: [
@@ -73,7 +75,7 @@ import { HTTP } from '@ionic-native/http';
         ModalController,
         Camera,
         HTTP,
-        Storage,
+        GooglePlus,
         { provide: ErrorHandler, useClass: IonicErrorHandler }
     ]
 })

@@ -159,6 +159,10 @@
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@ionic-native/core/-/core-4.4.0.tgz#fb0f071543bd2725d858f5a0f5c20adbece20df4"
 
+"@ionic-native/google-plus@^4.11.0":
+  version "4.11.0"
+  resolved "https://registry.yarnpkg.com/@ionic-native/google-plus/-/google-plus-4.11.0.tgz#6feb82c29fa4c9730ee8ea039fe46cef1f7d791b"
+
 "@ionic-native/http@^4.7.0":
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/@ionic-native/http/-/http-4.11.0.tgz#8980793f51fd95557caf79549d08cdcea3db2ff4"
@@ -1088,6 +1092,10 @@ cordova-plugin-device@^2.0.1:
 cordova-plugin-file@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/cordova-plugin-file/-/cordova-plugin-file-6.0.1.tgz#49606b8c15a5688d4728f92e4a7325a061de07f5"
+
+cordova-plugin-googleplus@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/cordova-plugin-googleplus/-/cordova-plugin-googleplus-5.3.0.tgz#7ef418205f693018a2d06d2cb865de9d7cb721ca"
 
 cordova-plugin-ionic-keyboard@^2.0.5:
   version "2.1.2"

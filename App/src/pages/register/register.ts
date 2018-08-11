@@ -28,15 +28,20 @@ export class RegisterPage {
     {
         this.loadingDialog.present("Registering...");
 
-        this.authService.register(this.registerForm.value.email.toLowerCase(), this.registerForm.value.username, this.registerForm.value.password)
-        .then(response => {
-            this.userService.getUserById(response.uid).then((user: User) => {
+        const email = this.registerForm.value.email.toLowerCase();
+        const name = this.registerForm.value.username;
+        const password = this.registerForm.value.password; 
+
+        return this.authService.register(email, name, password)
+        .then(response => this.userService.createUser(response.uid, email, name).then(() => response.uid))
+        .then(uid =>
+            this.userService.getUserById(uid).then((user: User) => {
                 this.loadingDialog.dismiss();
                 this.store.setUser(user);
                 return this.storage.set(StorageKey.UserId, user.id)
-                    .then(value => this.nav.push(DashBoardPage));
-            });
-        })
+                    .then(value => this.nav.setRoot(DashBoardPage));
+            })
+        )
         .catch(error => {
             let message = "Unable to register";
             if (error.code === FirestoreError.EmailAlreadyExists) message = "Email already registered";

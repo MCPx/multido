@@ -21,6 +21,8 @@ export class FirestoreUserService {
             const id = documentSnapshot.id;
             const userData = documentSnapshot.data();
 
+            if (!userData) return undefined;
+
             return <User>{
                 id,
                 userRef: document.ref,
@@ -59,5 +61,10 @@ export class FirestoreUserService {
                     userRef: querySnapshot.docs[0].ref
                 };
             });
+    }
+
+    public createUser(uid: string, email: string, name: string) : Promise<void>{
+        console.log("Creating user ", uid, email, name);
+        return this.users.doc(uid).set({ name, listIds: [], email });
     }
 }
