@@ -27,6 +27,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HTTP } from '@ionic-native/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Platform } from 'ionic-angular';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 @NgModule({
     declarations: [
@@ -76,6 +77,7 @@ import { Platform } from 'ionic-angular';
         Camera,
         HTTP,
         GooglePlus,
+        LocalNotifications,
         { provide: ErrorHandler, useClass: IonicErrorHandler }
     ]
 })

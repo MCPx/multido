@@ -94,6 +94,7 @@
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.793639388905-lqstv5hs9k4egk8ac9kdkllsgq638vu2" />
         <variable name="WEB_APPLICATION_CLIENT_ID" value="793639388905-6ggede80u9uec6aj1n1tjbdj679n121r.apps.googleusercontent.com" />
     </plugin>
+    <plugin name="cordova-plugin-local-notification" spec="^0.9.0-beta.2" />
     <engine name="android" spec="7.0.0" />
     <engine name="ios" spec="4.5.4" />
     <engine name="browser" spec="^5.0.3" />
