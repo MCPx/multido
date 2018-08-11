@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "793639388905",
+    "firebase_url": "https://multido-4f75f.firebaseio.com",
+    "project_id": "multido-4f75f",
+    "storage_bucket": "multido-4f75f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793639388905:android:eb7433156f189910",
+        "android_client_info": {
+          "package_name": "com.multido"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "793639388905-nth3a9h6rstsja895al2mvlo458bl3du.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.multido",
+            "certificate_hash": "25dbbf37e152124c02ce0829368fd1bbf3d30906"
+          }
+        },
+        {
+          "client_id": "793639388905-6ggede80u9uec6aj1n1tjbdj679n121r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXJmFcwTXlksRYVVFmZGsfYq2MlTVAE44"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "793639388905-6ggede80u9uec6aj1n1tjbdj679n121r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
