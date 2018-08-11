@@ -20,6 +20,7 @@ import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { FirestoreUserService } from "services/firestoreUserService";
 import { FirestoreAuthService } from "services/firestoreAuthService";
+import { FirebaseCloudService } from "services/firebaseCloudService";
 import { CachingService } from 'services/cachingService'
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { FirestoreFileService } from 'services/firestoreFileService';
@@ -28,6 +29,7 @@ import { HTTP } from '@ionic-native/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { Platform } from 'ionic-angular';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { Firebase } from '@ionic-native/firebase'
 
 @NgModule({
     declarations: [
@@ -70,6 +72,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
         FirestoreListService,
         FirestoreAuthService,
         FirestoreFileService,
+        FirebaseCloudService,
         CachingService,
         AngularFireAuth,
         LoadingDialog,
@@ -78,7 +81,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
         HTTP,
         GooglePlus,
         LocalNotifications,
-        { provide: ErrorHandler, useClass: IonicErrorHandler }
+        Firebase,
+        { provide: ErrorHandler, useClass: IonicErrorHandler },
     ]
 })
 export class AppModule { }

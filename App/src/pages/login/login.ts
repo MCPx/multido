@@ -11,6 +11,7 @@ import { RegisterPage } from 'pages/register/register';
 import { User } from 'models/user';
 import { StorageKey } from 'enums/storageKey';
 import { FirestoreError } from 'enums/firestoreError';
+import { FirebaseCloudService } from "services/firebaseCloudService";
 
 @Component({ selector: 'page-login', templateUrl: 'login.html' })
 export class LoginPage {
@@ -19,7 +20,7 @@ export class LoginPage {
     showPasswordText: boolean = false;
     loading: boolean = false;
 
-    constructor(private nav: NavController, formBuilder: FormBuilder, private loadingDialog: LoadingDialog, private store: SiteStore, private userService: FirestoreUserService, private alertCtrl: AlertController, private authService: FirestoreAuthService, private storage: Storage) {
+    constructor(private nav: NavController, formBuilder: FormBuilder, private loadingDialog: LoadingDialog, private store: SiteStore, private userService: FirestoreUserService, private alertCtrl: AlertController, private authService: FirestoreAuthService, private storage: Storage, private firebaseCloudService : FirebaseCloudService) {
         this.loginForm = formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
@@ -49,7 +50,7 @@ export class LoginPage {
         console.log("signing in with googlez");
 
         this.authService.signInWithGoogle()
-            .then(gplusUser => {
+            .then((gplusUser: any) => {
                 console.log("returned user", gplusUser)
                 // check if user in OUR firebase
                 return this.userService.getUserById(gplusUser.user.uid).then((user: User) => {
@@ -103,6 +104,8 @@ export class LoginPage {
     private loginUser(user: User) : Promise<void> {
         this.loading = false;
         this.store.setUser(user);
+        // save token for push notifications
+        this.firebaseCloudService.generateToken(user);
         return this.storage.set(StorageKey.UserId, user.id).then(() => this.nav.setRoot(DashBoardPage));    
     }
 

@@ -10,6 +10,11 @@ import { StorageKey } from 'enums/storageKey';
 import { SiteStore } from 'services/siteStore';
 import { FirestoreAuthService } from "services/firestoreAuthService";
 import { FirestoreUserService } from "services/firestoreUserService";
+import { FirebaseCloudService } from "services/firebaseCloudService";
+import { Subject } from 'rxjs/Subject';
+import { tap } from 'rxjs/operators';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import _ from 'lodash';
 
 @Component({
     templateUrl: 'app.html'
@@ -20,11 +25,20 @@ export class MyApp {
     rootPage: any;
 
     constructor(
-        platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: SiteStore, private authService: FirestoreAuthService, private userService: FirestoreUserService) {
+        platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: SiteStore, private authService: FirestoreAuthService, private userService: FirestoreUserService, private firebaseCloudService : FirebaseCloudService, private localNotifications: LocalNotifications) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             statusBar.styleDefault();
+
+            this.firebaseCloudService.listenToNotifications().pipe(
+                            tap(message => {
+                                this.localNotifications.schedule({
+                                    id: parseInt(_.uniqueId()),
+                                    text: message,
+                                    data: { custom_data: 'testtest' }
+                                  });
+            }));
 
             // try to fetch UserId from storage - if not then send to LoginPage
             return this.storage.get(StorageKey.UserId)
@@ -34,6 +48,9 @@ export class MyApp {
                     return this.userService.getUserById(id).then((user: User) => {
                         this.store.setUser(user);
                         this.rootPage = DashBoardPage;
+
+
+                        
                     });
                 })
                 .catch(error => this.rootPage = LoginPage)
