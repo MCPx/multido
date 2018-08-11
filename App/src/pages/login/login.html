@@ -40,6 +40,13 @@
                             <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner>
                             <span *ngIf="loading">Logging in...</span>
                         </button>
+                        <button ion-button block large  color="light"
+                                [disabled]="loading"
+                                (click)="this.loginWithGoogle($event)">
+                            <span *ngIf="!loading">Login with Google</span>
+                            <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner>
+                            <span *ngIf="loading">Logging in...</span>
+                        </button>
                     </ion-row>
                     <ion-row>
                         <button ion-button type="button" block large icon-only clear color="secondary"

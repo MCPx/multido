@@ -1,4 +1,5 @@
 import { AngularFireAuth } from "angularfire2/auth";
+import * as firebase from 'firebase/app';
 import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
 import { Injectable } from "@angular/core";
 import { FirestoreCollection } from "enums/firestoreCollection";
@@ -25,5 +26,14 @@ export class FirestoreAuthService {
             return this.users.doc(response.uid).set({ name, listIds: [], email })
                 .then(response);
         });
+    }
+
+    public signInWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        return this.oAuthLogin(provider);
+    }
+
+    private oAuthLogin(provider) {
+        return this.angularFireAuth.auth.signInWithPopup(provider);
     }
 }

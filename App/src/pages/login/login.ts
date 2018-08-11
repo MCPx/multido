@@ -47,6 +47,12 @@ export class LoginPage {
             });
     }
 
+    private loginWithGoogle() {
+        console.log("signing in with googlez");
+
+        this.authService.signInWithGoogle().then(credential => console.log(credential));
+    }
+
     private handleRegisterClick(e) {
         e.preventDefault();
         this.nav.push(RegisterPage, { ...this.loginForm.value });
