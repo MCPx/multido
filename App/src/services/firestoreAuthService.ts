@@ -25,19 +25,19 @@ export class FirestoreAuthService {
 
     public register(email: string, name: string, password: string): Promise<any> {
         return this.angularFireAuth.auth.createUserWithEmailAndPassword(email, password);
-    }    
+    }
 
     public signInWithGoogle() {
         if (this.platform.is('cordova')) {
             return this.nativeGoogleLogin();
-          } else {
+        } else {
             const provider = new firebase.auth.GoogleAuthProvider();
             return this.oAuthLogin(provider);
-          }
-        
+        }
+
     }
 
-    public resetPassword(email: string) : Promise<any> {
+    public resetPassword(email: string): Promise<any> {
         return this.angularFireAuth.auth.sendPasswordResetEmail(email);
     }
 
@@ -46,14 +46,12 @@ export class FirestoreAuthService {
             'webClientId': '793639388905-6ggede80u9uec6aj1n1tjbdj679n121r.apps.googleusercontent.com',
             'offline': true,
             'scopes': 'email'
-          }).then(gplusUser => { 
-                console.log("User returned", gplusUser); 
-                this.angularFireAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken))
-                return gplusUser;
-            });
-    } 
+        }).then(gplusUser =>
+            this.angularFireAuth.auth.signInWithCredential(firebase.auth.GoogleAuthProvider.credential(gplusUser.idToken)));
+    }
 
     private oAuthLogin(provider) {
-        return this.angularFireAuth.auth.signInWithPopup(provider);
+        return this.angularFireAuth.auth.signInWithPopup(provider)
+            .then(result => result.user);
     }
 }

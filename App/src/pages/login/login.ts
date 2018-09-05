@@ -31,7 +31,10 @@ export class LoginPage {
         this.loading = true;
 
         this.authService.signIn(this.loginForm.value.email, this.loginForm.value.password)
-            .then(response => { console.log("sign in response", response); return this.userService.getUserById(response.uid); })
+            .then(response => {
+                console.log("sign in response", response);
+                return this.userService.getUserById(response.uid);
+            })
             .then((user: User) => {
                 return this.loginUser(user);
             })
@@ -42,7 +45,7 @@ export class LoginPage {
 
                 this.loading = false;
                 this.loadingDialog.dismiss();
-                this.loadingDialog.present(message, { spinner: "hide", enableBackdropDismiss: true });
+                this.loadingDialog.present(message, {spinner: "hide", enableBackdropDismiss: true});
             });
     }
 
@@ -51,22 +54,25 @@ export class LoginPage {
 
         this.authService.signInWithGoogle()
             .then((gplusUser: any) => {
-                console.log("returned user", gplusUser)
+                console.log("returned user");
+                console.dir(gplusUser);
                 // check if user in OUR firebase
-                return this.userService.getUserById(gplusUser.user.uid).then((user: User) => {
-                    if (user)
-                        return this.loginUser(user);
-                    
-                    // does not exist
-                    console.log("Unable to find user in firestore", gplusUser)
-                    return this.userService.createUser(gplusUser.user.uid, gplusUser.user.email, gplusUser.user.displayName)
-                    .then(() => {
-                        return this.userService.getUserById(gplusUser.user.uid).then((user: User) => {
-                        console.log("fetched user", user)
-                        return this.loginUser(user);                    
-                        })
-                    });
-                })
+                return this.userService.getUserById(gplusUser.uid)
+                    .then((user: User) => {
+                        console.dir(user);
+                        if (user)
+                            return this.loginUser(user);
+
+                        // does not exist
+                        console.log("Unable to find user in firestore", gplusUser);
+                        return this.userService.createUser(gplusUser.uid, gplusUser.email, gplusUser.displayName)
+                            .then(() => {
+                                return this.userService.getUserById(gplusUser.uid).then((user: User) => {
+                                    console.log("fetched user", user);
+                                    return this.loginUser(user);
+                                })
+                            });
+                    })
             })
             .catch(error => this.loadingDialog.present(`Error: ${JSON.stringify(error)}`, { spinner: "hide", enableBackdropDismiss: true }));
     }
@@ -85,13 +91,18 @@ export class LoginPage {
                 {
                     text: 'Save',
                     handler: data => {
-                        try
-                        {
+                        try {
                             this.authService.resetPassword(data.email)
-                            .then(() => this.loadingDialog.present('Password reset email sent', { spinner: "hide", enableBackdropDismiss: true }))
+                                .then(() => this.loadingDialog.present('Password reset email sent', {
+                                    spinner: "hide",
+                                    enableBackdropDismiss: true
+                                }))
                         } catch (error) {
                             console.log(error);
-                            this.loadingDialog.present('Email provided was not valid', { spinner: "hide", enableBackdropDismiss: true })
+                            this.loadingDialog.present('Email provided was not valid', {
+                                spinner: "hide",
+                                enableBackdropDismiss: true
+                            })
                         }
                     }
                 }],
@@ -101,16 +112,20 @@ export class LoginPage {
 
     }
 
-    private loginUser(user: User) : Promise<void> {
+    private loginUser(user: User): Promise<void> {
         this.loading = false;
         this.store.setUser(user);
         // save token for push notifications
-        this.firebaseCloudService.generateToken(user);
-        return this.storage.set(StorageKey.UserId, user.id).then(() => this.nav.setRoot(DashBoardPage));    
+        return this.firebaseCloudService.generateToken(user)
+            .then(value => {
+                console.log("Saved firebase token", value);
+
+                return this.storage.set(StorageKey.UserId, user.id).then(() => this.nav.setRoot(DashBoardPage));
+            });
     }
 
     private handleRegisterClick(e) {
         e.preventDefault();
-        this.nav.push(RegisterPage, { ...this.loginForm.value });
+        this.nav.push(RegisterPage, {...this.loginForm.value});
     }
 }
