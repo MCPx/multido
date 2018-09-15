@@ -13,14 +13,14 @@ import { StorageKey } from 'enums/storageKey';
 import { FirestoreError } from 'enums/firestoreError';
 import { FirebaseCloudService } from "services/firebaseCloudService";
 
-@Component({ selector: 'page-login', templateUrl: 'login.html' })
+@Component({selector: 'page-login', templateUrl: 'login.html'})
 export class LoginPage {
 
     loginForm: FormGroup;
     showPasswordText: boolean = false;
     loading: boolean = false;
 
-    constructor(private nav: NavController, formBuilder: FormBuilder, private loadingDialog: LoadingDialog, private store: SiteStore, private userService: FirestoreUserService, private alertCtrl: AlertController, private authService: FirestoreAuthService, private storage: Storage, private firebaseCloudService : FirebaseCloudService) {
+    constructor(private nav: NavController, formBuilder: FormBuilder, private loadingDialog: LoadingDialog, private store: SiteStore, private userService: FirestoreUserService, private alertCtrl: AlertController, private authService: FirestoreAuthService, private storage: Storage, private firebaseCloudService: FirebaseCloudService) {
         this.loginForm = formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
@@ -74,7 +74,10 @@ export class LoginPage {
                             });
                     })
             })
-            .catch(error => this.loadingDialog.present(`Error: ${JSON.stringify(error)}`, { spinner: "hide", enableBackdropDismiss: true }));
+            .catch(error => this.loadingDialog.present(`Error: ${JSON.stringify(error)}`, {
+                spinner: "hide",
+                enableBackdropDismiss: true
+            }));
     }
 
     private resetPassword() {

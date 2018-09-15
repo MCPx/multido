@@ -33,19 +33,19 @@ export class FirebaseCloudService {
     private saveTokenToFirestore(token, user: User) {
         if (!token) return;
 
-        const devicesRef = this.afs.collection('devices')
+        const devicesRef = this.afs.collection('devices');
 
         const docData = {
             token,
             userId: user.id,
-        }
+        };
 
         return devicesRef.doc(token).set(docData)
     }
 
     // Listen to incoming FCM messages
     listenToNotifications() {
-        return this.firebaseNative.onNotificationOpen()
+        return this.firebaseNative.onNotificationOpen();
      }
 
 }

@@ -8,8 +8,12 @@ import { ListPage } from 'pages/list/list';
 import { ManageListPage } from 'pages/manageList/manageList';
 import { FirestoreFileService } from 'services/firestoreFileService';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { base64ToArrayBuffer, uIntArrayToBase64, uuid } from 'util/utility'
+import { uuid } from 'util/utility'
 import { CachingService } from 'services/cachingService';
+import {tap} from "rxjs/operators";
+import _ from "lodash";
+import { FirebaseCloudService } from "services/firebaseCloudService";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -17,7 +21,20 @@ export class DashBoardPage {
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private listService: FirestoreListService, private fileService: FirestoreFileService, private camera: Camera, private cachingService: CachingService) {
+    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private listService: FirestoreListService, private fileService: FirestoreFileService, private camera: Camera, private cachingService: CachingService, private firebaseCloudService : FirebaseCloudService, private localNotifications: LocalNotifications) {
+        this.firebaseCloudService.listenToNotifications()
+            .pipe(
+                tap(message => {
+                    console.log("NOTIFICATION", message)
+                        this.localNotifications.schedule({
+                                id: parseInt(_.uniqueId()),
+                                text: message,
+                                data: { custom_data: 'woop de woop' }
+                            }
+                        );
+                    }
+                )
+            );
     }
 
     ionViewWillEnter() {

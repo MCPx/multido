@@ -1,45 +1,81 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
+import * as _ from 'lodash';
+import {
+    DocumentReference,
+    DocumentSnapshot,
+    QueryDocumentSnapshot,
+    DocumentData,
+    QuerySnapshot
+} from "@firebase/firestore-types";
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
 admin.initializeApp();
 
-exports.newSubscriberNotification = functions.firestore
-    .document('subscribers/{subscriptionId}')
-    .onCreate(async event => {
+/*
+    When list items are modified
+        notify all users except the agent
 
-        const data = event.after.data();
+*/
 
-        const userId = data.userId
-        const subscriber = data.subscriberId
+// user is added to a list
+exports.addedUserNotification = functions.firestore
+    .document('lists/{listId}')
+    .onUpdate(async event => {
+            // the update is a user being added
+            const beforeData = event.before.data();
+            const afterData = event.after.data();
 
-        // Notification content
-        const payload = {
-            notification: {
-                title: 'New Subscriber',
-                body: `${subscriber} is following your content!`,
-                icon: 'https://goo.gl/Fz9nrQ'
-            }
+            const beforeIds = beforeData.userIds.map((docRef: DocumentReference) => docRef.id);
+            const afterIds = afterData.userIds.map((docRef: DocumentReference) => docRef.id);
+
+            const addedUsers: string[] = _.difference(afterIds, beforeIds);
+
+            if (addedUsers.length === 0)
+                return Promise.resolve(); // no users added
+
+            const listName = afterData.name;
+
+            return sendNotificationsToUsers(afterData.userIds, `A new person was added to list ${listName}`);
         }
+    );
 
-        // ref to the device collection for the user
-        const db = admin.firestore()
-        const devicesRef = db.collection('devices').where('userId', '==', userId)
+const sendNotificationsToUsers = (userIds: any[], title: string, body?: string) => {
 
+    const db = admin.firestore();
+    db.settings({timestampsInSnapshots: true});
+
+    return Promise.all(userIds.map((userId: DocumentReference) => {
+
+        const devicesRef = db.collection('devices').where('userId', '==', userId.id);
 
         // get the user's tokens and send notifications
-        const devices = await devicesRef.get();
+        return devicesRef.get();
+    })).then(devices => sendNotifications(devices, title));
+};
 
-        const tokens = [];
+const sendNotifications = (devices: any[], title: string, body?: string) => {
+    const tokens = [];
 
-        // send a notification to each device token
-        devices.forEach(result => {
+    const payload = {
+        notification: {
+            title: title,
+            body
+        }
+    };
+
+    // send a notification to each device token
+    devices.forEach(snapshot => {
+        snapshot.forEach(result => {
             const token = result.data().token;
 
-            tokens.push(token)
+            tokens.push(token);
         })
-
-        return admin.messaging().sendToDevice(tokens, payload)
-
     });
+
+    if (tokens.length > 0)
+        return admin.messaging().sendToDevice(tokens, payload);
+
+    console.warn("No devices to notify");
+
+    return Promise.resolve(<admin.messaging.MessagingDevicesResponse>undefined);
+}
