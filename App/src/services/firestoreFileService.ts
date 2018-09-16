@@ -1,7 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore } from "angularfire2/firestore";
 import { AngularFireStorage } from 'angularfire2/storage';
-import { uuid } from 'util/utility';
 import { HTTP } from '@ionic-native/http';
 
 @Injectable()

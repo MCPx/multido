@@ -24,10 +24,9 @@ import { FirebaseCloudService } from "services/firebaseCloudService";
 import { CachingService } from 'services/cachingService'
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { FirestoreFileService } from 'services/firestoreFileService';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 import { HTTP } from '@ionic-native/http';
 import { GooglePlus } from '@ionic-native/google-plus';
-import { Platform } from 'ionic-angular';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Firebase } from '@ionic-native/firebase';
 

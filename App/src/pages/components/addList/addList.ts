@@ -18,11 +18,11 @@ export class AddListPage
         this.addListModel.name = params.get("name");
     }
 
-    save() {
-        this.viewCtrl.dismiss(this.addListModel);
+    async save() {
+        return this.viewCtrl.dismiss(this.addListModel);
     }
 
-    dismiss() {
-        this.viewCtrl.dismiss();
+    async dismiss() {
+        return this.viewCtrl.dismiss();
     }
 }
