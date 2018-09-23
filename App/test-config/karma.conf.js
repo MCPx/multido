@@ -1,16 +1,8 @@
-var webpackConfig = require('./webpack.test.js');
-
-console.log(webpackConfig.resolve.alias);
+const webpackConfig = require('./webpack.test.js');
 
 module.exports = function (config) {
-    var _config = {
+    const _config = {
         basePath: '../',
-
-        paths: {
-            'services': ['src/services'],
-            'pages': ['src/pages'],
-            'enum': ['src/enum']
-        },
 
         frameworks: ['jasmine'],
 

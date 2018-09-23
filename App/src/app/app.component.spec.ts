@@ -1,15 +1,19 @@
 import { async, TestBed } from '@angular/core/testing';
 import { IonicModule, Platform } from 'ionic-angular';
 
+import { Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { FirestoreAuthService } from "services/firestoreAuthService";
+import { FirestoreUserService } from "services/firestoreUserService";
+import { SiteStore } from "../services/siteStore";
 
 import { MyApp } from './app.component';
-import {
-    PlatformMock,
+
+import { PlatformMock,
     StatusBarMock,
-    SplashScreenMock
-} from '../../test-config/mocks-ionic';
+    SplashScreenMock,
+    StorageMock } from 'ionic-mocks'
 
 describe('MyApp Component', () => {
     let fixture;
@@ -22,9 +26,13 @@ describe('MyApp Component', () => {
                 IonicModule.forRoot(MyApp)
             ],
             providers: [
-                { provide: StatusBar, useClass: StatusBarMock },
-                { provide: SplashScreen, useClass: SplashScreenMock },
-                { provide: Platform, useClass: PlatformMock }
+                { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
+                { provide: SplashScreen, useFactory: () => SplashScreenMock.instance() },
+                { provide: Platform, useFactory: () => PlatformMock.instance() },
+                { provide: Storage, useFactory: () => StorageMock.instance() },
+                { provide: SiteStore },
+                { provide: FirestoreAuthService },
+                { provide: FirestoreUserService }
             ]
         })
     }));
@@ -38,8 +46,11 @@ describe('MyApp Component', () => {
         expect(component instanceof MyApp).toBe(true);
     });
 
-    it('should have two pages', () => {
-        expect(component.pages.length).toBe(2);
+    it('should have two pages', (done) => {
+        component.logOut().then(() => {
+            expect(component.rootPage).toBe(null);
+            done();
+        });
     });
 
 });

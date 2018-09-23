@@ -1,15 +1,15 @@
-import {Component, ViewChild} from '@angular/core';
-import {Platform} from 'ionic-angular';
-import {StatusBar} from '@ionic-native/status-bar';
-import {SplashScreen} from '@ionic-native/splash-screen';
-import {Storage} from '@ionic/storage';
-import {LoginPage} from 'pages/login/login';
-import {DashBoardPage} from 'pages/dashboard/dashboard';
-import {User} from 'models/user';
-import {StorageKey} from 'enums/storageKey';
-import {SiteStore} from 'services/siteStore';
-import {FirestoreAuthService} from "services/firestoreAuthService";
-import {FirestoreUserService} from "services/firestoreUserService";
+import { Component, ViewChild } from '@angular/core';
+import { Platform } from 'ionic-angular';
+import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { Storage } from '@ionic/storage';
+import { LoginPage } from 'pages/login/login';
+import { DashBoardPage } from 'pages/dashboard/dashboard';
+import { User } from 'models/user';
+import { StorageKey } from 'enums/storageKey';
+import { SiteStore } from 'services/siteStore';
+import { FirestoreAuthService } from "services/firestoreAuthService";
+import { FirestoreUserService } from "services/firestoreUserService";
 
 @Component({
     templateUrl: 'app.html'
@@ -42,7 +42,7 @@ export class MyApp {
     }
 
     public logOut() {
-        this.authService.signOut().then(result => {
+        return this.authService.signOut().then(result => {
             this.store.clearUser();
             return this.nav.setRoot(LoginPage);
         })
