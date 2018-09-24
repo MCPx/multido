@@ -42,7 +42,7 @@ export class MyApp {
     }
 
     public logOut() {
-        return this.authService.signOut().then(result => {
+        return this.authService.signOut().then(() => {
             this.store.clearUser();
             return this.nav.setRoot(LoginPage);
         })
