@@ -31,34 +31,36 @@
                                     <ion-icon name="eye-off" *ngIf="showPasswordText"></ion-icon>
                                 </button>
                             </ion-item>
+                            <a style="color:#ff5f52;float:right;margin-top:5px;" (click)="this.resetPassword()">forgot password?</a>
                         </ion-col>
                     </ion-row>
                     <ion-row padding-top>
                         <button ion-button block large type="submit" color="light"
                                 [disabled]="!loginForm.valid || loading">
-                            <span *ngIf="!loading">Log in</span>
+                            <span *ngIf="!loading">Sign in</span>
                             <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner>
                             <span *ngIf="loading">Logging in...</span>
+                            <!--<ion-icon item-end *ngIf="!loading" name="arrow-forward"></ion-icon>-->
                         </button>
-                        <button ion-button block large type="button" color="light"
+                        <button ion-button block large type="button" color="light" class="button-login-with-google"
                                 [disabled]="loading"
                                 (click)="this.loginWithGoogle($event)">
-                            <span *ngIf="!loading">Login with Google</span>
+                            <img src="assets/imgs/google_logo.svg" width="35px">
+                            <span *ngIf="!loading">Sign in with Google</span>
                             <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner>
                             <span *ngIf="loading">Logging in...</span>
                         </button>
                     </ion-row>
-                    <ion-row>
-                        <button ion-button type="button" block large icon-only clear color="secondary"
-                                (click)="this.handleRegisterClick($event)">Register
-                        </button>
+                    <ion-row style="color:#ff5f52;margin-top:5px;">
+                        Don't have an account?
+                        <a style="color:#fff9dd;" (click)="this.handleRegisterClick($event)">&nbsp;Sign up</a>
                     </ion-row>
                     
-                    <ion-row>
-                        <button ion-button type="button" block large icon-only clear color="secondary"
-                                (click)="this.resetPassword()">Forgot password
-                        </button>
-                    </ion-row>
+                    <!--<ion-row>-->
+                        <!--<button ion-button type="button" block large icon-only clear color="secondary"-->
+                                <!--(click)="this.resetPassword()">Forgot password-->
+                        <!--</button>-->
+                    <!--</ion-row>-->
                 </ion-grid>
             </ion-row>
         </ion-grid>

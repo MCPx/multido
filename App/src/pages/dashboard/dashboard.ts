@@ -88,7 +88,9 @@ export class DashBoardPage {
 
                         this.lists.push(newList); // add list locally, should be updated with properties when getLists is called
                         const addListPromise = this.listService.addListForUser(this.store.getUser(), newList.name);
-                        return this.nav.push(ListPage, { list: newList, addListPromise });
+                        this.nav.push(ListPage, { list: newList, addListPromise });
+
+                        return true;
                     }
                 }],
         });
@@ -104,7 +106,11 @@ export class DashBoardPage {
                 'Cancel',
                 {
                     text: 'Remove me',
-                    handler: () => this.removeList(listToRemove)
+                    handler: () => {
+                        this.removeList(listToRemove);
+                        return true;
+                    }
+
                 }],
         });
 

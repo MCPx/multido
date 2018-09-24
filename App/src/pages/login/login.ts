@@ -83,7 +83,7 @@ export class LoginPage {
     private resetPassword() {
         // TODO: show popup with input (default to what they entered in login)
         const nameEditAlert = this.alertCtrl.create({
-            title: 'Enter email',
+            title: 'Enter your email address',
             inputs: [{
                 type: "text",
                 value: this.loginForm.value.email,
