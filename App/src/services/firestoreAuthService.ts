@@ -1,6 +1,6 @@
-import { AngularFireAuth } from "angularfire2/auth";
+import { AngularFireAuth } from "@angular/fire/auth";
 import * as firebase from 'firebase/app';
-import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
+import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/firestore";
 import { Injectable } from "@angular/core";
 import { FirestoreCollection } from "enums/firestoreCollection";
 import { GooglePlus } from '@ionic-native/google-plus';

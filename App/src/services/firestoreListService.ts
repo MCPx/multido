@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/firestore";
+import { AngularFireAuth } from '@angular/fire/auth';
 import { DocumentReference, DocumentSnapshot } from "@firebase/firestore-types";
 import { List } from "models/list";
 import { Item } from "models/item";

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
+import { AngularFirestore, AngularFirestoreCollection } from "@angular/fire/firestore";
 import { QuerySnapshot } from "@firebase/firestore-types";
 import { FirestoreCollection } from "enums/firestoreCollection";
 import { User } from "models/user";

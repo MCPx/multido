@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, NavController } from 'ionic-angular';
+import { AlertController, AlertOptions, NavController } from 'ionic-angular';
 import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { List } from 'models/list';
@@ -73,7 +73,7 @@ export class DashBoardPage {
     };
 
     async handleAddListClick() {
-        const addListAlert = this.alertCtrl.create({
+        const addListAlert = this.alertCtrl.create(<AlertOptions>{
             title: 'Add',
             inputs: [{
                 type: "text",
@@ -100,7 +100,7 @@ export class DashBoardPage {
 
     // update lists locally, then on firestore
     async handleDeleteClick(e, listToRemove) {
-        const deleteConfirm = this.alertCtrl.create({
+        const deleteConfirm = this.alertCtrl.create(<AlertOptions>{
             title: 'Remove yourself from this list?',
             buttons: [
                 'Cancel',

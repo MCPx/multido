@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorage } from '@angular/fire/storage';
 import { HTTP } from '@ionic-native/http';
 
 @Injectable()
