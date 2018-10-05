@@ -6,8 +6,8 @@ import { List } from 'models/list';
 import { Item } from 'models/item';
 import { uuid } from 'util/utility';
 import { ManageListPage } from 'pages/manageList/manageList';
-import { Subject } from 'rxjs/Subject';
-import "rxjs/add/operator/debounceTime";
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {
@@ -30,7 +30,9 @@ export class ListPage {
                 this.debounceUpdate.next();
             });
 
-        this.debounceUpdate.debounceTime(500).subscribe({ next: () => this.updateList() });
+        this.debounceUpdate
+            .pipe(debounceTime(500))
+            .subscribe({ next: () => this.updateList() });
     }
 
     ionViewWillEnter() {
@@ -106,10 +108,10 @@ export class ListPage {
         this.debounceUpdate.next();
     }
 
-    private updateList() {
+    async updateList() {
         this.isUpdating = true;
-        this.listService.updateList(this.list)
-            .then(() => this.isUpdating = false);
+        await this.listService.updateList(this.list);
+        this.isUpdating = false;
     }
 
     private refreshList(e) {

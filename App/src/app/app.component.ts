@@ -41,10 +41,9 @@ export class MyApp {
         });
     }
 
-    public logOut() {
-        return this.authService.signOut().then(() => {
-            this.store.clearUser();
-            return this.nav.setRoot(LoginPage);
-        })
+    public async logOut() {
+        await this.authService.signOut();
+        await this.store.clearUser();
+        return this.nav.setRoot(LoginPage);
     }
 }
