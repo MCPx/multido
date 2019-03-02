@@ -39,6 +39,10 @@ ion-content.logged-out {
     }
 }
 
+ion-card {
+    border-radius: 4px;
+}
+
 // Custom icons
 ion-icon {
     &[class*="custom-"] {
