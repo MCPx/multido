@@ -23,24 +23,27 @@
     align-items: flex-end;
 }
 
-ion-content.logged-out {
+ion-content{
+    &.logged-out {
+        ion-item {
+            background-color: transparent;
+            color: color($colors, light);
 
-    ion-item {
-        background-color: transparent;
-        color: color($colors, light);
-
-        .item-inner {
-            border-bottom: 2px solid color($colors, light) !important;
+            .item-inner {
+                border-bottom: 2px solid color($colors, light) !important;
+            }
+        }
+        ion-label {
+            color: color($colors, light) !important;
         }
     }
+    &.red-background {
+        background: color($colors, background);
 
-    ion-label {
-        color: color($colors, light) !important;
+        .scroll-content {
+            border-top: none;
+        }
     }
-}
-
-ion-content.red-background {
-    background: color($colors, background);
 }
 
 .card {
