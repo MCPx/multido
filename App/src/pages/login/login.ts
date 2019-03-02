@@ -33,7 +33,7 @@ export class LoginPage {
         this.authService.signIn(this.loginForm.value.email, this.loginForm.value.password)
             .then(response => {
                 console.log("sign in response", response);
-                return this.userService.getUserById(response.uid);
+                return this.userService.getUserById(response.user.uid);
             })
             .then((user: User) => {
                 return this.loginUser(user);
