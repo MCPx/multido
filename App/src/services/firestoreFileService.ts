@@ -19,7 +19,7 @@ export class FirestoreFileService {
             .then(response => response.data);
     }
     
-    uploadImage(imageId: string, base64Data: string) {
+    async uploadImage(imageId: string, base64Data: string) {
         return this.storage.ref(imageId).putString(base64Data);
     }
 }

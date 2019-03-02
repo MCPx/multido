@@ -21,7 +21,16 @@ export class DashBoardPage {
     lists: List[];
     isLoading: boolean;
 
-    constructor(private nav: NavController, private alertCtrl: AlertController, private store: SiteStore, private listService: FirestoreListService, private fileService: FirestoreFileService, private camera: Camera, private cachingService: CachingService, private firebaseCloudService: FirebaseCloudService, private localNotifications: LocalNotifications) {
+    constructor(
+        private nav: NavController, 
+        private alertCtrl: AlertController, 
+        private store: SiteStore, 
+        private listService: FirestoreListService, 
+        private fileService: FirestoreFileService, 
+        private camera: Camera, 
+        private cachingService: CachingService, 
+        private firebaseCloudService: FirebaseCloudService, 
+        private localNotifications: LocalNotifications) {
         this.firebaseCloudService.listenToNotifications()
             .pipe(
                 tap(message => {
@@ -137,22 +146,25 @@ export class DashBoardPage {
     }
 
     async handleListImageClick(e, list: List) {
+        e.stopPropagation(); // don't trigger click on surrounding card
+
         console.log("uploading pictures");
 
-        const options: CameraOptions = {
+        const cameraoptions: CameraOptions = {
             destinationType: this.camera.DestinationType.DATA_URL,
             encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE
+            mediaType: this.camera.MediaType.PICTURE,
+            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+            allowEdit: true,
+            correctOrientation: true
         };
 
-        e.stopPropagation(); // don't trigger click on surrounding card
         // Handle error
-        return this.camera.getPicture(options)
-            .then(imageData => {
+        return this.camera.getPicture(cameraoptions).then(imageData => {          
 
                 const imageId = uuid();
                 this.fileService.uploadImage(imageId, "data:image/jpeg;base64," + imageData)
-                    .then(() => this.listService.updateList({ imageId, ...list }));
+                    .then(() => this.listService.updateList({ ...list, imageId })).catch(console.error);
             })
             .catch(err => {
                 console.error("Error uploading image.", err);
