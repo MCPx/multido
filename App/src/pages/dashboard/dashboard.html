@@ -24,12 +24,10 @@
     </ion-refresher>
     <ion-list>
         <ion-card *ngFor="let list of lists" (click)="handleListClick(list)" (press)="handleLongPress(list)">
+            <img [src]="list.imageData || 'assets/icon/list-icon.png'" [hidden]="list.imageId && !list.imageData" (click)="handleListImageClick($event, list)">
+            <ion-spinner [hidden]="!list.imageId || list.imageData"> </ion-spinner>
+
             <ion-item>
-                <ion-avatar item-start (click)="handleListImageClick($event, list)">
-                    
-                    <ion-spinner [hidden]="!list.imageId || list.imageData"> </ion-spinner>
-                    <img [src]="list.imageData || 'assets/icon/list-icon.png'" [hidden]="list.imageId && !list.imageData">
-                </ion-avatar>
                 <h2>{{list.name}}</h2>
                 <p>{{getListSubtext(list.items)}}</p>
                 <button ion-button icon-only item-right clear (click)="handleDeleteClick($event, list)">
