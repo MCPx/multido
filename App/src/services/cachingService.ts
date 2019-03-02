@@ -7,19 +7,23 @@ export class CachingService {
 
     }
 
-    tryGetOrAdd(key: string, getValue: () => Promise<string>): Promise<string> {
-        return this.storage.get(key).then(result => {
-            console.log("Result ", result)
-            if (result !== null && result !== undefined) return Promise.resolve(result);
+    async tryGetOrAdd(key: string, getValue: () => Promise<any>): Promise<any> {
+        let value = await this.storage.get(key);
+        
+        if (value !== null && value !== undefined)
+            return Promise.resolve(value);
 
-            return getValue().then(value => { 
-                this.storage.set(key, value);
-                return value;
-            });
-        });
-        
-        
+        value = await getValue();
+        this.storage.set(key, value);
 
-        
+        return value;
+    }
+
+    async add(key: string, data: any): Promise<void> {
+        return this.storage.set(key, data);
+    }
+
+    async clear(key: string): Promise<void> {
+        return this.storage.remove(key);
     }
 }

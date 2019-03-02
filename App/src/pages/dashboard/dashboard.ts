@@ -7,13 +7,14 @@ import { Item } from 'models/item';
 import { ListPage } from 'pages/list/list';
 import { ManageListPage } from 'pages/manageList/manageList';
 import { FirestoreFileService } from 'services/firestoreFileService';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 import { uuid } from 'util/utility'
 import { CachingService } from 'services/cachingService';
 import { tap } from "rxjs/operators";
 import _ from "lodash";
 import { FirebaseCloudService } from "services/firebaseCloudService";
 import { ILocalNotification, LocalNotifications } from "@ionic-native/local-notifications";
+import CameraOptions from 'config/cameraConfig';
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -50,27 +51,29 @@ export class DashBoardPage {
         return this.loadLists();
     }
 
-    private loadLists() {
+    private async loadLists(): Promise<void> {
         this.isLoading = true;
-        return this.listService.getListsForUser(this.store.getUser())
-            .then(lists => {
-                this.lists = lists;
-                this.isLoading = false;
 
-                return lists;
-            }).then(lists => {
-                // fetch images
-                lists.forEach(list => {
-                    if (list.imageId === undefined) return;
+        this.lists = await this.listService.getListsForUser(this.store.getUser())
+        this.isLoading = false;
 
-                    this.cachingService
-                        .tryGetOrAdd(list.imageId, () => {
-                            return this.fileService.getImageById(list.imageId);
-                        })
-                        .then(data => list.imageData = data)
-                        .catch(err => console.log("Error fetching list image", err));
-                });
-            });
+        const imageFetchPromises: Promise<void>[] = [];
+
+        this.lists.forEach(list => {
+            if (list.imageId === undefined) return;
+
+            imageFetchPromises.push(
+                this.fetchImageData(list)
+                .catch(err => console.log("Error fetching list image", err))
+            );    
+        });          
+
+        Promise.all(imageFetchPromises);
+    }
+
+    async fetchImageData(list: List): Promise<void> {
+        list.imageData = await this.cachingService
+            .tryGetOrAdd(list.imageId, () => this.fileService.getImageById(list.imageId));
     }
 
     async handleListClick(list: List) {
@@ -109,6 +112,8 @@ export class DashBoardPage {
 
     // update lists locally, then on firestore
     async handleDeleteClick(e, listToRemove) {
+        e.stopPropagation(); // don't trigger click on surrounding card
+
         const deleteConfirm = this.alertCtrl.create(<AlertOptions>{
             title: 'Remove yourself from this list?',
             buttons: [
@@ -124,8 +129,6 @@ export class DashBoardPage {
         });
 
         await deleteConfirm.present();
-
-        e.stopPropagation(); // don't trigger click on surrounding card
     }
 
     async removeList(listToRemove) {
@@ -141,34 +144,31 @@ export class DashBoardPage {
     }
 
     async handleDashboardRefresh(e) {
-        this.loadLists()
-            .then(() => e.complete());
+        await this.loadLists()
+        
+        e.complete();
     }
 
     async handleListImageClick(e, list: List) {
         e.stopPropagation(); // don't trigger click on surrounding card
 
-        console.log("uploading pictures");
+        const options = CameraOptions(this.camera);
 
-        const cameraoptions: CameraOptions = {
-            destinationType: this.camera.DestinationType.DATA_URL,
-            encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE,
-            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-            allowEdit: true,
-            correctOrientation: true
-        };
+        try {
+            var imageData = await this.camera.getPicture(options);
+            
+            if (!imageData) return;
 
-        // Handle error
-        return this.camera.getPicture(cameraoptions).then(imageData => {          
+            list.imageId = uuid();
+            list.imageData = `data:image/jpeg;base64,${imageData}`;
 
-                const imageId = uuid();
-                this.fileService.uploadImage(imageId, "data:image/jpeg;base64," + imageData)
-                    .then(() => this.listService.updateList({ ...list, imageId })).catch(console.error);
-            })
-            .catch(err => {
-                console.error("Error uploading image.", err);
-            });
+            this.cachingService.add(list.imageId, list.imageData);
+            await this.fileService.uploadImage(list.imageId, list.imageData);
+            await this.listService.updateList(list);
+        }
+        catch(error) {
+            console.error(error);
+        }
     }
 
     async handleLongPress(listToEdit: List) {
