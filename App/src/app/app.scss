@@ -39,7 +39,11 @@ ion-content.logged-out {
     }
 }
 
-ion-card {
+ion-content.red-background {
+    background: color($colors, background);
+}
+
+.card {
     border-radius: 4px;
 }
 
