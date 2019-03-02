@@ -98,20 +98,21 @@ export class FirestoreListService {
         return this.users.doc(user.id).update({ listIds: user.listIds });
     }
 
-    public updateList(list: List): Promise<void> {
-        if (!list.listRef) return Promise.resolve();
+    public updateList(updatedList: List): Promise<void> {
+        if (!updatedList.listRef) return Promise.resolve();
 
-        const updatedList = <List>{
-            name: list.name,            
-            items: list.items.map(item => {
+        // have to duplicate for now because FireStore throws exception for some of list properties (ListRef, UserIds etc)
+        const duplicateList = <List>{
+            name: updatedList.name,            
+            items: updatedList.items.map(item => {
                 return { id: item.id, text: item.text, state: item.state }
             })
         };
 
-        if (list.imageId)
-            updatedList.imageId = list.imageId;
+        if (updatedList.imageId)            
+            duplicateList.imageId = updatedList.imageId;
 
-        return list.listRef.update(updatedList);
+        return updatedList.listRef.update(duplicateList);
     }
 
     public getUpdatedList(list: List): Promise<List> {
