@@ -27,7 +27,7 @@ export class LoginPage {
         });
     }
 
-    private login() {
+    public login() {
         this.loading = true;
 
         this.authService.signIn(this.loginForm.value.email, this.loginForm.value.password)
@@ -49,11 +49,12 @@ export class LoginPage {
             });
     }
 
-    private loginWithGoogle() {
+    public loginWithGoogle() {
+        this.loading = true;
         console.log("signing in with googlez");
-
         this.authService.signInWithGoogle()
             .then((gplusUser: any) => {
+
                 console.log("returned user");
                 console.dir(gplusUser);
                 // check if user in OUR firebase
@@ -74,13 +75,17 @@ export class LoginPage {
                             });
                     })
             })
-            .catch(error => this.loadingDialog.present(`Error: ${JSON.stringify(error)}`, {
-                spinner: "hide",
-                enableBackdropDismiss: true
-            }));
+            .catch(error =>
+            {
+                this.loading = false;
+                this.loadingDialog.present(`Error: ${JSON.stringify(error)}`, {
+                    spinner: "hide",
+                    enableBackdropDismiss: true
+                })
+            });
     }
 
-    private resetPassword() {
+    public resetPassword() {
         // TODO: show popup with input (default to what they entered in login)
         const nameEditAlert = this.alertCtrl.create({
             title: 'Enter your email address',
@@ -127,7 +132,7 @@ export class LoginPage {
             });
     }
 
-    private handleRegisterClick(e) {
+    public handleRegisterClick(e) {
         e.preventDefault();
         this.nav.push(RegisterPage, {...this.loginForm.value});
     }
