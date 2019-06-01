@@ -91,7 +91,7 @@
         "ts-node": "^7.0.1",
         "typemoq": "^2.1.0",
         "typescript": "3.0.3",
-        "webpack": "4.19.1"
+        "webpack": "^3.10.0"
     },
     "description": "For multi-user todo lists",
     "cordova": {
