@@ -13,20 +13,28 @@ import { debounceTime } from 'rxjs/operators';
 export class ListPage {
 
     list: List;
+    checkedItems: Item[];
+    uncheckedItems: Item[];
     isUpdating: boolean = false;
     newItemName: string;
     debounceUpdate: Subject<void> = new Subject();
 
     constructor(private navParams: NavParams, private listService: FirestoreListService, private store: SiteStore, private nav: NavController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
         this.list = this.navParams.get('list');
-        const addListPromise = this.navParams.get('addListPromise');
-
+        this.checkedItems = this.list.items.filter(x => x.state.checked);
+        this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
+        
         // adding list to firestore is triggered from DashboardPage - merge response with local when it completes
+        const addListPromise = this.navParams.get('addListPromise');
         if (addListPromise)
             addListPromise.then(addedList => {
                 const items = this.list.items.concat(addedList.items);
                 this.list = addedList;
                 this.list.items = items;
+
+                this.checkedItems = this.list.items.filter(x => x.state.checked);
+                this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
+
                 this.debounceUpdate.next();
             });
 
@@ -45,15 +53,14 @@ export class ListPage {
 
     // reorder on check
     private handleItemCheck(item: Item) {
-        this.sort(item);
+        this.sort(item);        
     }
 
     private sort(item: Item) {
-        const uncheckedItems = this.list.items.filter(x => !x.state.checked && x.id !== item.id);
-        const checkedItems = this.list.items.filter(x => x.state.checked && x.id !== item.id);
+        this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
+        this.checkedItems = this.list.items.filter(x => x.state.checked);
 
-        uncheckedItems.push(item);
-        this.list.items = uncheckedItems.concat(checkedItems);
+        this.list.items = this.uncheckedItems.concat(this.checkedItems);        
 
         this.debounceUpdate.next();
     }
