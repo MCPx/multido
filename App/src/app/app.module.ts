@@ -29,6 +29,7 @@ import { HTTP } from '@ionic-native/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Firebase } from '@ionic-native/firebase';
+import { ImagePicker } from '@ionic-native/image-picker';
 
 @NgModule({
     declarations: [
@@ -81,6 +82,7 @@ import { Firebase } from '@ionic-native/firebase';
         GooglePlus,
         LocalNotifications,
         Firebase,
+        ImagePicker,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
     ]
 })

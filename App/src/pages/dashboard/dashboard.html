@@ -7,10 +7,11 @@
         </ion-buttons>
         <ion-title>Dashboard</ion-title>
         <ion-buttons end>
-            <button ion-button icon-only>
+            <!-- Only want to show in developer mode - disabling for now -->
+            <!-- <button ion-button icon-only>
                 <ion-icon name="cloud-done" color="tertiary" [hidden]="isLoading"></ion-icon>
                 <ion-spinner color="tertiary" [hidden]="!isLoading"></ion-spinner>
-            </button>
+            </button> -->
             <button ion-button icon-only color="primary" (click)="handleAddListClick()">
                 <ion-icon name="add"></ion-icon>
             </button>
@@ -23,8 +24,8 @@
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-list>
-        <ion-card *ngFor="let list of lists" (click)="handleListClick(list)" (press)="handleLongPress(list)">
-            <img [src]="list.imageData || 'assets/icon/list-icon.png'" [hidden]="list.imageId && !list.imageData" (click)="handleListImageClick($event, list)">
+        <ion-card *ngFor="let list of lists" (click)="handleListClick(list)" (press)="handleLongPress(list)">                
+            <img [src]="list.imageData || 'assets/icon/list-icon.png'" [hidden]="list.imageId && !list.imageData" (click)="handleListImageClick($event, list)" ng-file-upload>
             <ion-spinner [hidden]="!list.imageId || list.imageData"> </ion-spinner>
 
             <ion-item>

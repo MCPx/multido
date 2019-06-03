@@ -94,8 +94,8 @@
     <plugin name="cordova-plugin-googleplus" spec="^5.2.1">
         <variable name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.793639388905-lqstv5hs9k4egk8ac9kdkllsgq638vu2" />
     </plugin>
-    <plugin name="cordova-plugin-firebase" spec="^1.0.5" />
-    <engine name="android" spec="^7.1.1" />
+    <plugin name="cordova-plugin-firebase" spec="https://github.com/dpa99c/cordova-plugin-firebase#GH-1057-April-05-android-build-issue" />
     <engine name="ios" spec="^4.5.5" />
     <engine name="browser" spec="5.0.4" />
+    <engine name="android" spec="7.0.0" />
 </widget>

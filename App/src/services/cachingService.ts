@@ -3,27 +3,27 @@ import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class CachingService {
-    constructor(private storage: Storage) {
+    constructor(private localStorage: Storage) {
 
     }
 
     async tryGetOrAdd(key: string, getValue: () => Promise<any>): Promise<any> {
-        let value = await this.storage.get(key);
+        let value = await this.localStorage.get(key);
         
         if (value !== null && value !== undefined)
             return Promise.resolve(value);
 
         value = await getValue();
-        this.storage.set(key, value);
+        this.localStorage.set(key, value);
 
         return value;
     }
 
     async add(key: string, data: any): Promise<void> {
-        return this.storage.set(key, data);
+        return this.localStorage.set(key, data);
     }
 
     async clear(key: string): Promise<void> {
-        return this.storage.remove(key);
+        return this.localStorage.remove(key);
     }
 }

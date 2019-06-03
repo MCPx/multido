@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, AlertOptions, NavController } from 'ionic-angular';
+import { AlertController, AlertOptions, NavController, Platform } from 'ionic-angular';
 import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { List } from 'models/list';
@@ -15,6 +15,7 @@ import _ from "lodash";
 import { FirebaseCloudService } from "services/firebaseCloudService";
 import { ILocalNotification, LocalNotifications } from "@ionic-native/local-notifications";
 import CameraOptions from 'config/cameraConfig';
+import { ImagePicker } from '@ionic-native/image-picker';
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -31,7 +32,9 @@ export class DashBoardPage {
         private camera: Camera, 
         private cachingService: CachingService, 
         private firebaseCloudService: FirebaseCloudService, 
-        private localNotifications: LocalNotifications) {
+        private localNotifications: LocalNotifications,
+        private platform: Platform,
+        private imagePicker: ImagePicker) {
         this.firebaseCloudService.listenToNotifications()
             .pipe(
                 tap(message => {
@@ -149,14 +152,32 @@ export class DashBoardPage {
         e.complete();
     }
 
-    async handleListImageClick(e, list: List) {
+    async handleListImageClick(e : any, list: List) {
+
         e.stopPropagation(); // don't trigger click on surrounding card
-
-        const options = CameraOptions(this.camera);
-
+        
         try {
-            var imageData = await this.camera.getPicture(options);
-            
+            let imageData: any;
+            if (this.platform.is('cordova')) {
+
+                const options = CameraOptions(this.camera);
+                imageData = await this.camera.getPicture(options);      
+                
+            } else {
+                // apparently this might work on android just sommer?
+                // const options = {
+                //         maximumImagesCount: 1,
+                //         outputType: 1 // DATA_URL
+                // };
+                // this.imagePicker.getPictures(options).then(results => {
+                //     console.log('Image URI: ' + results[0]);
+                //     imageData = results[0];
+                // });
+                // this.fileOpener.showOpenWithDialog('path/to/file.pdf', 'application/pdf')
+                //     .then(() => console.log('File is opened'))
+                //     .catch(e => console.log('Error opening file', e));
+            }
+
             if (!imageData) return;
 
             list.imageId = uuid();
