@@ -1,49 +1,57 @@
 import { Component, ViewChild } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
+import { Router } from '@angular/router';
+
+import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Storage } from '@ionic/storage';
-import { LoginPage } from 'pages/login/login';
-import { DashBoardPage } from 'pages/dashboard/dashboard';
 import { User } from 'models/user';
 import { StorageKey } from 'enums/storageKey';
 import { SiteStore } from 'services/siteStore';
-import { FirestoreAuthService } from "services/firestoreAuthService";
-import { FirestoreUserService } from "services/firestoreUserService";
+import { FirestoreAuthService } from 'services/firestoreAuth.service';
+import { FirestoreUserService } from 'services/firestoreUser.service';
 
 @Component({
-    templateUrl: 'app.html'
+    selector: 'app-root',
+    templateUrl: 'app.component.html'
 })
-export class MyApp {
+export class AppComponent {
     @ViewChild('content') nav;
 
     rootPage: any;
 
     constructor(
-        platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: SiteStore, private authService: FirestoreAuthService, private userService: FirestoreUserService) {
-        platform.ready().then(() => {
-            // Okay, so the platform is ready and our plugins are available.
-            // Here you can do any higher level native things you might need.
-            statusBar.styleDefault();
+        private platform: Platform,
+        private statusBar: StatusBar,
+        private splashScreen: SplashScreen,
+        private router: Router,
+        private storage: Storage,
+        private store: SiteStore,
+        private authService: FirestoreAuthService,
+        private userService: FirestoreUserService
+    ) {
+        this.initializeApp();
+    }
 
-            // try to fetch UserId from storage - if not then send to LoginPage
+    initializeApp() {
+        this.platform.ready().then(() => {
+            this.statusBar.styleDefault();
             return this.storage.get(StorageKey.UserId)
-                .then((id: string) => {
-                    if (!id) throw "User Id was null";
+                .then(async (id: string) => {
+                    if (!id) throw new Error('User Id was null');
 
-                    return this.userService.getUserById(id).then((user: User) => {
-                        this.store.setUser(user);
-                        this.rootPage = DashBoardPage;
-                    });
+                    const user = await this.userService.getUserById(id);
+                    await this.store.setUser(user);
+                    // return this.router.navigate(['/dashboard']);
                 })
-                .catch(error => this.rootPage = LoginPage)
-                .then(() => splashScreen.hide());
+                .catch(error => this.router.navigate(['/login']))
+                .then(() => this.splashScreen.hide());
         });
     }
 
     public async logOut() {
         await this.authService.signOut();
         await this.store.clearUser();
-        return this.nav.setRoot(LoginPage);
+        // return this.nav.setRoot(LoginPage);
     }
 }

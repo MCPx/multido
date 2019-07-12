@@ -1,0 +1,17 @@
+page-dashboard ion-card {
+  display: flex;
+  height:100px;
+
+  & > img {
+    object-fit: cover;
+    max-width:100px;
+  }
+
+  & > ion-spinner {
+    margin: auto 20px;
+  }
+
+  & > ion-item h2 {
+    padding-bottom: 20px !important;
+  }
+}

@@ -1,44 +1,34 @@
-import FirestoreCredentials from './../firestoreCredentials';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouteReuseStrategy } from '@angular/router';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule, ModalController } from 'ionic-angular';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
+import { IonicModule, IonicRouteStrategy, ModalController } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { AngularFireAuth } from '@angular/fire/auth';
-import { MyApp } from './app.component';
-import { LoginPage } from 'pages/login/login';
-import { DashBoardPage } from 'pages/dashboard/dashboard';
-import { ListPage } from 'pages/list/list';
-import { LoadingDialog } from 'pages/components/loadingdialog';
-import { RegisterPage } from 'pages/register/register';
-import { ManageListPage } from 'pages/manageList/manageList';
-import { SiteStore } from 'services/siteStore';
-import { FirestoreListService } from 'services/firestoreListService';
-import { FirestoreUserService } from "services/firestoreUserService";
-import { FirestoreAuthService } from "services/firestoreAuthService";
-import { FirebaseCloudService } from "services/firebaseCloudService";
-import { CachingService } from 'services/cachingService'
-import { AngularFireStorageModule } from '@angular/fire/storage';
-import { FirestoreFileService } from 'services/firestoreFileService';
-import { Camera } from '@ionic-native/camera';
-import { HTTP } from '@ionic-native/http';
-import { GooglePlus } from '@ionic-native/google-plus';
-import { LocalNotifications } from '@ionic-native/local-notifications';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import FirestoreCredentials from './firestoreCredentials';
+import { FirestoreListService } from 'services/firestoreList.service';
+import { LoadingDialogComponent } from './loading-dialog/loading-dialog.component';
 import { Firebase } from '@ionic-native/firebase';
+import { SiteStore } from 'services/siteStore';
+import { FirestoreUserService } from 'services/firestoreUser.service';
+import { FirestoreAuthService } from 'services/firestoreAuth.service';
+import { FirestoreFileService } from 'services/firestoreFile.service';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { FirebaseCloudService } from 'services/firebaseCloud.service';
+import { GooglePlus } from '@ionic-native/google-plus';
+import { CachingService } from 'services/caching.service';
+import { HTTP } from '@ionic-native/http';
 
 @NgModule({
-    declarations: [
-        MyApp,
-        LoginPage,
-        RegisterPage,
-        DashBoardPage,
-        ListPage,
-        ManageListPage
-    ],
+    declarations: [AppComponent],
+    entryComponents: [],
     imports: [
         AngularFireModule.initializeApp({
             apiKey: FirestoreCredentials.apiKey,
@@ -51,18 +41,9 @@ import { Firebase } from '@ionic-native/firebase';
         AngularFirestoreModule,
         AngularFireStorageModule,
         BrowserModule,
-        IonicModule.forRoot(MyApp),
-        IonicStorageModule.forRoot()
-    ],
-    bootstrap: [IonicApp],
-    entryComponents: [
-        MyApp,
-        LoginPage,
-        RegisterPage,
-        DashBoardPage,
-        ListPage,
-        ManageListPage
-    ],
+        IonicModule.forRoot(),
+        IonicStorageModule.forRoot(),
+        AppRoutingModule],
     providers: [
         StatusBar,
         SplashScreen,
@@ -74,14 +55,11 @@ import { Firebase } from '@ionic-native/firebase';
         FirebaseCloudService,
         CachingService,
         AngularFireAuth,
-        LoadingDialog,
+        LoadingDialogComponent,
         ModalController,
-        Camera,
-        HTTP,
-        GooglePlus,
-        LocalNotifications,
-        Firebase,
-        { provide: ErrorHandler, useClass: IonicErrorHandler },
-    ]
+        { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

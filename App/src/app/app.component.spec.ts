@@ -1,66 +1,47 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import * as TypeMoq from 'typemoq';
-import { IonicModule, Platform } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { FirestoreAuthService } from "services/firestoreAuthService";
-import { FirestoreUserService } from "services/firestoreUserService";
-import { SiteStore } from "../services/siteStore";
-import { MyApp } from './app.component';
-import { PlatformMock,
-    StatusBarMock,
-    SplashScreenMock,
-    StorageMock} from 'ionic-mocks'
-import { MockComponent } from 'ng-mocks';
-import { Times } from 'typemoq';
-import { LoginPage } from "../pages/login/login";
-import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TestBed, async } from '@angular/core/testing';
 
-describe('MyApp Component', () => {
-    let fixture: ComponentFixture<MyApp>;
-    let component;
-    const authServiceMock: TypeMoq.IMock<FirestoreAuthService> = TypeMoq.Mock.ofType<FirestoreAuthService>(undefined, TypeMoq.MockBehavior.Loose);
-    const userServiceMock: TypeMoq.IMock<FirestoreUserService> = TypeMoq.Mock.ofType<FirestoreUserService>(undefined, TypeMoq.MockBehavior.Loose);
-    const siteStoreMock: TypeMoq.IMock<SiteStore> = TypeMoq.Mock.ofType<SiteStore>(undefined, TypeMoq.MockBehavior.Loose);
+import { Platform } from '@ionic/angular';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
+
+import { AppComponent } from './app.component';
+
+describe('AppComponent', () => {
+
+    let statusBarSpy, splashScreenSpy, platformReadySpy, platformSpy;
 
     beforeEach(async(() => {
-        authServiceMock.setup(x => x.signOut()).returns(() => Promise.resolve(undefined));
-        siteStoreMock.setup(x => x.clearUser());
+        statusBarSpy = jasmine.createSpyObj('StatusBar', ['styleDefault']);
+        splashScreenSpy = jasmine.createSpyObj('SplashScreen', ['hide']);
+        platformReadySpy = Promise.resolve();
+        platformSpy = jasmine.createSpyObj('Platform', { ready: platformReadySpy });
 
         TestBed.configureTestingModule({
-            declarations: [MyApp,
-                MockComponent(LoginPage)],
-            imports: [
-                IonicModule.forRoot(MyApp)
-            ],
+            declarations: [AppComponent],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
             providers: [
-                { provide: StatusBar, useFactory: () => StatusBarMock.instance() },
-                { provide: SplashScreen, useFactory: () => SplashScreenMock.instance() },
-                { provide: Platform, useFactory: () => PlatformMock.instance() },
-                { provide: Storage, useFactory: () => StorageMock.instance() },
-                { provide: SiteStore, useFactory: () => siteStoreMock.object },
-                { provide: FirestoreAuthService, useFactory: () => authServiceMock.object },
-                { provide: FirestoreUserService, useFactory: () => userServiceMock.object }
-            ]
+                { provide: StatusBar, useValue: statusBarSpy },
+                { provide: SplashScreen, useValue: splashScreenSpy },
+                { provide: Platform, useValue: platformSpy },
+            ],
         }).compileComponents();
     }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(MyApp);
-        fixture.detectChanges();
-        component = fixture.componentInstance;
+    it('should create the app', () => {
+        const fixture = TestBed.createComponent(AppComponent);
+        const app = fixture.debugElement.componentInstance;
+        expect(app).toBeTruthy();
     });
 
-    it('should be created', () => {
-        expect(component instanceof MyApp).toBe(true);
+    it('should initialize the app', async () => {
+        TestBed.createComponent(AppComponent);
+        expect(platformSpy.ready).toHaveBeenCalled();
+        await platformReadySpy;
+        expect(statusBarSpy.styleDefault).toHaveBeenCalled();
+        expect(splashScreenSpy.hide).toHaveBeenCalled();
     });
 
-    it('should clear user and go to login page on log out', async (done) => {
-        await component.logOut();
-        siteStoreMock.verify(x => x.clearUser(), Times.once());
-        expect(component.rootPage).toBe(null);
-        done();
-    });
+    // TODO: add more tests!
 
 });

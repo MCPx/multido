@@ -13,31 +13,23 @@ log.txt
 npm-debug.log*
 
 .idea/
+.ionic/
 .sourcemaps/
 .sass-cache/
 .tmp/
 .versions/
 coverage/
-dist/
+www/
 node_modules/
-**/out-tsc/*
 tmp/
 temp/
-hooks/
 platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
-www/
 $RECYCLE.BIN/
+dist/
 
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
-
-**/firestoreCredentials.ts
-/API/.idea
-/App/GoogleService-Info.plist
-/App/google-services.json
-/App/functions/lib/
-
