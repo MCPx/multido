@@ -1,0 +1,7 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "multido",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www"
+}

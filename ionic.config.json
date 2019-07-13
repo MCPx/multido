@@ -1,0 +1,7 @@
+{
+  "name": "multido",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

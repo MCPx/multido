@@ -1,9 +1,0 @@
-{
-  "name": "Multido",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "ionic-angular",
-  "pro_id": "com.multido",
-  "id": "com.multido"
-}
