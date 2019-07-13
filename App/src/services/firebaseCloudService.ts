@@ -26,7 +26,7 @@ export class FirebaseCloudService {
 
         console.log("Token: ", token);
 
-        return this.saveTokenToFirestore(token, user)
+        return this.saveTokenToFirestore(token, user);
     }
 
     // Save the token to firestore

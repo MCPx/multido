@@ -14,7 +14,6 @@ $app-direction: ltr;
 
 @import "ionic.globals";
 
-
 // Shared Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
@@ -35,13 +34,15 @@ $app-direction: ltr;
 
 $colors: (
   primary:    #c62828,
-  secondary:  #ff5f52,
-  background: #c55,
+  secondary:  #ffb627,
+  background: #FFC971,
   danger:     #8e0000,
   light:      #fff9dd,
   dark:       #222,
   tertiary:   #9c9c9c,
-  white:      #fff
+  white:      #fff,
+  disabled-secondary: #cb9a49
+
 );
 
 $refresher-icon-color: #9c9c9c;

@@ -115,9 +115,8 @@ export class LoginPage {
                     }
                 }],
         });
-
+        
         nameEditAlert.present();
-
     }
 
     private loginUser(user: User): Promise<void> {

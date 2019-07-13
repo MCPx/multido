@@ -1,32 +1,12 @@
-<ion-header>
-    <ion-navbar hideBackButton>
-        <ion-buttons left>
-            <button ion-button icon-only [menuToggle]>
-                <ion-icon name="menu" color="primary"></ion-icon>
-            </button>
-        </ion-buttons>
-        <ion-title>Dashboard</ion-title>
-        <ion-buttons end>
-            <button ion-button icon-only>
-                <ion-icon name="cloud-done" color="tertiary" [hidden]="isLoading"></ion-icon>
-                <ion-spinner color="tertiary" [hidden]="!isLoading"></ion-spinner>
-            </button>
-            <button ion-button icon-only color="primary" (click)="handleAddListClick()">
-                <ion-icon name="add"></ion-icon>
-            </button>
-        </ion-buttons>
-    </ion-navbar>
-</ion-header>
-
-<ion-content class="red-background">
+<ion-content class="background">
     <ion-refresher color="tertiary" (ionRefresh)="handleDashboardRefresh($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-list>
         <ion-card *ngFor="let list of lists" (click)="handleListClick(list)" (press)="handleLongPress(list)">
-            <img [src]="list.imageData || 'assets/icon/list-icon.png'" [hidden]="list.imageId && !list.imageData" (click)="handleListImageClick($event, list)">
-            <ion-spinner [hidden]="!list.imageId || list.imageData"> </ion-spinner>
+            <div class="card-accent">
 
+            </div>
             <ion-item>
                 <h2>{{list.name}}</h2>
                 <p>{{getListSubtext(list.items)}}</p>
@@ -36,4 +16,9 @@
             </ion-item>
         </ion-card>
     </ion-list>
+    <ion-fab>
+        <button ion-fab bottom right color="primary" (click)="handleAddListClick()">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
 </ion-content>

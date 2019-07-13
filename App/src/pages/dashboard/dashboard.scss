@@ -15,3 +15,13 @@ page-dashboard ion-card {
         padding-bottom: 20px !important;
     }
 }
+
+ion-fab {
+    right: 20px;
+    bottom: 20px;
+}
+
+.card-accent {
+    width: 20px;
+    background-color: color($colors, primary)
+}
