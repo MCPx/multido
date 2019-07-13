@@ -7,17 +7,18 @@ import { RouterModule } from '@angular/router';
 import { ListPage } from './list.page';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: ListPage
-      }
-    ])
-  ],
-  declarations: [ListPage]
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: ListPage
+            }
+        ])
+    ],
+    declarations: [ListPage]
 })
-export class ListPageModule {}
+export class ListPageModule {
+}
