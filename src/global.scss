@@ -35,8 +35,8 @@ ion-content {
     }
   }
 
-  &.red-background {
-    --background: var(--ion-color-primary-tint);
+  &.background {
+    --background: var(--ion-color-tertiary);
 
     .scroll-content {
       border-top: none;
