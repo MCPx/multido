@@ -1,45 +1,76 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-menu-button></ion-menu-button>
-        </ion-buttons>
-        <ion-title>
-            Home
-        </ion-title>
-    </ion-toolbar>
-</ion-header>
+<div class="background-img"></div>
+<ion-content padding class="no-scroll logged-out content-md">
+    <form class="login-box" (ngSubmit)="this.login()" [formGroup]="loginForm">
+        <ion-grid class="no-scroll login-page-grid">
+            <ion-row justify-content-center>
+                <ion-col text-center>
+                    <img class="logo" src="assets/imgs/login/logo.png"/>
+                </ion-col>
+                <ion-col style="flex-grow: 1">
+                    <ion-grid class="login-form-grid">
+                        <ion-row justify-content-center align-items-center>
+                            <ion-col>
+                                <ion-item>
+                                    <ion-label position="floating">
+                                        <ion-icon name="mail" slot="start" class="text-primary"></ion-icon>
+                                        Email
+                                    </ion-label>
+                                    <ion-input formControlName="email" type="email" id="email" name="email"
+                                               required></ion-input>
+                                </ion-item>
 
-<ion-content>
-    <ion-card class="welcome-card">
-        <img src="/assets/shapes.svg" alt=""/>
-        <ion-card-header>
-            <ion-card-subtitle>Get Started</ion-card-subtitle>
-            <ion-card-title>Welcome to Ionic</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-            <p>Now that your app has been created, you'll want to start building out features and components. Check out
-                some of the resources below for next steps.</p>
-        </ion-card-content>
-    </ion-card>
-    <ion-list lines="none">
-        <ion-list-header>
-            <ion-label>Resources</ion-label>
-        </ion-list-header>
-        <ion-item href="https://ionicframework.com/docs/">
-            <ion-icon slot="start" color="medium" name="book"></ion-icon>
-            <ion-label>Ionic Documentation</ion-label>
-        </ion-item>
-        <ion-item href="https://ionicframework.com/docs/building/scaffolding">
-            <ion-icon slot="start" color="medium" name="build"></ion-icon>
-            <ion-label>Scaffold Out Your App</ion-label>
-        </ion-item>
-        <ion-item href="https://ionicframework.com/docs/layout/structure">
-            <ion-icon slot="start" color="medium" name="grid"></ion-icon>
-            <ion-label>Change Your App Layout</ion-label>
-        </ion-item>
-        <ion-item href="https://ionicframework.com/docs/theming/basics">
-            <ion-icon slot="start" color="medium" name="color-fill"></ion-icon>
-            <ion-label>Theme Your App</ion-label>
-        </ion-item>
-    </ion-list>
+                                <ion-item class="password-input">
+                                    <ion-label position="floating" for="password">
+                                        <ion-icon name="lock" slot="start" class="text-primary"></ion-icon>
+                                        Password
+                                    </ion-label>
+                                    <ion-input formControlName="password"
+                                               [type]="!showPasswordText ? 'password' : 'text'"
+                                               id="password" name="password" required></ion-input>
+
+                                    <ion-button fill="clear" color="light" type="button" slot="end"
+                                                (click)="showPasswordText = !showPasswordText">
+                                        <ion-icon slot="icon-only" name="eye" *ngIf="!showPasswordText"></ion-icon>
+                                        <ion-icon slot="icon-only" name="eye-off" *ngIf="showPasswordText"></ion-icon>
+                                    </ion-button>
+                                </ion-item>
+                                <a style="color:#ff5f52;float:right;margin-top:5px;" (click)="this.resetPassword()">forgot
+                                    password?</a>
+                            </ion-col>
+                        </ion-row>
+                        <ion-row padding-top>
+                            <ion-button expand="block" size="large" type="submit" color="light"
+                                        [disabled]="!loginForm.valid || loading" class="login-button">
+                                <span *ngIf="!loading">Sign in</span>
+                                <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner>
+                                <span *ngIf="loading">Logging in...</span>
+                                <!--<ion-icon item-end *ngIf="!loading" name="arrow-forward"></ion-icon>-->
+                            </ion-button>
+                        </ion-row>
+                        <ion-row>
+                            <ion-button expand="block" size="large" type="button" color="light"
+                                        class="login-button button-login-with-google"
+                                        [disabled]="loading"
+                                        (click)="this.loginWithGoogle($event)">
+                                <img src="assets/icon/google_logo.svg" width="35px">
+                                <ion-text *ngIf="!loading">Sign in with Google</ion-text>
+                                <ion-spinner *ngIf="loading" name="crescent" color="primary" margin-right></ion-spinner>
+                                <ion-text *ngIf="loading">Logging in...</ion-text>
+                            </ion-button>
+                        </ion-row>
+                        <ion-row style="color:#ff5f52;margin-top:5px;">
+                            <ion-text>Don't have an account?</ion-text>
+                            <a style="color:#fff9dd;" (click)="this.handleRegisterClick($event)">Sign up</a>
+                        </ion-row>
+
+                        <!--<ion-row>-->
+                        <!--<button ion-button type="button" block large icon-only clear color="secondary"-->
+                        <!--(click)="this.resetPassword()">Forgot password-->
+                        <!--</button>-->
+                        <!--</ion-row>-->
+                    </ion-grid>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
 </ion-content>

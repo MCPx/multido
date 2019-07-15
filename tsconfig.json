@@ -3,6 +3,13 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
+    "paths": {
+      "services/*": ["src/app/services/*"],
+      "models/*": ["src/app/models/*"],
+      "enums/*": ["src/app/enums/*"],
+      "util/*": ["src/app/util/*"],
+      "config/*": ["src/app/config/*"]
+    },
     "sourceMap": true,
     "declaration": false,
     "module": "es2015",
