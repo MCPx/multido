@@ -69,9 +69,7 @@ export class HomePage implements OnInit {
     }
 
     private loginWithGoogle() {
-        console.log('signing in with googlez');
-
-        this.authService.signInWithGoogle()
+        return this.authService.signInWithGoogle()
             .then((gplusUser: any) => {
                 console.log('returned user');
                 console.dir(gplusUser);
