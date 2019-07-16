@@ -1,4 +1,10 @@
-ion-content ion-card {
+.card-accent {
+  width: 20px;
+  background-color: var(--ion-color-primary-shade);
+}
+
+ion-card {
+  flex-direction: row;
   display: flex;
   height:100px;
 
@@ -14,4 +20,12 @@ ion-content ion-card {
   & > ion-item h2 {
     padding-bottom: 20px !important;
   }
+
+  ion-card-content {
+    flex-grow: 1;
+  }
+}
+
+.refresher-md .refresher-refreshing-icon {
+  color: var(--ion-color-primary-shade-rgb);
 }

@@ -1,1 +1,28 @@
+ion-checkbox .item-cover{
+  display:none;
+}
+.input-cover{
+  display: none;
+}
+.itemchecked {
+  text-decoration: line-through;
+  color: var(--ion-color-secondary-shade);
+}
+.new-item-input{
+  margin-bottom: 40px;
+}
 
+.card-item-checked {
+  box-shadow: none;
+  background: transparent none !important;
+  border: 1px solid var(--ion-color-secondary-shade);
+}
+
+.item-checkbox-checked {
+  background: none !important;
+}
+
+ion-fab {
+  right: 20px;
+  bottom: 20px;
+}

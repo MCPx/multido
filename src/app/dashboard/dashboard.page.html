@@ -1,22 +1,21 @@
 <ion-content class="background">
-  <ion-refresher color="tertiary" (ionRefresh)="handleDashboardRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+    <ion-refresher  color="tertiary" (ionRefresh)="handleDashboardRefresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-card *ngFor="let list of lists" color="light" (click)="handleListClick(list)" (press)="handleLongPress(list)">
-      <div class="card-accent">
-
-      </div>
-      <ion-card-content>
-        <h2>{{list.name}}</h2>
-        <p>{{getListSubtext(list.items)}}</p>
-        <ion-button icon-only item-right clear (click)="handleDeleteClick($event, list)">
-          <ion-icon color="tertiary" name="close"></ion-icon>
+        <div class="card-accent" slot="start">
+        </div>
+        <ion-card-content >
+            <h2>{{list.name}}</h2>
+            <p>{{getListSubtext(list.items)}}</p>
+        </ion-card-content>
+        <ion-button fill="clear" (click)="handleDeleteClick($event, list)">
+            <ion-icon slot="icon-only" color="medium" name="close"></ion-icon>
         </ion-button>
-      </ion-card-content>
     </ion-card>
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="primary" (click)="handleAddListClick()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button color="primary" (click)="handleAddListClick()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>
