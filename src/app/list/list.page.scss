@@ -1,3 +1,12 @@
+ion-header {
+  background-color: var(--ion-color-tertiary);
+
+  ion-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+  }
+}
+
 ion-checkbox .item-cover{
   display:none;
 }
@@ -12,14 +21,18 @@ ion-checkbox .item-cover{
   margin-bottom: 40px;
 }
 
-.card-item-checked {
+ion-card.card-item-checked {
   box-shadow: none;
-  background: transparent none !important;
+  background-color: var(--ion-color-tertiary);
   border: 1px solid var(--ion-color-secondary-shade);
 }
 
 .item-checkbox-checked {
   background: none !important;
+}
+
+ion-list {
+  background-color: transparent;
 }
 
 ion-fab {

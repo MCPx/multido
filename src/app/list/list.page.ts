@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActionSheetController, AlertController, NavParams } from '@ionic/angular';
+import { ActionSheetController, AlertController } from '@ionic/angular';
 import { FirestoreListService } from 'services/firestoreList.service';
-import { SiteStore } from 'services/siteStore';
+import { getSelectedList } from 'store/selectors/lists.selectors';
+import { getUser } from 'store/selectors/user.selectors';
 import { List } from 'models/list';
 import { Item } from 'models/item';
+import { User } from 'models/user';
 import { uuid } from 'util/utility';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { AppState } from 'store/reducers';
+import { Store } from '@ngrx/store';
 
 @Component({
     selector: 'app-list',
@@ -16,7 +20,8 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class ListPage implements OnInit {
 
-    list: List;
+    user: User;
+    list: List = <List>{};
     checkedItems: Item[];
     uncheckedItems: Item[];
     isUpdating = false;
@@ -24,33 +29,37 @@ export class ListPage implements OnInit {
     debounceUpdate: Subject<void> = new Subject();
 
     constructor(
-        private navParams: NavParams,
         private listService: FirestoreListService,
-        private store: SiteStore,
+        private store: Store<AppState>,
         private router: Router,
         private alertCtrl: AlertController,
         private actionSheetCtrl: ActionSheetController) {
 
-        this.list = this.navParams.get('list');
+        this.store.select(getSelectedList).subscribe(list => {
+            this.list = list || { items: [] } as List;
+        });
+
+        this.store.select(getUser).subscribe(user => this.user = user);
+
         this.checkedItems = this.list.items.filter(x => x.state.checked);
         this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
     }
 
     ngOnInit() {
         // adding list to firestore is triggered from DashboardPage - merge response with local when it completes
-        const addListPromise = this.navParams.get('addListPromise');
-        if (addListPromise) {
-            addListPromise.then(addedList => {
-                const items = this.list.items.concat(addedList.items);
-                this.list = addedList;
-                this.list.items = items;
-
-                this.checkedItems = this.list.items.filter(x => x.state.checked);
-                this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
-
-                this.debounceUpdate.next();
-            });
-        }
+        // const addListPromise = this.navParams.get('addListPromise');
+        // if (addListPromise) {
+        //     addListPromise.then(addedList => {
+        //         const items = this.list.items.concat(addedList.items);
+        //         this.list = addedList;
+        //         this.list.items = items;
+        //
+        //         this.checkedItems = this.list.items.filter(x => x.state.checked);
+        //         this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
+        //
+        //         this.debounceUpdate.next();
+        //     });
+        // }
 
         this.debounceUpdate
             .pipe(debounceTime(500))
@@ -89,10 +98,12 @@ export class ListPage implements OnInit {
     }
 
     async handleManageListClick() {
-        return this.router.navigate(['/manageList'], { queryParams: {
-            knownUserEmails: this.store.getUser().knownUserEmails,
-            list: this.list
-        }});
+        return this.router.navigate(['/manageList'], {
+            queryParams: {
+                knownUserEmails: this.user.knownUserEmails,
+                list: this.list
+            }
+        });
     }
 
     async presentActionSheet(item: Item) {

@@ -5,6 +5,7 @@
     "outDir": "./dist/out-tsc",
     "paths": {
       "services/*": ["src/app/services/*"],
+      "store/*": ["src/app/store/*"],
       "models/*": ["src/app/models/*"],
       "enums/*": ["src/app/enums/*"],
       "util/*": ["src/app/util/*"],

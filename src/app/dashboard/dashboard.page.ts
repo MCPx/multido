@@ -3,17 +3,23 @@ import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { List } from 'models/list';
 import { Item } from 'models/item';
-import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreList.service';
 import { FirestoreFileService } from 'services/firestoreFile.service';
 import { FirebaseCloudService } from 'services/firebaseCloud.service';
 import { CachingService } from 'services/caching.service';
 import { uuid } from 'util/utility';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import _ from 'lodash';
 import { ILocalNotification, LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
 import CameraOptions from 'config/cameraConfig';
+import { Store } from '@ngrx/store';
+import { AddList, UpdateLists, RemoveList, SelectList } from 'store/actions/lists.actions';
+import { AppState } from 'store/reducers';
+import { Observable } from 'rxjs';
+import { getAllLists, getSelectedList } from 'store/selectors/lists.selectors';
+import { User } from 'models/user';
+import { getUser } from 'store/selectors/user.selectors';
 
 @Component({
     selector: 'app-dashboard',
@@ -22,19 +28,22 @@ import CameraOptions from 'config/cameraConfig';
 })
 export class DashboardPage {
 
-    lists: List[];
+    public lists: Observable<List[]>;
+    public user: User;
+
     isLoading: boolean;
 
     constructor(
         private router: Router,
         private alertCtrl: AlertController,
-        private store: SiteStore,
+        private store: Store<AppState>,
         private listService: FirestoreListService,
         private fileService: FirestoreFileService,
         private camera: Camera,
         private cachingService: CachingService,
         private firebaseCloudService: FirebaseCloudService,
         private localNotifications: LocalNotifications) {
+
         this.firebaseCloudService.listenToNotifications()
             .pipe(
                 tap(message => {
@@ -48,32 +57,46 @@ export class DashboardPage {
                     }
                 )
             );
+
+        this.lists = this.store.select(getAllLists);
+        this.lists.pipe(
+            map(this.fetchImages),
+            tap(Promise.all)
+        );
+
+        this.store.select(getUser).subscribe(user => this.user = user);
+        // return await this.nav.push(ListPage, { list });
+        this.store.select(getSelectedList).subscribe((listId) => {
+            if (listId != null)
+                this.router.navigate(['/list'] );
+        })
     }
 
     ionViewWillEnter() {
+        this.store.dispatch(new SelectList({ id: null }));
         return this.loadLists();
     }
 
-    private async loadLists(): Promise<void[]> {
+    private async loadLists(): Promise<void> {
         this.isLoading = true;
 
-        this.lists = await this.listService.getListsForUser(this.store.getUser());
+        const newLists = await this.listService.getListsForUser(this.user);
+        this.store.dispatch(new UpdateLists({ lists: newLists }));
         this.isLoading = false;
+    }
 
+    private fetchImages(lists: List[]): Promise<void>[] {
         const imageFetchPromises: Promise<void>[] = [];
 
-        this.lists.forEach(list => {
-            if (list.imageId === undefined) {
-                return;
-            }
+        lists.forEach(list => {
+            if (list.imageId === undefined) return;
 
             imageFetchPromises.push(
                 this.fetchImageData(list)
-                    .catch(err => console.log('Error fetching list image', err))
+                    .catch(err => console.log("Error fetching list image", err))
             );
         });
-
-        return Promise.all(imageFetchPromises);
+        return imageFetchPromises;
     }
 
     async fetchImageData(list: List): Promise<void> {
@@ -82,14 +105,14 @@ export class DashboardPage {
     }
 
     async handleListClick(list: List) {
-        return await this.router.navigate(['/list'], { queryParams: { list } });
+        this.store.dispatch(new SelectList({ id: list.id }));
     }
 
     getListSubtext(items: Item[] = []) {
         return items.length + ' item' + (items.length === 1 ? '' : 's');
     }
 
-    async handleAddListClick() {
+    async handleAddListClick(): Promise<void> {
         const addListAlert = await this.alertCtrl.create({
             header: 'Add',
             inputs: [{
@@ -101,11 +124,11 @@ export class DashboardPage {
                 {
                     text: 'Save',
                     handler: data => {
-                        const newList = { name: data.name, items: [] } as List;
+                        const newList = <List>{ name: data.name, items: [] };
 
-                        this.lists.push(newList); // add list locally, should be updated with properties when getLists is called
-                        const addListPromise = this.listService.addListForUser(this.store.getUser(), newList.name);
-                        this.router.navigate(['/list'], { queryParams: { list: newList, addListPromise } });
+                        this.store.dispatch(new AddList({ list: newList })); // add list locally, should be updated with properties when getLists is called
+                        const addListPromise = this.listService.addListForUser(this.user, newList.name);
+                        this.router.navigate(['/list'], { queryParams: { addListPromise } });
                         return true;
                     }
                 }],
@@ -137,12 +160,13 @@ export class DashboardPage {
 
     async removeList(listToRemove) {
         this.isLoading = true;
-        this.lists = this.lists.filter(list => list.id !== listToRemove.id);
-        return this.listService.removeListForCurrentUser(this.store.getUser(), listToRemove)
-            .then(() => this.loadLists())
+        this.store.dispatch(new RemoveList({ id: listToRemove.id }));
+
+        return this.listService.removeListForCurrentUser(this.user, listToRemove)
             .catch(error => {
                 console.error(error);
-                this.lists.push(listToRemove);
+                this.store.dispatch(new AddList({ list: listToRemove }));
+
                 this.isLoading = false;
             });
     }
@@ -150,7 +174,7 @@ export class DashboardPage {
     async handleDashboardRefresh(e) {
         await this.loadLists();
 
-        e.complete();
+        return e.complete();
     }
 
     async handleListImageClick(e, list: List) {
@@ -182,7 +206,7 @@ export class DashboardPage {
 
     private async displayManagePage(list: List): Promise<any> {
         return this.router.navigate(['/manageList'],
-            { queryParams: { knownUserEmails: this.store.getUser().knownUserEmails, list } });
+            { queryParams: { knownUserEmails: this.user.knownUserEmails, list } });
     }
 
 }

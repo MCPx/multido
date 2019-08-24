@@ -29,6 +29,9 @@ import { GooglePlus } from '@ionic-native/google-plus/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { IonicStorageModule } from '@ionic/storage';
+import { StoreModule } from '@ngrx/store';
+import { metaReducers, reducers } from 'store/reducers';
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 @NgModule({
     declarations: [AppComponent],
@@ -47,6 +50,10 @@ import { IonicStorageModule } from '@ionic/storage';
         BrowserModule,
         IonicModule.forRoot(),
         IonicStorageModule.forRoot(),
+        StoreModule.forRoot(reducers, { metaReducers }),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25, // Retains last 25 states
+        }),
         AppRoutingModule
     ],
     providers: [

@@ -1,5 +1,5 @@
-<ion-header translucent>
-    <ion-toolbar color="background">
+<ion-header translucent no-border>
+    <ion-toolbar>
         <ion-buttons slot="start">
             <ion-back-button defaultHref="/dashboard"></ion-back-button>
         </ion-buttons>
@@ -11,7 +11,7 @@
     <ion-refresher color="tertiary" (ionRefresh)="refreshList($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-list>
+    <ion-list back>
         <ion-card *ngFor="let item of uncheckedItems">
             <ion-item class="item">
                 <ion-checkbox [(ngModel)]="item.state.checked" color="secondary"
@@ -20,7 +20,7 @@
                            (ionBlur)="updateItem(item, $event.value)" *ngIf="!item.state.checked"></ion-input>
                 <ion-label *ngIf="item.state.checked"
                            [ngClass]="{ itemchecked: item.state.checked }">{{item.text}}</ion-label>
-                <ion-button fill="clear" item-right (click)="presentActionSheet(item)">
+                <ion-button fill="clear" slot="end" (click)="presentActionSheet(item)">
                     <ion-icon color="tertiary" name="close"></ion-icon>
                 </ion-button>
             </ion-item>
@@ -39,7 +39,7 @@
                            (ionBlur)="updateItem(item, $event.value)" *ngIf="!item.state.checked"></ion-input>
                 <ion-label *ngIf="item.state.checked"
                            [ngClass]="{ itemchecked: item.state.checked }">{{item.text}}</ion-label>
-                <ion-button fill="clear" item-right (click)="presentActionSheet(item)">
+                <ion-button fill="clear" slot="end" (click)="presentActionSheet(item)">
                     <ion-icon color="tertiary" name="more"></ion-icon>
                 </ion-button>
             </ion-item>
