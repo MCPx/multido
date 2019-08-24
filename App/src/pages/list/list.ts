@@ -7,13 +7,17 @@ import { uuid } from 'util/utility';
 import { ManageListPage } from 'pages/manageList/manageList';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {AppState} from "../../store/reducers";
-import {Store} from "@ngrx/store";
+import { AppState } from "store/reducers";
+import { Store } from "@ngrx/store";
+import {getSelectedList} from "../../store/selectors/lists.selectors";
+import {User} from "models/user";
+import {getUser} from "../../store/selectors/user.selectors";
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {
 
-    list: List;
+    user: User;
+    list: List = <List>{};
     checkedItems: Item[];
     uncheckedItems: Item[];
     isUpdating: boolean = false;
@@ -21,7 +25,10 @@ export class ListPage {
     debounceUpdate: Subject<void> = new Subject();
 
     constructor(private navParams: NavParams, private listService: FirestoreListService, private store: Store<AppState>, private nav: NavController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
-        this.list = this.navParams.get('list');
+
+        this.store.select(getSelectedList).subscribe(list => {
+            this.list = list || { items: [] } as List;
+        });
         this.checkedItems = this.list.items.filter(x => x.state.checked);
         this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
 
@@ -42,6 +49,8 @@ export class ListPage {
         this.debounceUpdate
             .pipe(debounceTime(500))
             .subscribe({ next: () => this.updateList() });
+
+        this.store.select(getUser).subscribe(user => this.user = user);
     }
 
     ionViewWillEnter() {
@@ -77,7 +86,7 @@ export class ListPage {
 
     private handleManageListClick() {
         this.nav.push(ManageListPage, {
-            knownUserEmails: this.store.getUser().knownUserEmails,
+            knownUserEmails: this.user.knownUserEmails,
             list: this.list
         });
     }

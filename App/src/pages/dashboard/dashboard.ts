@@ -15,10 +15,10 @@ import { FirebaseCloudService } from "services/firebaseCloudService";
 import { ILocalNotification, LocalNotifications } from "@ionic-native/local-notifications";
 import CameraOptions from 'config/cameraConfig';
 import { Store } from '@ngrx/store';
-import * as ListActions from 'store/actions/lists.actions';
+import {AddList, UpdateLists, RemoveList, SelectList} from "../../store/actions/lists.actions";
 import { AppState } from 'store/reducers';
 import { Observable } from 'rxjs';
-import {getAllLists} from "store/selectors/lists.selectors";
+import {getAllLists, getSelectedList} from "store/selectors/lists.selectors";
 import {User} from "models/user";
 import {getUser} from "store/selectors/user.selectors";
 
@@ -41,6 +41,7 @@ export class DashBoardPage {
         private localNotifications: LocalNotifications,
         private store: Store<AppState>) {
 
+        console.info("dashboard - constructor");
         this.firebaseCloudService.listenToNotifications()
             .pipe(
                 tap(message => {
@@ -60,9 +61,15 @@ export class DashBoardPage {
         );
 
         this.store.select(getUser).subscribe(user => this.user = user);
+        // return await this.nav.push(ListPage, { list });
+        this.store.select(getSelectedList).subscribe((listId) => {
+            if (listId != null)
+                this.nav.push(ListPage)
+        })
     }
 
     ionViewWillEnter() {
+        this.store.dispatch(new SelectList({ id: null }));
         return this.loadLists();
     }
 
@@ -70,7 +77,7 @@ export class DashBoardPage {
         this.isLoading = true;
 
         const newLists = await this.listService.getListsForUser(this.user);
-        this.store.dispatch(new ListActions.UpdateLists({ lists: newLists }));
+        this.store.dispatch(new UpdateLists({ lists: newLists }));
         this.isLoading = false;
     }
 
@@ -94,7 +101,7 @@ export class DashBoardPage {
     }
 
     async handleListClick(list: List) {
-        return await this.nav.push(ListPage, { list });
+        this.store.dispatch(new SelectList({ id: list.id }));
     }
 
     getListSubtext(items: Item[] = []) {
@@ -115,7 +122,7 @@ export class DashBoardPage {
                     handler: data => {
                         const newList = <List>{ name: data.name, items: [] };
 
-                        this.store.dispatch(new ListActions.AddList({ list: newList })); // add list locally, should be updated with properties when getLists is called
+                        this.store.dispatch(new AddList({ list: newList })); // add list locally, should be updated with properties when getLists is called
                         const addListPromise = this.listService.addListForUser(this.user, newList.name);
                         this.nav.push(ListPage, { list: newList, addListPromise });
 
@@ -150,12 +157,12 @@ export class DashBoardPage {
 
     async removeList(listToRemove: List) {
         this.isLoading = true;
-        this.store.dispatch(new ListActions.RemoveList({ id: listToRemove.id }));
+        this.store.dispatch(new RemoveList({ id: listToRemove.id }));
 
         return this.listService.removeListForCurrentUser(this.user, listToRemove)
         .catch(error => {
             console.error(error);
-            this.store.dispatch(new ListActions.AddList({ list: listToRemove }));
+            this.store.dispatch(new AddList({ list: listToRemove }));
 
             this.isLoading = false;
         });

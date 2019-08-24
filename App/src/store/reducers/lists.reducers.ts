@@ -2,10 +2,12 @@ import * as listActions from "../actions/lists.actions";
 import {List} from "models/list";
 
 export interface ListState {
+    selectedListId: string,
     data: List[];
 }
 
 export const initialState: ListState = {
+    selectedListId: null,
     data: []
 };
 
@@ -28,6 +30,12 @@ export function reducer(state = initialState, action: listActions.AnyAction): Li
                 ...state,
                 data: state.data.filter(list => list.id !== action.payload.id)
             };
+        }
+        case listActions.ActionTypes.SelectList: {
+            return {
+                ...state,
+                selectedListId: action.payload.id
+            }
         }
 
         default:

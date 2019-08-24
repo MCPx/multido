@@ -5,6 +5,7 @@ export enum ActionTypes {
     UpdateLists = "[List Service] Update lists",
     AddList = "[List Service] Add list",
     RemoveList = "[List Service] Remove list",
+    SelectList = "[List Service] Select list",
 }
 
 export class UpdateLists implements Action {
@@ -25,4 +26,10 @@ export class RemoveList implements Action {
     constructor(public payload: { id: string }){}
 }
 
-export type AnyAction = UpdateLists | AddList | RemoveList;
+export class SelectList implements Action {
+    readonly type = ActionTypes.SelectList;
+
+    constructor(public payload: { id: string}){}
+}
+
+export type AnyAction = UpdateLists | AddList | RemoveList | SelectList;
