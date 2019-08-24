@@ -10,41 +10,65 @@ import { FirestoreFileService } from 'services/firestoreFileService';
 import { Camera } from '@ionic-native/camera';
 import { uuid } from 'util/utility'
 import { CachingService } from 'services/cachingService';
-import { tap } from "rxjs/operators";
+import { tap, map } from "rxjs/operators";
 import _ from "lodash";
 import { FirebaseCloudService } from "services/firebaseCloudService";
 import { ILocalNotification, LocalNotifications } from "@ionic-native/local-notifications";
 import CameraOptions from 'config/cameraConfig';
+import { Store } from '@ngrx/store';
+import * as ListActions from 'store/actions/lists.actions';
+import { AppState, getAllLists } from 'store/reducers';
+import { Observable } from 'rxjs';
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
 
-    lists: List[];
+    public lists: Observable<List[]>;
     isLoading: boolean;
 
     constructor(
-        private nav: NavController, 
-        private alertCtrl: AlertController, 
-        private store: SiteStore, 
-        private listService: FirestoreListService, 
-        private fileService: FirestoreFileService, 
-        private camera: Camera, 
-        private cachingService: CachingService, 
-        private firebaseCloudService: FirebaseCloudService, 
-        private localNotifications: LocalNotifications) {
+        private nav: NavController,
+        private alertCtrl: AlertController,
+        private oldStore: SiteStore,
+        private listService: FirestoreListService,
+        private fileService: FirestoreFileService,
+        private camera: Camera,
+        private cachingService: CachingService,
+        private firebaseCloudService: FirebaseCloudService,
+        private localNotifications: LocalNotifications,
+        private store: Store<AppState>) {
+
         this.firebaseCloudService.listenToNotifications()
             .pipe(
                 tap(message => {
-                        console.log("NOTIFICATION", message);
-                        this.localNotifications.schedule(<ILocalNotification>{
-                                id: parseInt(_.uniqueId()),
-                                text: message,
-                                data: { custom_data: 'woop de woop' }
-                            }
-                        );
-                    }
-                )
+                    console.log("NOTIFICATION", message);
+                    this.localNotifications.schedule(<ILocalNotification>{
+                        id: parseInt(_.uniqueId()),
+                        text: message,
+                        data: { custom_data: 'woop de woop' }
+                    });
+                })
             );
+
+        this.lists = this.store.select(getAllLists);
+        this.lists.pipe(
+            map(this.fetchImages),
+            tap(Promise.all)
+        )
+    }
+
+    private fetchImages(lists: List[]): Promise<void>[] {
+        const imageFetchPromises: Promise<void>[] = [];
+
+        lists.forEach(list => {
+            if (list.imageId === undefined) return;
+
+            imageFetchPromises.push(
+                this.fetchImageData(list)
+                    .catch(err => console.log("Error fetching list image", err))
+            );
+        });
+        return imageFetchPromises;
     }
 
     ionViewWillEnter() {
@@ -54,21 +78,9 @@ export class DashBoardPage {
     private async loadLists(): Promise<void> {
         this.isLoading = true;
 
-        this.lists = await this.listService.getListsForUser(this.store.getUser())
+        const newLists = await this.listService.getListsForUser(this.oldStore.getUser());
+        this.store.dispatch(new ListActions.UpdateLists({ lists: newLists }));
         this.isLoading = false;
-
-        const imageFetchPromises: Promise<void>[] = [];
-
-        this.lists.forEach(list => {
-            if (list.imageId === undefined) return;
-
-            imageFetchPromises.push(
-                this.fetchImageData(list)
-                .catch(err => console.log("Error fetching list image", err))
-            );    
-        });          
-
-        Promise.all(imageFetchPromises);
     }
 
     async fetchImageData(list: List): Promise<void> {
@@ -99,7 +111,7 @@ export class DashBoardPage {
                         const newList = <List>{ name: data.name, items: [] };
 
                         this.lists.push(newList); // add list locally, should be updated with properties when getLists is called
-                        const addListPromise = this.listService.addListForUser(this.store.getUser(), newList.name);
+                        const addListPromise = this.listService.addListForUser(this.oldStore.getUser(), newList.name);
                         this.nav.push(ListPage, { list: newList, addListPromise });
 
                         return true;
@@ -134,7 +146,7 @@ export class DashBoardPage {
     async removeList(listToRemove) {
         this.isLoading = true;
         this.lists = this.lists.filter(list => list.id != listToRemove.id);
-        return this.listService.removeListForCurrentUser(this.store.getUser(), listToRemove)
+        return this.listService.removeListForCurrentUser(this.oldStore.getUser(), listToRemove)
             .then(() => this.loadLists())
             .catch(error => {
                 console.error(error);
@@ -145,7 +157,7 @@ export class DashBoardPage {
 
     async handleDashboardRefresh(e) {
         await this.loadLists()
-        
+
         e.complete();
     }
 
@@ -156,7 +168,7 @@ export class DashBoardPage {
 
         try {
             var imageData = await this.camera.getPicture(options);
-            
+
             if (!imageData) return;
 
             list.imageId = uuid();
@@ -166,7 +178,7 @@ export class DashBoardPage {
             await this.fileService.uploadImage(list.imageId, list.imageData);
             await this.listService.updateList(list);
         }
-        catch(error) {
+        catch (error) {
             console.error(error);
         }
     }
@@ -176,6 +188,6 @@ export class DashBoardPage {
     }
 
     private displayManagePage(list: List): Promise<any> {
-        return this.nav.push(ManageListPage, { knownUserEmails: this.store.getUser().knownUserEmails, list });
+        return this.nav.push(ManageListPage, { knownUserEmails: this.oldStore.getUser().knownUserEmails, list });
     }
 }
