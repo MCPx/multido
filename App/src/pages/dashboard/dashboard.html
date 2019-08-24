@@ -3,7 +3,7 @@
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
     <ion-list>
-        <ion-card *ngFor="let list of lists" (click)="handleListClick(list)" (press)="handleLongPress(list)">
+        <ion-card *ngFor="let list of lists | async" (click)="handleListClick(list)" (press)="handleLongPress(list)">
             <div class="card-accent">
 
             </div>

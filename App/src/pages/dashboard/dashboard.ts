@@ -19,6 +19,7 @@ import { Store } from '@ngrx/store';
 import * as ListActions from 'store/actions/lists.actions';
 import { AppState, getAllLists } from 'store/reducers';
 import { Observable } from 'rxjs';
+import {RemoveList} from "store/actions/lists.actions";
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -57,6 +58,18 @@ export class DashBoardPage {
         )
     }
 
+    ionViewWillEnter() {
+        return this.loadLists();
+    }
+
+    private async loadLists(): Promise<void> {
+        this.isLoading = true;
+
+        const newLists = await this.listService.getListsForUser(this.oldStore.getUser());
+        this.store.dispatch(new ListActions.UpdateLists({ lists: newLists }));
+        this.isLoading = false;
+    }
+
     private fetchImages(lists: List[]): Promise<void>[] {
         const imageFetchPromises: Promise<void>[] = [];
 
@@ -69,18 +82,6 @@ export class DashBoardPage {
             );
         });
         return imageFetchPromises;
-    }
-
-    ionViewWillEnter() {
-        return this.loadLists();
-    }
-
-    private async loadLists(): Promise<void> {
-        this.isLoading = true;
-
-        const newLists = await this.listService.getListsForUser(this.oldStore.getUser());
-        this.store.dispatch(new ListActions.UpdateLists({ lists: newLists }));
-        this.isLoading = false;
     }
 
     async fetchImageData(list: List): Promise<void> {
@@ -110,7 +111,7 @@ export class DashBoardPage {
                     handler: data => {
                         const newList = <List>{ name: data.name, items: [] };
 
-                        this.lists.push(newList); // add list locally, should be updated with properties when getLists is called
+                        this.store.dispatch(new ListActions.AddList({ list: newList })); // add list locally, should be updated with properties when getLists is called
                         const addListPromise = this.listService.addListForUser(this.oldStore.getUser(), newList.name);
                         this.nav.push(ListPage, { list: newList, addListPromise });
 
@@ -143,20 +144,21 @@ export class DashBoardPage {
         await deleteConfirm.present();
     }
 
-    async removeList(listToRemove) {
+    async removeList(listToRemove: List) {
         this.isLoading = true;
-        this.lists = this.lists.filter(list => list.id != listToRemove.id);
+        this.store.dispatch(new ListActions.RemoveList({ id: listToRemove.id }));
+
         return this.listService.removeListForCurrentUser(this.oldStore.getUser(), listToRemove)
-            .then(() => this.loadLists())
-            .catch(error => {
-                console.error(error);
-                this.lists.push(listToRemove);
-                this.isLoading = false;
-            });
+        .catch(error => {
+            console.error(error);
+            this.store.dispatch(new ListActions.AddList({ list: listToRemove }));
+
+            this.isLoading = false;
+        });
     }
 
     async handleDashboardRefresh(e) {
-        await this.loadLists()
+        await this.loadLists();
 
         e.complete();
     }
@@ -167,7 +169,7 @@ export class DashBoardPage {
         const options = CameraOptions(this.camera);
 
         try {
-            var imageData = await this.camera.getPicture(options);
+            const imageData = await this.camera.getPicture(options);
 
             if (!imageData) return;
 

@@ -1,5 +1,5 @@
 import * as listActions from "../actions/lists.actions";
-import { List } from "models/list";
+import {List} from "models/list";
 
 export interface ListState {
     data: List[];
@@ -17,6 +17,18 @@ export function reducer(state = initialState, action: listActions.ActionsUnion):
                 data: action.payload.lists
             };
         }
+        case listActions.ActionTypes.AddList: {
+            return {
+                ...state,
+                data: [...state.data, action.payload.list]
+            };
+        }
+        case listActions.ActionTypes.RemoveList: {
+            return {
+                ...state,
+                data: state.data.filter(list => list.id !== action.payload.id)
+            };
+        }
 
         default:
             return state;
@@ -24,4 +36,4 @@ export function reducer(state = initialState, action: listActions.ActionsUnion):
 }
 
 export const getLists = (state: ListState) => state.data;
-export const getListById = (state: ListState, props: {id: string}) => state.data.find(list => list.id == props.id);
+export const getListById = (state: ListState, props: { id: string }) => state.data.find(list => list.id == props.id);
