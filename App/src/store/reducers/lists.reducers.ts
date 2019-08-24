@@ -34,6 +34,3 @@ export function reducer(state = initialState, action: listActions.ActionsUnion):
             return state;
     }
 }
-
-export const getLists = (state: ListState) => state.data;
-export const getListById = (state: ListState, props: { id: string }) => state.data.find(list => list.id == props.id);

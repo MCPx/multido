@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { AlertController, AlertOptions, NavController } from 'ionic-angular';
-import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { List } from 'models/list';
 import { Item } from 'models/item';
@@ -17,9 +16,9 @@ import { ILocalNotification, LocalNotifications } from "@ionic-native/local-noti
 import CameraOptions from 'config/cameraConfig';
 import { Store } from '@ngrx/store';
 import * as ListActions from 'store/actions/lists.actions';
-import { AppState, getAllLists } from 'store/reducers';
+import { AppState } from 'store/reducers';
 import { Observable } from 'rxjs';
-import {RemoveList} from "store/actions/lists.actions";
+import {getAllLists} from "../../store/selectors/lists.selectors";
 
 @Component({ selector: 'page-dashboard', templateUrl: 'dashboard.html' })
 export class DashBoardPage {
@@ -30,7 +29,6 @@ export class DashBoardPage {
     constructor(
         private nav: NavController,
         private alertCtrl: AlertController,
-        private oldStore: SiteStore,
         private listService: FirestoreListService,
         private fileService: FirestoreFileService,
         private camera: Camera,
