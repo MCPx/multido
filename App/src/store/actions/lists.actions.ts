@@ -25,4 +25,4 @@ export class RemoveList implements Action {
     constructor(public payload: { id: string }){}
 }
 
-export type ActionsUnion = UpdateLists | AddList | RemoveList;
+export type AnyAction = UpdateLists | AddList | RemoveList;

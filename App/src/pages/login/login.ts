@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, AlertController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
-import { SiteStore } from 'services/siteStore';
 import { FirestoreUserService } from "services/firestoreUserService";
 import { FirestoreAuthService } from "services/firestoreAuthService";
 import { DashBoardPage } from 'pages/dashboard/dashboard'
@@ -12,6 +11,9 @@ import { User } from 'models/user';
 import { StorageKey } from 'enums/storageKey';
 import { FirestoreError } from 'enums/firestoreError';
 import { FirebaseCloudService } from "services/firebaseCloudService";
+import {AppState} from "../../store/reducers";
+import {Store} from "@ngrx/store";
+import {SetUser} from "../../store/actions/user.actions";
 
 @Component({selector: 'page-login', templateUrl: 'login.html'})
 export class LoginPage {
@@ -20,7 +22,7 @@ export class LoginPage {
     showPasswordText: boolean = false;
     loading: boolean = false;
 
-    constructor(private nav: NavController, formBuilder: FormBuilder, private loadingDialog: LoadingDialog, private store: SiteStore, private userService: FirestoreUserService, private alertCtrl: AlertController, private authService: FirestoreAuthService, private storage: Storage, private firebaseCloudService: FirebaseCloudService) {
+    constructor(private nav: NavController, formBuilder: FormBuilder, private loadingDialog: LoadingDialog, private store: Store<AppState>, private userService: FirestoreUserService, private alertCtrl: AlertController, private authService: FirestoreAuthService, private storage: Storage, private firebaseCloudService: FirebaseCloudService) {
         this.loginForm = formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])],
             password: ['', Validators.compose([Validators.required, Validators.minLength(6)])]
@@ -115,13 +117,13 @@ export class LoginPage {
                     }
                 }],
         });
-        
+
         nameEditAlert.present();
     }
 
     private loginUser(user: User): Promise<void> {
         this.loading = false;
-        this.store.setUser(user);
+        this.store.dispatch(new SetUser({ user }));
         // save token for push notifications
         return this.firebaseCloudService.generateToken(user)
             .then(value => {

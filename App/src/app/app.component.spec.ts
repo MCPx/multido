@@ -6,7 +6,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { FirestoreAuthService } from "services/firestoreAuthService";
 import { FirestoreUserService } from "services/firestoreUserService";
-import { SiteStore } from "../services/siteStore";
 import { MyApp } from './app.component';
 import { PlatformMock,
     StatusBarMock,
@@ -16,13 +15,15 @@ import { MockComponent } from 'ng-mocks';
 import { Times } from 'typemoq';
 import { LoginPage } from "../pages/login/login";
 import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
+import {AppState} from "../store/reducers";
+import {Store} from "@ngrx/store";
 
 describe('MyApp Component', () => {
     let fixture: ComponentFixture<MyApp>;
     let component;
     const authServiceMock: TypeMoq.IMock<FirestoreAuthService> = TypeMoq.Mock.ofType<FirestoreAuthService>(undefined, TypeMoq.MockBehavior.Loose);
     const userServiceMock: TypeMoq.IMock<FirestoreUserService> = TypeMoq.Mock.ofType<FirestoreUserService>(undefined, TypeMoq.MockBehavior.Loose);
-    const siteStoreMock: TypeMoq.IMock<SiteStore> = TypeMoq.Mock.ofType<SiteStore>(undefined, TypeMoq.MockBehavior.Loose);
+    const siteStoreMock: TypeMoq.IMock<Store<AppState>> = TypeMoq.Mock.ofType<Store<AppState>>(undefined, TypeMoq.MockBehavior.Loose);
 
     beforeEach(async(() => {
         authServiceMock.setup(x => x.signOut()).returns(() => Promise.resolve(undefined));

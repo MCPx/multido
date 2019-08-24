@@ -9,7 +9,7 @@ export const initialState: ListState = {
     data: []
 };
 
-export function reducer(state = initialState, action: listActions.ActionsUnion): ListState {
+export function reducer(state = initialState, action: listActions.AnyAction): ListState {
     switch (action.type) {
         case listActions.ActionTypes.UpdateLists: {
             return {

@@ -3,12 +3,15 @@ import { ViewController, NavParams } from "ionic-angular";
 import _ from "lodash";
 import { List } from "models/list";
 import { DocumentReference } from "@firebase/firestore-types";
-import { SiteStore } from "services/siteStore";
 import { FirestoreListService } from "services/firestoreListService";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import {AppState} from "../../store/reducers";
+import {Store} from "@ngrx/store";
+import {User} from "../../models/user";
+import {getUser} from "../../store/selectors/user.selectors";
 
 @Component({ selector: 'page-managelist', templateUrl: 'manageList.html' })
-export class ManageListPage {    
+export class ManageListPage {
     addEmailForm: FormGroup;
     knownUserEmails: string[];
     existingEmails: string[] = [];
@@ -16,12 +19,13 @@ export class ManageListPage {
     searchResults: string[] = [];
     isLoading: boolean = true;
     list: List;
+    user: User;
 
     hasChanged() {
         return _.some(_.difference(this.modifiedList, this.existingEmails).concat(_.difference(this.existingEmails, this.modifiedList)));
     }
 
-    constructor(public viewCtrl: ViewController, params: NavParams, private formBuilder: FormBuilder, private store: SiteStore, private listService: FirestoreListService) {
+    constructor(public viewCtrl: ViewController, params: NavParams, private formBuilder: FormBuilder, private store: Store<AppState>, private listService: FirestoreListService) {
         this.addEmailForm = formBuilder.group({
             email: ['', Validators.compose([Validators.required, Validators.email])]
         });
@@ -37,6 +41,8 @@ export class ManageListPage {
             this.existingEmails = [...emails];
             this.isLoading = false;
         });
+
+        this.store.select(getUser).subscribe(user => this.user = user);
     }
 
     private static fetchUserEmails(userRefs: DocumentReference[]): Promise<string[]> {
@@ -94,13 +100,13 @@ export class ManageListPage {
         const emailsToAdd = _.difference(this.modifiedList, this.existingEmails);
 
         if (_.some(emailsToAdd))
-            return this.listService.addUsersToList(this.list, this.store.getUser(), emailsToAdd);
+            return this.listService.addUsersToList(this.list, this.user, emailsToAdd);
 
         return Promise.resolve();
     }
 
     private isOwnEmail(email : string) {
-        return email == this.store.getUser().email;
+        return email == this.user.email;
     }
 
     save() {

@@ -7,9 +7,11 @@ import { LoginPage } from 'pages/login/login';
 import { DashBoardPage } from 'pages/dashboard/dashboard';
 import { User } from 'models/user';
 import { StorageKey } from 'enums/storageKey';
-import { SiteStore } from 'services/siteStore';
 import { FirestoreAuthService } from "services/firestoreAuthService";
 import { FirestoreUserService } from "services/firestoreUserService";
+import {AppState} from "../store/reducers";
+import {Store} from "@ngrx/store";
+import {ClearUser, SetUser} from "../store/actions/user.actions";
 
 @Component({
     templateUrl: 'app.html'
@@ -20,7 +22,7 @@ export class MyApp {
     rootPage: any;
 
     constructor(
-        platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: SiteStore, private authService: FirestoreAuthService, private userService: FirestoreUserService) {
+        platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private storage: Storage, private store: Store<AppState>, private authService: FirestoreAuthService, private userService: FirestoreUserService) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
@@ -32,7 +34,7 @@ export class MyApp {
                     if (!id) throw "User Id was null";
 
                     return this.userService.getUserById(id).then((user: User) => {
-                        this.store.setUser(user);
+                        this.store.dispatch(new SetUser({user}));
                         this.rootPage = DashBoardPage;
                     });
                 })
@@ -43,7 +45,7 @@ export class MyApp {
 
     public async logOut() {
         await this.authService.signOut();
-        await this.store.clearUser();
+        await this.store.dispatch(new ClearUser());
         return this.nav.setRoot(LoginPage);
     }
 }

@@ -16,7 +16,6 @@ import { ListPage } from 'pages/list/list';
 import { LoadingDialog } from 'pages/components/loadingdialog';
 import { RegisterPage } from 'pages/register/register';
 import { ManageListPage } from 'pages/manageList/manageList';
-import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { FirestoreUserService } from "services/firestoreUserService";
 import { FirestoreAuthService } from "services/firestoreAuthService";
@@ -69,7 +68,6 @@ import { reducers, metaReducers } from 'store/reducers';
     providers: [
         StatusBar,
         SplashScreen,
-        SiteStore,
         FirestoreUserService,
         FirestoreListService,
         FirestoreAuthService,

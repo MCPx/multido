@@ -103,17 +103,17 @@ export class FirestoreListService {
 
         // have to duplicate for now because FireStore throws exception for some of list properties (ListRef, UserIds etc)
         const duplicateList = <List>{
-            name: updatedList.name,            
+            name: updatedList.name,
             items: updatedList.items.map(item => {
                 return { id: item.id, text: item.text, state: item.state }
             })
         };
 
-        if (updatedList.imageId)            
+        if (updatedList.imageId)
             duplicateList.imageId = updatedList.imageId;
 
-        await updatedList.listRef.update(duplicateList)
-        
+        await updatedList.listRef.update(duplicateList);
+
         return updatedList;
     }
 
