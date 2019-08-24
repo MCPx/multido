@@ -39,3 +39,4 @@ UserInterfaceState.xcuserstate
 /App/GoogleService-Info.plist
 /App/google-services.json
 /App/functions/lib/
+/API/MultiDo.Api/obj/*
