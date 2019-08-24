@@ -1,29 +1,37 @@
 import { Component } from '@angular/core';
 import { ActionSheetController, AlertController, NavController, NavParams } from 'ionic-angular';
 import { FirestoreListService } from 'services/firestoreListService';
-import { SiteStore } from 'services/siteStore';
 import { List } from 'models/list';
 import { Item } from 'models/item';
 import { uuid } from 'util/utility';
 import { ManageListPage } from 'pages/manageList/manageList';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { AppState } from "store/reducers";
+import { Store } from "@ngrx/store";
+import {getSelectedList} from "../../store/selectors/lists.selectors";
+import {User} from "models/user";
+import {getUser} from "../../store/selectors/user.selectors";
 
 @Component({ selector: 'page-list', templateUrl: 'list.html' })
 export class ListPage {
 
-    list: List;
+    user: User;
+    list: List = <List>{};
     checkedItems: Item[];
     uncheckedItems: Item[];
     isUpdating: boolean = false;
     newItemName: string;
     debounceUpdate: Subject<void> = new Subject();
 
-    constructor(private navParams: NavParams, private listService: FirestoreListService, private store: SiteStore, private nav: NavController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
-        this.list = this.navParams.get('list');
+    constructor(private navParams: NavParams, private listService: FirestoreListService, private store: Store<AppState>, private nav: NavController, private alertCtrl: AlertController, private actionSheetCtrl: ActionSheetController) {
+
+        this.store.select(getSelectedList).subscribe(list => {
+            this.list = list || { items: [] } as List;
+        });
         this.checkedItems = this.list.items.filter(x => x.state.checked);
         this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
-        
+
         // adding list to firestore is triggered from DashboardPage - merge response with local when it completes
         const addListPromise = this.navParams.get('addListPromise');
         if (addListPromise)
@@ -41,6 +49,8 @@ export class ListPage {
         this.debounceUpdate
             .pipe(debounceTime(500))
             .subscribe({ next: () => this.updateList() });
+
+        this.store.select(getUser).subscribe(user => this.user = user);
     }
 
     ionViewWillEnter() {
@@ -53,14 +63,14 @@ export class ListPage {
 
     // reorder on check
     private handleItemCheck(item: Item) {
-        this.sort(item);        
+        this.sort(item);
     }
 
     private sort(item: Item) {
         this.uncheckedItems = this.list.items.filter(x => !x.state.checked);
         this.checkedItems = this.list.items.filter(x => x.state.checked);
 
-        this.list.items = this.uncheckedItems.concat(this.checkedItems);        
+        this.list.items = this.uncheckedItems.concat(this.checkedItems);
 
         this.debounceUpdate.next();
     }
@@ -76,7 +86,7 @@ export class ListPage {
 
     private handleManageListClick() {
         this.nav.push(ManageListPage, {
-            knownUserEmails: this.store.getUser().knownUserEmails,
+            knownUserEmails: this.user.knownUserEmails,
             list: this.list
         });
     }

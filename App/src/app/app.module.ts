@@ -16,7 +16,6 @@ import { ListPage } from 'pages/list/list';
 import { LoadingDialog } from 'pages/components/loadingdialog';
 import { RegisterPage } from 'pages/register/register';
 import { ManageListPage } from 'pages/manageList/manageList';
-import { SiteStore } from 'services/siteStore';
 import { FirestoreListService } from 'services/firestoreListService';
 import { FirestoreUserService } from "services/firestoreUserService";
 import { FirestoreAuthService } from "services/firestoreAuthService";
@@ -29,6 +28,8 @@ import { HTTP } from '@ionic-native/http';
 import { GooglePlus } from '@ionic-native/google-plus';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Firebase } from '@ionic-native/firebase';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from 'store/reducers';
 
 @NgModule({
     declarations: [
@@ -52,7 +53,8 @@ import { Firebase } from '@ionic-native/firebase';
         AngularFireStorageModule,
         BrowserModule,
         IonicModule.forRoot(MyApp),
-        IonicStorageModule.forRoot()
+        IonicStorageModule.forRoot(),
+        StoreModule.forRoot(reducers, { metaReducers })
     ],
     bootstrap: [IonicApp],
     entryComponents: [
@@ -66,7 +68,6 @@ import { Firebase } from '@ionic-native/firebase';
     providers: [
         StatusBar,
         SplashScreen,
-        SiteStore,
         FirestoreUserService,
         FirestoreListService,
         FirestoreAuthService,
